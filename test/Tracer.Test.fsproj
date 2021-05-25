@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Tracer.fsproj" />
+    <ProjectReference Include="..\src\lib\Tracer.fsproj" />
   </ItemGroup>
 
 </Project>

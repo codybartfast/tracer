@@ -7,30 +7,30 @@ module Tuple =
 
 
     (* Tuple implementation *)
-    type Tuple = (struct (float * float * float * float))
-    let raw  x y z w : Tuple = (x, y, z, w)
-    let X ((x, _, _, _): Tuple)  = x
-    let Y ((_, y, _, _): Tuple)  = y
-    let Z ((_, _, z, _): Tuple)  = z
-    let W ((_, _, _, w): Tuple)  = w
-    let isPoint t = W t = wPoint
-    let isVector t = W t = wVector
+    // type Tuple = (struct (float * float * float * float))
+    // let raw  x y z w : Tuple = (x, y, z, w)
+    // let X ((x, _, _, _): Tuple)  = x
+    // let Y ((_, y, _, _): Tuple)  = y
+    // let Z ((_, _, z, _): Tuple)  = z
+    // let W ((_, _, _, w): Tuple)  = w
+    // let isPoint t = W t = wPoint
+    // let isVector t = W t = wVector
 
 
     (* Struct Record implementation *)
-    // [<Struct>]
-    // type Tuple =
-    //     { X: float
-    //       Y: float
-    //       Z: float
-    //       W: float }
-    // let raw x y z w : Tuple = { X = x; Y = y; Z = z; W = w }
-    // let X t = t.X
-    // let Y t = t.Y
-    // let Z t = t.Z
-    // let W t = t.W
-    // let isPoint t = W t = wPoint
-    // let isVector t = W t = wVector
+    [<Struct>]
+    type Tuple =
+        { X: float
+          Y: float
+          Z: float
+          W: float }
+    let raw x y z w : Tuple = { X = x; Y = y; Z = z; W = w }
+    let X t = t.X
+    let Y t = t.Y
+    let Z t = t.Z
+    let W t = t.W
+    let isPoint t = W t = wPoint
+    let isVector t = W t = wVector
 
 
     (* Common implementation *)
