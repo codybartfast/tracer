@@ -3,7 +3,7 @@ module TupleTests
 open Xunit
 open Tuple
 
-let assertFloatEqual a b = Assert.True(floatEqual a b)
+let assertValEqual a b = Assert.True(valEqual a b)
 let assertTupleEqual a b = Assert.True(equal a b)
 
 [<Fact>]
@@ -94,14 +94,14 @@ let dividing_a_tuple_by_a_scalar () =
 [<InlineData(3.74165739, 1.0, 2.0, 3.0)>]
 [<InlineData(3.74165739, -1.0, -2.0, -3.0)>]
 let computing_magnitude_of_vector (expected, x, y, z) =
-    assertFloatEqual expected (mag (vector x y z))
+    assertValEqual expected (mag (vector x y z))
 
 [<Fact>]
 let normalizing_vectors () =
     let test tup exp =
         let norm = norm tup
         assertTupleEqual exp norm 
-        assertFloatEqual 1.0 (mag norm)
+        assertValEqual 1.0 (mag norm)
     test (vector 4.0 0.0 0.0) (vector 1.0 0.0 0.0)
     test (vector 1.0 2.0 3.0) (vector 0.26726 0.53452 0.80178)
 
@@ -109,7 +109,7 @@ let normalizing_vectors () =
 let dot_product_of_two_tuples () =
     let a = vector 1.0 2.0 3.0
     let b = vector 2.0 3.0 4.0
-    assertFloatEqual 20.0 (dot a b)
+    assertValEqual 20.0 (dot a b)
 
 [<Fact>]
 let cross_product_of_two_tuples () =
@@ -117,4 +117,3 @@ let cross_product_of_two_tuples () =
     let b = vector 2.0 3.0 4.0
     assertTupleEqual (vector -1.0 2.0 -1.0) (cross a b)
     assertTupleEqual (vector 1.0 -2.0 1.0) (cross b a)
-

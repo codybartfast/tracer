@@ -1,48 +1,41 @@
 ﻿module Tuple
 
-let EPSILON = 0.00001
+let private epsilon = 0.00001
 let private wPoint = 1.0
 let private wVector = 0.0
 
 
 (* Tuple implementation *)
-type Tuple = (struct (float * float * float * float))
-let rawTuple  x y z w : Tuple = (x, y, z, w)
-let X ((x, _, _, _): Tuple)  = x
-let Y ((_, y, _, _): Tuple)  = y
-let Z ((_, _, z, _): Tuple)  = z
-let W ((_, _, _, w): Tuple)  = w
-let isPoint t = W t = wPoint
-let isVector t = W t = wVector
+// type Tuple = (struct (float * float * float * float))
+// let rawTuple  x y z w : Tuple = (x, y, z, w)
+// let X ((x, _, _, _): Tuple)  = x
+// let Y ((_, y, _, _): Tuple)  = y
+// let Z ((_, _, z, _): Tuple)  = z
+// let W ((_, _, _, w): Tuple)  = w
 
 
 (* Struct Record implementation *)
-// [<Struct>]
-// type Tuple =
-//     { X: float
-//       Y: float
-//       Z: float
-//       W: float }
-// let raw x y z w : Tuple = { X = x; Y = y; Z = z; W = w }
-// let X t = t.X
-// let Y t = t.Y
-// let Z t = t.Z
-// let W t = t.W
-// let isPoint t = W t = wPoint
-// let isVector t = W t = wVector
-
+[<Struct>]
+type Tuple = { X: float; Y: float; Z: float; W: float }
+let rawTuple x y z w : Tuple = { X = x; Y = y; Z = z; W = w }
+let X t = t.X
+let Y t = t.Y
+let Z t = t.Z
+let W t = t.W
 
 (* Common implementation *)
 let point x y z = rawTuple x y z wPoint
+let isPoint t = W t = wPoint
+
 let vector x y z = rawTuple x y z wVector
+let isVector t = W t = wVector
 
-let floatEqual a b = a - b |> abs |> (>) EPSILON
-
+let valEqual a b = a - b |> abs |> (>) epsilon
 let equal a b =
-    floatEqual (X a) (X b)
-    && floatEqual (Y a) (Y b)
-    && floatEqual (Z a) (Z b)
-    && floatEqual (W a) (W b)
+    valEqual (X a) (X b)
+    && valEqual (Y a) (Y b)
+    && valEqual (Z a) (Z b)
+    && valEqual (W a) (W b)
 
 let add a b = rawTuple (X a + X b) (Y a + Y b) (Z a + Z b) (W a + W b)
 let (.+) = add

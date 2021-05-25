@@ -11,12 +11,8 @@ let projectile_hits_target () =
 
     let flight =
         flight
-            (environment
-                (vector 0.0 -0.1 0.0)
-                (vector -0.01 0.0 0.0))
-            (projectile
-                (point 0.0 1.0 0.0)
-                (vector 1.0 1.0 0.0 |> norm))
+            (environment (vector 0.0 -0.1 0.0) (vector -0.01 0.0 0.0))
+            (projectile (point 0.0 1.0 0.0) (vector 1.0 1.0 0.0 |> norm))
         |> Seq.toList
 
     let lastPos = List.last flight
