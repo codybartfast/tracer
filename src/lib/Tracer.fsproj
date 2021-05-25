@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Compile Include="Tuple.fs" />
+    <Compile Include="Projectile.fs" />
   </ItemGroup>
 
 </Project>
