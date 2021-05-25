@@ -1,13 +1,21 @@
-// Learn more about F# at http://docs.microsoft.com/dotnet/fsharp
-
 open System
 
-// Define a function to construct a message to print
-let from whom =
-    sprintf "from %s" whom
+open Tuple
+open Projectile
+
+let flight () =
+    flight
+        (environment (Tuple.vector 0.0 -0.1 0.0) (Tuple.vector -0.01 0.0 0.0))
+        (projectile (Tuple.point 0.0 1.0 0.0) (Tuple.vector 1.0 1.0 0.0 |> Tuple.norm))
+
+let posToRow pos = sprintf "%0.5f,%0.5f" (Tuple.X pos) (Tuple.Y pos)
+
+
 
 [<EntryPoint>]
 let main argv =
-    let message = from "F#" // Call the function
-    printfn "Hello world %s" message
-    0 // return an integer exit code
+    flight ()
+    |> Seq.map posToRow
+    |> Seq.iter (printfn "%s")
+
+    0
