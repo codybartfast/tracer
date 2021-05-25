@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Tuple.fsi" />
     <Compile Include="Tuple.fs" />
     <Compile Include="Projectile.fs" />
   </ItemGroup>

@@ -5,23 +5,42 @@ let private wPoint = 1.0
 let private wVector = 0.0
 
 
-(* Tuple implementation *)
-// type Tuple = (struct (float * float * float * float))
+(* Tuple Struct implementation *)
+// type Struct Tuple = (struct (float * float * float * float))
 // let rawTuple  x y z w : Tuple = (x, y, z, w)
 // let X ((x, _, _, _): Tuple)  = x
 // let Y ((_, y, _, _): Tuple)  = y
 // let Z ((_, _, z, _): Tuple)  = z
 // let W ((_, _, _, w): Tuple)  = w
 
+(* Typed Tuple Struct implementation *)
+type Tuple = Tuple of (struct (float * float * float * float))
+let rawTuple  x y z w : Tuple = Tuple (x, y, z, w)
+let X (Tuple (x, _, _, _))  = x
+let Y (Tuple (_, y, _, _))  = y
+let Z (Tuple (_, _, z, _))  = z
+let W (Tuple (_, _, _, w))  = w
 
-(* Struct Record implementation *)
-[<Struct>]
-type Tuple = { X: float; Y: float; Z: float; W: float }
-let rawTuple x y z w : Tuple = { X = x; Y = y; Z = z; W = w }
-let X t = t.X
-let Y t = t.Y
-let Z t = t.Z
-let W t = t.W
+
+(* Record Struct implementation *)
+// [<Struct>]
+// type Tuple = { X: float; Y: float; Z: float; W: float }
+// let rawTuple x y z w : Tuple = { X = x; Y = y; Z = z; W = w }
+// let X t = t.X
+// let Y t = t.Y
+// let Z t = t.Z
+// let W t = t.W
+
+(* Typed Record Struct implementation *)
+// [<Struct>]
+// type TupleRecord = { X: float; Y: float; Z: float; W: float }
+// type Tuple = Tuple of TupleRecord
+// let rawTuple x y z w : Tuple = Tuple { X = x; Y = y; Z = z; W = w }
+// let X (Tuple t) = t.X
+// let Y (Tuple t) = t.Y
+// let Z (Tuple t) = t.Z
+// let W (Tuple t) = t.W
+
 
 (* Common implementation *)
 let point x y z = rawTuple x y z wPoint
@@ -53,8 +72,7 @@ let mag t =
 let norm t =
     let m = mag t
     vector (X t / m) (Y t / m) (Z t / m)
-let dot a b =
-    (X a * X b) + (Y a * Y b) + (Z a * Z b) + (W a * W b)
+let dot a b = (X a * X b) + (Y a * Y b) + (Z a * Z b) + (W a * W b)
 let cross a b =
     let ax, ay, az = X a, Y a, Z a
     let bx, by, bz = X b, Y b, Z b
