@@ -7,7 +7,7 @@ module Tuple =
 
 
     (* Tuple implementation *)
-    type Tuple = float * float * float * float
+    type Tuple = (struct (float * float * float * float))
     let raw  x y z w : Tuple = (x, y, z, w)
     let X ((x, _, _, _): Tuple)  = x
     let Y ((_, y, _, _): Tuple)  = y
