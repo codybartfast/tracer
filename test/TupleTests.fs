@@ -41,24 +41,28 @@ let adding_two_tuples () =
     let a1 = rawTuple 3.0 -2.0 5.0 1.0
     let a2 = rawTuple -2.0 3.0 1.0 0.0
     assertTupleEqual (rawTuple 1.0 1.0 6.0 1.0) (add a1 a2)
+    assertTupleEqual (rawTuple 1.0 1.0 6.0 1.0) (a1 .+ a2)
 
 [<Fact>]
 let subtracting_two_tuples () =
     let a1 = point 3.0 2.0 1.0
     let a2 = point 5.0 6.0 7.0
     assertTupleEqual (vector -2.0 -4.0 -6.0) (sub a1 a2)
+    assertTupleEqual (vector -2.0 -4.0 -6.0) (a1 .- a2)
 
 [<Fact>]
 let subtracting_vector_from_point () =
     let a1 = point 3.0 2.0 1.0
     let a2 = vector 5.0 6.0 7.0
     assertTupleEqual (point -2.0 -4.0 -6.0) (sub a1 a2)
+    assertTupleEqual (point -2.0 -4.0 -6.0) (a1 .- a2)
 
 [<Fact>]
 let subtracting_vector_from_zero_vecor () =
     let a1 = vector 0.0 0.0 0.0
     let a2 = vector 1.0 -2.0 3.0
     assertTupleEqual (vector -1.0 2.0 -3.0) (sub a1 a2)
+    assertTupleEqual (vector -1.0 2.0 -3.0) (a1 .- a2)
 
 [<Fact>]
 let negating_a_vector () =
@@ -69,16 +73,19 @@ let negating_a_vector () =
 let multiplying_a_tuple_by_a_scalar () =
     let a = rawTuple 1.0 -2.0 3.0 -4.0
     assertTupleEqual (rawTuple 3.5 -7.0 10.5 -14.0) (mul a 3.5)
+    assertTupleEqual (rawTuple 3.5 -7.0 10.5 -14.0) (a .* 3.5)
 
 [<Fact>]
 let multiplying_a_tuple_by_a_fraction () =
     let a = rawTuple 1.0 -2.0 3.0 -4.0
     assertTupleEqual (rawTuple 0.5 -1.0 1.5 -2.0) (mul a 0.5)
+    assertTupleEqual (rawTuple 0.5 -1.0 1.5 -2.0) (a .* 0.5)
 
 [<Fact>]
 let dividing_a_tuple_by_a_scalar () =
     let a = rawTuple 1.0 -2.0 3.0 -4.0
     assertTupleEqual (rawTuple 0.5 -1.0 1.5 -2.0) (div a 2.0)
+    assertTupleEqual (rawTuple 0.5 -1.0 1.5 -2.0) (a ./ 2.0)
 
 [<Theory>]
 [<InlineData(1.0, 1.0, 0.0, 0.0)>]

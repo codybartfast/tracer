@@ -49,7 +49,6 @@ let (.+) = add
 let sub a b = rawTuple (X a - X b) (Y a - Y b) (Z a - Z b) (W a - W b)
 let (.-) = sub
 let neg a = rawTuple -(X a) -(Y a) -(Z a) -(W a)
-let (~-) = neg
 let mul a s = rawTuple (X a * s) (Y a * s) (Z a * s) (W a * s)
 let (.*) = mul
 let div a s = rawTuple (X a / s) (Y a / s) (Z a / s) (W a / s)
@@ -67,4 +66,3 @@ let cross a b =
     let ax, ay, az = X a, Y a, Z a
     let bx, by, bz = X b, Y b, Z b
     vector (ay * bz - az * by) (az * bx - ax * bz) (ax * by - ay * bx)
-
