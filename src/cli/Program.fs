@@ -12,6 +12,7 @@ let posToRow pos = sprintf "%0.5f,%0.5f" (X pos) (Y pos)
 
 [<EntryPoint>]
 let main argv =
+    printfn "X,Y"
     flight ()
     |> Seq.map posToRow
     |> Seq.iter (printfn "%s")
