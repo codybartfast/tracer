@@ -1,12 +1,12 @@
 module Tuple
 
+// type Quad
 type Tuple
 
-val rawTuple : float -> float -> float -> float -> Tuple
+// val rawTuple : float -> float -> float -> float -> Quad
 val X : Tuple -> float
 val Y : Tuple -> float
 val Z : Tuple -> float
-val W : Tuple -> float
 
 
 val point : float -> float -> float -> Tuple
