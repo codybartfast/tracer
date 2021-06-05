@@ -8,21 +8,21 @@ let assertTupleEqual a b = Assert.True(equal a b)
 
 [<Fact>]
 let point_creates_a_point () =
-    let x, y, z = 4.3, -4.2, 3.1
-    let a = point x y z
-    Assert.Equal(x, X a)
-    Assert.Equal(y, Y a)
-    Assert.Equal(z, Z a)
+    let ex, ey, ez = 4.3, -4.2, 3.1
+    let a = point ex ey ez
+    Assert.Equal(ex, x a)
+    Assert.Equal(ey, y a)
+    Assert.Equal(ez, z a)
     Assert.True(isPoint a)
     Assert.False(isVector a)
 
 [<Fact>]
 let vector_create_a_vector () =
-    let x, y, z = 4.3, -4.2, 3.1
-    let a = vector x y z
-    Assert.Equal(x, X a)
-    Assert.Equal(y, Y a)
-    Assert.Equal(z, Z a)
+    let ex, ey, ez = 4.3, -4.2, 3.1
+    let a = vector ex ey ez
+    Assert.Equal(ex, x a)
+    Assert.Equal(ey, y a)
+    Assert.Equal(ez, z a)
     Assert.False(isPoint a)
     Assert.True(isVector a)
 
