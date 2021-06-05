@@ -1,4 +1,4 @@
-module TupleTests
+module PointVectorTests
 
 open Xunit
 open Tuple

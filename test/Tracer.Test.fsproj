@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="PointVectorTests.fs" />
     <Compile Include="ProjectileTests.fs" />
-    <Compile Include="TupleTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
