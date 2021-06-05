@@ -3,6 +3,7 @@
 let private epsilon = 0.00001
 let private wPoint = 1.0
 let private wVector = 0.0
+let private wColor = 0.0
 
 
 (* Tuple Struct implementation *)
@@ -49,6 +50,13 @@ let isPoint t = W t = wPoint
 let vector x y z = rawTuple x y z wVector
 let isVector t = W t = wVector
 
+let color r g b = rawTuple r g b wColor
+let red t = X t  // why not 'red = X'?
+let green t = Y t
+let blue t = Z t
+
+
+
 let valEqual a b = a - b |> abs |> (>) epsilon
 let equal a b =
     valEqual (X a) (X b)
@@ -77,3 +85,5 @@ let cross a b =
     let ax, ay, az = X a, Y a, Z a
     let bx, by, bz = X b, Y b, Z b
     vector (ay * bz - az * by) (az * bx - ax * bz) (ax * by - ay * bx)
+let hadamard a b = rawTuple (red a * red b) (green a * green b) (blue a * blue b) wColor
+
