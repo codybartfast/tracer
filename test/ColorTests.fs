@@ -36,4 +36,4 @@ let multiplying_a_color_by_a_scalar () =
 let hadamard_product_of_two_colors () =
     let a1 = color 1.0 0.2 0.4
     let a2 = color 0.9 1.0 0.1
-    Assert.TupleEqual(color 0.9 0.2 0.04, hadamard a1 a2)
+    Assert.TupleEqual(color 0.9 0.2 0.04, hprod a1 a2)

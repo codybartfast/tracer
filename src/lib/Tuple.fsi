@@ -36,4 +36,4 @@ val mag : Tuple -> float
 val norm : Tuple -> Tuple
 val dot : Tuple -> Tuple -> float
 val cross : Tuple -> Tuple -> Tuple
-val hadamard : Tuple -> Tuple -> Tuple
+val hprod : Tuple -> Tuple -> Tuple
