@@ -16,7 +16,7 @@ let tick env proj =
 let rec path env = Seq.unfold (fun proj -> Some(proj.Position, tick env proj))
 
 let flight env proj =
-    let isAirbourne = Y >> ((<) 0.0)
+    let isAirbourne = y >> ((<) 0.0)
     let rec flight path = seq {
         let pos = Seq.head path
         yield pos

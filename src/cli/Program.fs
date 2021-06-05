@@ -7,7 +7,7 @@ let flight () =
         (projectile (point 0.0 1.0 0.0) (vector 1.0 1.0 0.0 |> norm))
     |> Seq.toList
 
-let posToRow pos = sprintf "%0.5f,%0.5f" (X pos) (Y pos)
+let posToRow pos = sprintf "%0.5f,%0.5f" (x pos) (y pos)
 
 
 [<EntryPoint>]

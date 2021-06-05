@@ -4,9 +4,9 @@ module Tuple
 type Tuple
 
 // val rawTuple : float -> float -> float -> float -> Quad
-val X : Tuple -> float
-val Y : Tuple -> float
-val Z : Tuple -> float
+val x : Tuple -> float
+val y : Tuple -> float
+val z : Tuple -> float
 
 
 val point : float -> float -> float -> Tuple
