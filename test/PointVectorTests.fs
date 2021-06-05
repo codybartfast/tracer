@@ -72,8 +72,8 @@ let negating_a_vector () =
 [<Fact>]
 let multiplying_a_tuple_by_a_scalar () =
     let a = vector 1.0 -2.0 3.0
-    assertTupleEqual (vector 3.5 -7.0 10.5 ) (mul a 3.5)
-    assertTupleEqual (vector 3.5 -7.0 10.5 ) (a .* 3.5)
+    assertTupleEqual (vector 3.5 -7.0 10.5) (mul a 3.5)
+    assertTupleEqual (vector 3.5 -7.0 10.5) (a .* 3.5)
 
 [<Fact>]
 let multiplying_a_tuple_by_a_fraction () =

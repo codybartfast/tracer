@@ -15,6 +15,11 @@ val isPoint : Tuple -> bool
 val vector : float -> float -> float -> Tuple
 val isVector : Tuple -> bool
 
+val color : float -> float -> float -> Tuple
+val red : Tuple -> float
+val green : Tuple -> float
+val blue : Tuple -> float
+
 val valEqual : float -> float -> bool
 val equal : Tuple -> Tuple -> bool
 
@@ -31,3 +36,4 @@ val mag : Tuple -> float
 val norm : Tuple -> Tuple
 val dot : Tuple -> Tuple -> float
 val cross : Tuple -> Tuple -> Tuple
+val hadamard : Tuple -> Tuple -> Tuple
