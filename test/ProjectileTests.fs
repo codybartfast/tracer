@@ -4,7 +4,7 @@ open Xunit
 open Tuple
 open Projectile
 
-let assertTupleEqual a b = Assert.True(equal a b)
+type Assert = XUnitExtensions.TracerAssert
 
 [<Fact>]
 let projectile_hits_target () =
@@ -16,5 +16,5 @@ let projectile_hits_target () =
         |> Seq.toList
 
     let lastPos = List.last flight
-    assertTupleEqual (point 10.660815 -0.579184 0.0) lastPos
+    Assert.TupleEqual(point 10.660815 -0.579184 0.0, lastPos)
     Assert.Equal(17, flight.Length - 1)
