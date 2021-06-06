@@ -1,3 +1,3 @@
 # tracer
 
-The 'typed' branch has a version with typed Points and Vectors, but same tests
+Working through [The Ray Tracer Challenge](http://raytracerchallenge.com/)

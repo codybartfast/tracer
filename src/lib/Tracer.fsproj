@@ -5,7 +5,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Tuple.fsi" />
-    <Compile Include="Tuple.fs" />
+    <Compile Include="TupleTyped.fs" />
+    <!-- <Compile Include="TupleUntyped.fs" /> -->
     <Compile Include="Projectile.fs" />
   </ItemGroup>
 </Project>
