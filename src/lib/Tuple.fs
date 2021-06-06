@@ -51,10 +51,9 @@ let vector x y z = rawTuple x y z wVector
 let isVector t = W t = wVector
 
 let color r g b = rawTuple r g b wColor
-let red t = x t  // why not 'red = x'?
-let green t = y t
-let blue t = z t
-
+let red = x   // why not 'red = x'?
+let green = y
+let blue = z
 
 
 let valEqual a b = a - b |> abs |> (>) epsilon

@@ -4,9 +4,9 @@ module Tuple
 type Tuple
 
 // val rawTuple : float -> float -> float -> float -> Quad
-val x : Tuple -> float
-val y : Tuple -> float
-val z : Tuple -> float
+val x : (Tuple -> float)
+val y : (Tuple -> float)
+val z : (Tuple -> float)
 
 
 val point : float -> float -> float -> Tuple
@@ -16,9 +16,9 @@ val vector : float -> float -> float -> Tuple
 val isVector : Tuple -> bool
 
 val color : float -> float -> float -> Tuple
-val red : Tuple -> float
-val green : Tuple -> float
-val blue : Tuple -> float
+val red : (Tuple -> float)
+val green : (Tuple -> float)
+val blue : (Tuple -> float)
 
 val valEqual : float -> float -> bool
 val equal : Tuple -> Tuple -> bool
