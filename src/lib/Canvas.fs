@@ -42,10 +42,10 @@ type Canvas(width, height, initializer) =
         let write str = write str; lineLen <- lineLen + str.Length
         let writeSep () = if lineLen < 67 then write " " else newline ()
 
-        let scale depth = ((*) (float depth)) >> ((+) 0.5) >> int
+        let scale = ((*) (float depth + 1.0)) >> int // can return 256
         let clamp low high = (max low) >> (min high)
         let writePixel px =
-            let toStr = scale depth >> clamp 0 depth >> string
+            let toStr = scale >> clamp 0 depth >> string
             px |> red |> toStr |> write
             writeSep ()
             px |> green |> toStr |> write
