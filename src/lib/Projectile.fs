@@ -8,6 +8,7 @@ type Environment = { Gravity: Tuple; Wind: Tuple }
 let projectile position velocity =
     { Position = position
       Velocity = velocity }
+let position projectile = projectile.Position
 
 let environment gravity wind = { Gravity = gravity; Wind = wind }
 
