@@ -36,11 +36,12 @@ type Canvas(width, height, initializer) =
 
     member this.WritePpm(write: string -> unit) =
         let maxLen = 70
+        let wrapAfter = maxLen - ($"{depth}".Length) - 1
         let mutable lineLen = 0
         let newline () = write "\n"; lineLen <- 0
         let writeln str = write str; newline ()
         let write str = write str; lineLen <- lineLen + str.Length
-        let writeSep () = if lineLen < 67 then write " " else newline ()
+        let writeSep () = if lineLen <= wrapAfter then write " " else newline ()
 
         let scale = ((*) (float depth + 1.0)) >> int // can return 256
         let clamp low high = (max low) >> (min high)
