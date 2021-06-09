@@ -5,12 +5,14 @@
 
     <IsPackable>false</IsPackable>
     <GenerateProgramFile>false</GenerateProgramFile>
+    <DefineConstants>TYPED</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="XUnitExtensions.fs" />
     <Compile Include="CanvasTests.fs" />
     <Compile Include="ColorTests.fs" />
+    <Compile Include="MatrixTests.fs" />
     <Compile Include="PointVectorTests.fs" />
     <Compile Include="ProjectileTests.fs" />
     <Compile Include="Program.fs" />
