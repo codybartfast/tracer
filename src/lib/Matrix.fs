@@ -2,7 +2,7 @@ module Matrix
 
 open Tuple
 
-let matrixOfArrays (arrays: 'a[][]) =
+let matrixOfRows (arrays: 'a[][]) =
         let height = arrays.Length
         let width = arrays.[0].Length
         if arrays |> Array.forall (Array.length >> ((=) width)) |> not
@@ -10,8 +10,11 @@ let matrixOfArrays (arrays: 'a[][]) =
         Array2D.init width height (fun row col ->
             arrays |> Array.item row |> Array.item col)
 
-let matrixOfLists  (lists: 'a list list) =
-        lists |> (List.map List.toArray) |> List.toArray |> matrixOfArrays
+let rec toMatrix t =
+    let arr = toArray t
+    let m = Array2D.zeroCreate (Array.length arr) 1
+    m.[*, 0] <- arr
+    m
 
 let (|*|) a b =
     let height, width = Array2D.length1 a, Array2D.length2 a
@@ -21,22 +24,16 @@ let (|*|) a b =
         (a.[row, *], b.[*, col]) ||> Array.map2 (*) |> Array.reduce (+))
 
 let (|*) A b =
-    let B = Array2D.zeroCreate 3 1
-    B.[0, 0] <- x b
-    B.[1, 0] <- y b
-    B.[2, 0] <- z b
+    let B = toMatrix b
     let R = A |*| B
-    vector R.[0, 0] R.[1, 0] R.[2, 0]
+    toTuple R.[*, 0]
 
-let identity n =
+let identityN n =
     let M = Array2D.zeroCreate n n
     [0..n-1] |> List.iter (fun n -> M.[n, n] <- 1.0)
     M
 
-let identityMatrix =
-    // let size = 4
-    let size = 3
-    identity size
+let identity = identityN 4
 
 let inline transpose M =
     Array2D.init
@@ -77,3 +74,4 @@ let inverse M =
     |> Array2D.mapi (fun r c _ -> cofactor M r c)
     |> transpose
     |> Array2D.map (fun n -> n / (determinant M))
+

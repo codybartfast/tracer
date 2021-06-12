@@ -1,9 +1,7 @@
 module Tuple
 
-// type Quad
 type Tuple
 
-// val rawTuple : float -> float -> float -> float -> Quad
 val x : (Tuple -> float)
 val y : (Tuple -> float)
 val z : (Tuple -> float)
@@ -19,6 +17,8 @@ val color : float -> float -> float -> Tuple
 val red : (Tuple -> float)
 val green : (Tuple -> float)
 val blue : (Tuple -> float)
+
+val exotic : float -> float -> float -> float -> Tuple
 
 val valEqual : float -> float -> bool
 val equal : Tuple -> Tuple -> bool
@@ -37,3 +37,6 @@ val norm : Tuple -> Tuple
 val dot : Tuple -> Tuple -> float
 val cross : Tuple -> Tuple -> Tuple
 val hprod : Tuple -> Tuple -> Tuple
+
+val toArray : Tuple -> float[]
+val toTuple : float[] -> Tuple

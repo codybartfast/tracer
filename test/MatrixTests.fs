@@ -8,6 +8,8 @@ open Tuple
 
 type Assert = XUnitExtensions.TracerAssert
 
+let matrixOfLists  (lists: 'a list list) =
+        lists |> (List.map List.toArray) |> List.toArray |> matrixOfRows
 let matrixOfInts = matrixOfLists >> (Array2D.map float)
 let round = Array2D.map (fun (n: float) -> Math.Round(n, 5))
 
@@ -94,34 +96,28 @@ let multiplying_two_matrices () =
 
 [<Fact>]
 let a_matrix_multiplied_by_a_tuple () =
-    // let A = matrixOfLists [ [0.0; 1.0; 2.0; 4.0]
-    //                         [1.0; 2.0; 4.0; 8.0]
-    //                         [2.0; 4.0; 8.0; 16.0]
-    //                         [4.0; 8.0; 16.0; 32.0] ]
-    let A = matrixOfLists [ [0.0; 1.0; 2.0]
-                            [1.0; 2.0; 4.0]
-                            [2.0; 4.0; 8.0] ]
-    let b = vector 1.0 2.0 3.0
-    // let expected = vector 18.0 24.0 33.0
-    let expected = vector 8.0 17.0 34.0
-    Assert.TupleEqual (expected, A |* b)
+    let A = matrixOfInts [ [1; 2; 3; 4]
+                           [2; 4; 4; 2]
+                           [8; 6; 4; 1]
+                           [0; 0; 0; 1] ]
+    let b = point 1.0 2.0 3.0
+    let expected = point 18.0 24.0 33.0
+    let actual = A |* b
+    Assert.TupleEqual (expected, actual)
 
 [<Fact>]
 let multiplying_a_matrix_by_identity_matrix () =
-    // let A = matrixOfLists [ [0.0; 1.0; 2.0; 4.0]
-    //                         [1.0; 2.0; 4.0; 8.0]
-    //                         [2.0; 4.0; 8.0; 16.0]
-    //                         [4.0; 8.0; 16.0; 32.0] ]
-    let A = matrixOfLists [ [0.0; 1.0; 2.0]
-                            [1.0; 2.0; 4.0]
-                            [2.0; 4.0; 8.0] ]
-    let I = identityMatrix
-    Assert.Equal(A, A |*| I)
+    let A = matrixOfLists [ [0.0; 1.0; 2.0; 4.0]
+                            [1.0; 2.0; 4.0; 8.0]
+                            [2.0; 4.0; 8.0; 16.0]
+                            [4.0; 8.0; 16.0; 32.0] ]
+    Assert.Equal(A, A |*| identity)
 
 [<Fact>]
-let multiplying_the_identity_matrix_by () =
-    let a = vector 1.0 2.0 3.0
-    Assert.Equal(a, identityMatrix |* a)
+let multiplying_the_identity_matrix_by_a_tuple () =
+    let a = exotic 1.0 2.0 3.0 4.0
+    let actual = identity |* a
+    Assert.Equal(a, actual)
 
 [<Fact>]
 let transposing_a_matrix () =
@@ -138,7 +134,7 @@ let transposing_a_matrix () =
 
 [<Fact>]
 let transpose_the_identity_matrix () =
-    Assert.Equal(identityMatrix, transpose identityMatrix)
+    Assert.Equal(identity, transpose identity)
 
 [<Fact>]
 let calculating_the_determinant_of_a_2x2_matrix () =

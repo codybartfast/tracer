@@ -1,18 +1,22 @@
 ﻿module Tuple
 
-let epsilon = 0.00001
+let private epsilon = 0.00001
+let private wPoint = 1.0
+let private wVector = 0.0
 
 type RawTuple = (struct (float * float * float))
 
 type Tuple =
     | Color of RawTuple
     | Point of RawTuple
-    | Vector of RawTuple    
+    | Vector of RawTuple
+    | Exotic of float[]
 
 let (|RawTuple|) = function
     | Color rt -> rt
     | Point rt -> rt
     | Vector rt -> rt
+    | Exotic _ -> failwith "I don't handle the unknown"
 
 let x (RawTuple (x, _, _)) = x
 let y (RawTuple (_, y, _)) = y
@@ -24,6 +28,7 @@ let tuple hint rt =
     | Color _ -> Color rt
     | Point _ -> Point rt
     | Vector _ -> Vector rt
+    | Exotic _ -> failwith "I don't like the unknown"
 
 let point x y z = Point(rawTuple x y z)
 let isPoint = function
@@ -40,6 +45,7 @@ let red = x
 let green = y
 let blue = z
 
+let exotic x y z w = Exotic [| x; y; z; w |]
 
 let valEqual a b = a - b |> abs |> (>) epsilon
 let typeEqual a b =
@@ -49,10 +55,10 @@ let typeEqual a b =
     | (Vector _), (Vector _) -> true
     | _ -> false
 let equal a b =
-    valEqual (x a) (x b)
+    typeEqual a b
+    && valEqual (x a) (x b)
     && valEqual (y a) (y b)
     && valEqual (z a) (z b)
-    && typeEqual a b
 
 let add a b =
     let rt =
@@ -107,6 +113,22 @@ let cross a b =
 
 let hprod a b =
     match a, b with
-    | Color (ar, ag, ab), Color (br, bg, bb) -> 
+    | Color (ar, ag, ab), Color (br, bg, bb) ->
         color (ar * br) (ag * bg) (ab * bb)
     | _ -> failwith "habamard only accepts colors"
+
+let toArray t =
+    match t with
+    | Exotic a -> a
+    | Point _ -> [| x t; y t; z t; wPoint |]
+    | Vector _ -> [| x t; y t; z t; wVector |]
+    | Color _ -> failwith "Can't get matrix from colour"
+
+let toTuple a =
+    match a with
+        | [| x; y; z; w |] ->
+            match w with
+            | 0.0 -> vector x y z
+            | 1.0 -> point x y z
+            | _ -> exotic x y z w
+        | _ -> failwith "Unexpected length for tuple: ${Array.length a}"
