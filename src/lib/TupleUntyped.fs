@@ -1,4 +1,6 @@
-﻿module Tuple
+﻿// #if !Typed
+
+module Tuple
 
 let private epsilon = 0.00001
 let private wPoint = 1.0
@@ -85,3 +87,5 @@ let cross a b =
     let bx, by, bz = x b, y b, z b
     vector (ay * bz - az * by) (az * bx - ax * bz) (ax * by - ay * bx)
 let hprod a b = rawTuple (red a * red b) (green a * green b) (blue a * blue b) wColor
+
+// #endif

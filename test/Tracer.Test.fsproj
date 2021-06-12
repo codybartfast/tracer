@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
     <GenerateProgramFile>false</GenerateProgramFile>
-    <DefineConstants>TYPED</DefineConstants>
+    <!-- <DefineConstants>TYPED</DefineConstants> -->
   </PropertyGroup>
 
   <ItemGroup>

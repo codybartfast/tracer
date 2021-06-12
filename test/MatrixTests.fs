@@ -94,44 +94,33 @@ let multiplying_two_matrices () =
 
 [<Fact>]
 let a_matrix_multiplied_by_a_tuple () =
-#if TYPED
+    // let A = matrixOfLists [ [0.0; 1.0; 2.0; 4.0]
+    //                         [1.0; 2.0; 4.0; 8.0]
+    //                         [2.0; 4.0; 8.0; 16.0]
+    //                         [4.0; 8.0; 16.0; 32.0] ]
     let A = matrixOfLists [ [0.0; 1.0; 2.0]
                             [1.0; 2.0; 4.0]
                             [2.0; 4.0; 8.0] ]
     let b = vector 1.0 2.0 3.0
+    // let expected = vector 18.0 24.0 33.0
     let expected = vector 8.0 17.0 34.0
-#else
-    let A = matrixOfLists [ [0.0; 1.0; 2.0; 4.0]
-                            [1.0; 2.0; 4.0; 8.0]
-                            [2.0; 4.0; 8.0; 16.0]
-                            [4.0; 8.0; 16.0; 32.0] ]
-    let b = vector 1.0 2.0 3.0 1.0
-    let expected = vector 18.0 24.0 33.0 1.0
-#endif
     Assert.TupleEqual (expected, A |* b)
 
 [<Fact>]
 let multiplying_a_matrix_by_identity_matrix () =
-#if TYPED
+    // let A = matrixOfLists [ [0.0; 1.0; 2.0; 4.0]
+    //                         [1.0; 2.0; 4.0; 8.0]
+    //                         [2.0; 4.0; 8.0; 16.0]
+    //                         [4.0; 8.0; 16.0; 32.0] ]
     let A = matrixOfLists [ [0.0; 1.0; 2.0]
                             [1.0; 2.0; 4.0]
                             [2.0; 4.0; 8.0] ]
-#else
-    let A = matrixOfLists [ [0.0; 1.0; 2.0; 4.0]
-                            [1.0; 2.0; 4.0; 8.0]
-                            [2.0; 4.0; 8.0; 16.0]
-                            [4.0; 8.0; 16.0; 32.0] ]
-#endif
     let I = identityMatrix
     Assert.Equal(A, A |*| I)
 
 [<Fact>]
 let multiplying_the_identity_matrix_by () =
-#if TYPED
     let a = vector 1.0 2.0 3.0
-#else
-    let a = vector 1.0 2.0 3.0 4.0
-#endif
     Assert.Equal(a, identityMatrix |* a)
 
 [<Fact>]
@@ -290,4 +279,4 @@ let multiplying_a_product_by_its_inverse () =
                            [ 7;  0;  5;  4]
                            [ 6; -2;  0;  5] ]
     let C = A |*| B
-    Assert.Equal(A, C |*| inverse B |> round)
+    Assert.Equal(A, (C |*| inverse B) |> round)

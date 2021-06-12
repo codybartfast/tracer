@@ -34,11 +34,8 @@ let identity n =
     M
 
 let identityMatrix =
-#if TYPED
+    // let size = 4
     let size = 3
-#else
-    let size = 4
-#endif
     identity size
 
 let inline transpose M =
