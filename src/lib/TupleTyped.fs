@@ -41,9 +41,9 @@ let isVector = function
     | _ -> false
 
 let color r g b = Color(rawTuple r g b)
-let red = x
-let green = y
-let blue = z
+let r = x
+let g = y
+let b = z
 
 let exotic x y z w = Exotic [| x; y; z; w |]
 

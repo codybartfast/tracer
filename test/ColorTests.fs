@@ -8,9 +8,9 @@ type Assert = XUnitExtensions.TracerAssert
 [<Fact>]
 let colors_are_tuples () =
     let c = color -0.5 0.4 1.7
-    Assert.Equal(-0.5, red c)
-    Assert.Equal(0.4, green c)
-    Assert.Equal(1.7, blue c)
+    Assert.Equal(-0.5, r c)
+    Assert.Equal(0.4, g c)
+    Assert.Equal(1.7, b c)
 
 [<Fact>]
 let adding_two_colors () =

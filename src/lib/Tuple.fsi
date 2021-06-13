@@ -14,9 +14,9 @@ val vector : float -> float -> float -> Tuple
 val isVector : Tuple -> bool
 
 val color : float -> float -> float -> Tuple
-val red : (Tuple -> float)
-val green : (Tuple -> float)
-val blue : (Tuple -> float)
+val r : (Tuple -> float)
+val g : (Tuple -> float)
+val b : (Tuple -> float)
 
 val exotic : float -> float -> float -> float -> Tuple
 

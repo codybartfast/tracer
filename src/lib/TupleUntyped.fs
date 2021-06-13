@@ -53,9 +53,9 @@ let vector x y z = rawTuple x y z wVector
 let isVector t = w t = wVector
 
 let color r g b = rawTuple r g b wColor
-let red = x   // why not 'red = x'?
-let green = y
-let blue = z
+let r = x   // why not 'r = x'?
+let g = y
+let b = z
 
 let exotic x y z w = rawTuple x y z w
 
@@ -87,7 +87,7 @@ let cross a b =
     let ax, ay, az = x a, y a, z a
     let bx, by, bz = x b, y b, z b
     vector (ay * bz - az * by) (az * bx - ax * bz) (ax * by - ay * bx)
-let hprod a b = rawTuple (red a * red b) (green a * green b) (blue a * blue b) wColor
+let hprod a b = rawTuple (r a * r b) (g a * g b) (b a * b b) wColor
 
 let toArray t = [| x t; y t; z t; w t |]
 

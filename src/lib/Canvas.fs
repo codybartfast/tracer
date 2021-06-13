@@ -5,6 +5,10 @@ open System.Text
 open Tuple
 
 let black = color 0.0 0.0 0.0
+let red = color 1.0 0.0 0.0
+let green = color 0.0 1.0 0.0
+let blue = color 0.0 0.0 1.0
+let white = color 1.0 1.0 1.0
 
 type Canvas(width, height, initializer) =
     let depth = 255
@@ -47,11 +51,11 @@ type Canvas(width, height, initializer) =
         let clamp low high = (max low) >> (min high)
         let writePixel px =
             let toStr = scale >> clamp 0 depth >> string
-            px |> red |> toStr |> write
+            px |> r |> toStr |> write
             writeSep ()
-            px |> green |> toStr |> write
+            px |> g |> toStr |> write
             writeSep ()
-            px |> blue |> toStr  |> write
+            px |> b |> toStr  |> write
 
         let writeRow y =
             let rec writePixels pixels =
