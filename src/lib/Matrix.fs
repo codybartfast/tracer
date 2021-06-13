@@ -23,10 +23,14 @@ let (|*|) a b =
     Array2D.init height (Array2D.length2 b) (fun row col ->
         (a.[row, *], b.[*, col]) ||> Array.map2 (*) |> Array.reduce (+))
 
+let (|*|>) b a = a |*| b
+
 let (|*) A b =
     let B = toMatrix b
     let R = A |*| B
     toTuple R.[*, 0]
+
+let (|*>) b A = A |* b
 
 let identityN n =
     let M = Array2D.zeroCreate n n
@@ -34,6 +38,7 @@ let identityN n =
     M
 
 let identity () = identityN 4
+let zeroMatrix () = Array2D.zeroCreate 4 4
 
 let inline transpose M =
     Array2D.init
