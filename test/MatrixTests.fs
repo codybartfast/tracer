@@ -111,12 +111,12 @@ let multiplying_a_matrix_by_identity_matrix () =
                             [1.0; 2.0; 4.0; 8.0]
                             [2.0; 4.0; 8.0; 16.0]
                             [4.0; 8.0; 16.0; 32.0] ]
-    Assert.Equal(A, A |*| identity)
+    Assert.Equal(A, A |*| identity ())
 
 [<Fact>]
 let multiplying_the_identity_matrix_by_a_tuple () =
     let a = exotic 1.0 2.0 3.0 4.0
-    let actual = identity |* a
+    let actual = identity () |* a
     Assert.Equal(a, actual)
 
 [<Fact>]
@@ -134,7 +134,7 @@ let transposing_a_matrix () =
 
 [<Fact>]
 let transpose_the_identity_matrix () =
-    Assert.Equal(identity, transpose identity)
+    Assert.Equal(identity (), identity () |> transpose)
 
 [<Fact>]
 let calculating_the_determinant_of_a_2x2_matrix () =

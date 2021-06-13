@@ -33,7 +33,7 @@ let identityN n =
     [0..n-1] |> List.iter (fun n -> M.[n, n] <- 1.0)
     M
 
-let identity = identityN 4
+let identity () = identityN 4
 
 let inline transpose M =
     Array2D.init
