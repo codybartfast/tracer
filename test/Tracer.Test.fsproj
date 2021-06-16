@@ -14,6 +14,7 @@
     <Compile Include="MatrixTests.fs" />
     <Compile Include="PointVectorTests.fs" />
     <Compile Include="ProjectileTests.fs" />
+    <Compile Include="RayTests.fs" />
     <Compile Include="TransformTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
