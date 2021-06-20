@@ -2,17 +2,19 @@ module XUnitExtensions
 
 open Xunit
 
-type TracerAssert () = 
+open Primitives
+
+type TracerAssert () =
     inherit Assert ()
 
-    static member TupleEqual (a, b) = 
-        if not (Tuple.equal a b) then
+    static member PointEqual (a: Point, b: Point) =
+        if not (a .= b) then
             raise (Sdk.EqualException(a, b))
-    
+
+    static member VectorEqual (a: Vector, b: Vector) =
+        if not (a .= b) then
+            raise (Sdk.EqualException(a, b))
+
     static member ValEqual (a, b) =
-        if not (Tuple.valEqual a b) then
+        if not (valEqual a b) then
             raise (Sdk.EqualException(a, b))
-
-
-// let assertTupleEqual a b = Assert.True(equal a b)
-// 

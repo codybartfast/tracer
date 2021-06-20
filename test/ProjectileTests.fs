@@ -1,13 +1,13 @@
 module ProjectileTests
 
 open Xunit
-open Tuple
+open Primitives
 open Projectile
 
 type Assert = XUnitExtensions.TracerAssert
 
 [<Fact>]
-let projectile_hits_target () =
+let ``projectile hits target`` () =
 
     let flight =
         flight
@@ -17,5 +17,5 @@ let projectile_hits_target () =
         |> List.ofSeq
 
     let lastPos = List.last flight
-    Assert.TupleEqual(point 10.113708 0.313708 0.0, lastPos)
+    Assert.PointEqual(point 10.113708 0.313708 0.0, lastPos)
     Assert.Equal(16, flight.Length - 1)

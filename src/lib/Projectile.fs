@@ -1,9 +1,9 @@
 module Projectile
 
-open Tuple
+open Primitives
 
-type Projectile = { Position: Tuple; Velocity: Tuple }
-type Environment = { Gravity: Tuple; Wind: Tuple }
+type Projectile = { Position: Point; Velocity: Vector }
+type Environment = { Gravity: Vector; Wind: Vector }
 
 let projectile position velocity =
     { Position = position
