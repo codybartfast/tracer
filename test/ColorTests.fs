@@ -16,18 +16,18 @@ let ``colors are tuples`` () =
 let ``adding two colors`` () =
     let a1 = color 0.9 0.6 0.75
     let a2 = color 0.7 0.1 0.25
-    Assert.Equal(color 1.6 0.7 1.0, a1 .+ a2)
+    Assert.Equal(color 1.6 0.7 1.0, a1 + a2)
 
 [<Fact>]
 let ``subtracting two colors`` () =
     let a1 = color 0.9 0.6 0.75
     let a2 = color 0.7 0.1 0.25
-    Assert.Equal(color 0.2 0.5 0.5, a1 .- a2)
+    Assert.Equal(color 0.2 0.5 0.5, a1 - a2)
 
 [<Fact>]
 let ``multiplying a color by a scalar`` () =
     let a = color 0.2 0.3 0.4
-    Assert.Equal(color 0.4 0.6 0.8, a .* 2.0)
+    Assert.Equal(color 0.4 0.6 0.8, a * 2.0)
 
 [<Fact>]
 let ``hadamard product of two colors`` () =

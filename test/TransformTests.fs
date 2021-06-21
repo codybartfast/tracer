@@ -5,166 +5,161 @@ open Xunit
 
 open Matrix
 open Transform
-open Tuple
+open Primitives
 
 type Assert = XUnitExtensions.TracerAssert
-let assertTupEq e a = Assert.TupleEqual (e, a)
 
 let pointi x y z = point (float x) (float y) (float z)
 let vectori x y z = vector (float x) (float y) (float z)
-let hr2 = (Math.Sqrt 2.0) / 2.0
-
-//         lists |> (List.map List.toArray) |> List.toArray |> matrixOfRows
-// let matrixOfInts = matrixOfLists >> (Array2D.map float)
-// let round = Array2D.map (fun (n: float) -> Math.Round(n, 5))
-
+let hsr2 = (Math.Sqrt 2.0) / 2.0
 
 [<Fact>]
-let multiplying_by_a_translation_matrix () =
+let ``multiplying by a translation matrix`` () =
     let transform = translation 5.0 -3.0 2.0
     let p = point -3.0 4.0 5.0
-    Assert.TupleEqual(point 2.0 1.0 7.0, transform |* p)
+    Assert.Equal(point 2.0 1.0 7.0 |> toBare, transform * p)
 
 [<Fact>]
-let multiplying_by_the_inverse_of_a_translation_matrix () =
+let ``multiplying by the inverse of a translation matrix`` () =
     let transform = translation 5.0 -3.0 2.0
     let inv = inverse transform
     let p = point -3.0 4.0 5.0
-    Assert.TupleEqual(point -8.0 7.0 3.0, inv |* p)
+    Assert.Equal(point -8.0 7.0 3.0, inv * p |> toPoint)
 
 [<Fact>]
-let translation_does_not_affect_vectors () =
+let ``translation does not affect vectors`` () =
     let transform = translation 5.0 -3.0 2.0
     let v = vector -3.0 4.0 5.0
-    Assert.TupleEqual(v, transform |* v)
+    Assert.Equal(v, transform * v |> toVector)
 
 [<Fact>]
-let a_scaling_matrix_applied_to_a_point () =
+let ``a scaling matrix applied to a point`` () =
     let transform = scaling 2.0 3.0 4.0
     let p = point -4.0 6.0 8.0
-    Assert.TupleEqual(point -8.0 18.0 32.0, transform |* p)
+    Assert.Equal(point -8.0 18.0 32.0, transform * p |> toPoint)
 
 [<Fact>]
-let a_scaling_matrix_applied_to_a_vector () =
+let ``a scaling matrix applied to a vector`` () =
     let transform = scaling 2.0 3.0 4.0
     let v = vector -4.0 6.0 8.0
-    Assert.TupleEqual(vector -8.0 18.0 32.0, transform |* v)
+    Assert.Equal(vector -8.0 18.0 32.0, transform * v |> toVector)
 
 [<Fact>]
-let multiplying_by_the_inverse_of_a_scaling_matrix () =
+let ``multiplying by the inverse of a scaling matrix`` () =
     let transform = scaling 2.0 3.0 4.0
     let inv = inverse transform
     let v = vector -4.0 6.0 8.0
-    Assert.TupleEqual(vector -2.0 2.0 2.0, inv |* v)
+    Assert.Equal(vector -2.0 2.0 2.0, inv * v |> toVector)
 
 [<Fact>]
-let reflection_is_scaling_by_a_negative_value () =
+let ``reflection is scaling by a negative value`` () =
     let transform = scaling -1.0 1.0 1.0
     let p = point 2.0 3.0 4.0
-    Assert.TupleEqual(point -2.0 3.0 4.0, transform |* p)
+    Assert.Equal(point -2.0 3.0 4.0, transform * p |> toPoint)
 
 [<Fact>]
-let rotating_a_point_around_the_x_axis () =
+let ``rotating a point around the x axis`` () =
     let p = pointi 0 1 0
-    let half_quater = rotation_x (pi / 4.0)
-    let full_quater = rotation_x (pi / 2.0)
-    Assert.TupleEqual(point 0.0 hr2 hr2, half_quater |* p)
-    Assert.TupleEqual(pointi 0 0 1, full_quater |* p)
+    let halfQuater = rotationX (pi / 4.0)
+    let fullQuater = rotationX (pi / 2.0)
+    Assert.Equal(point 0.0 hsr2 hsr2, halfQuater * p |> toPoint)
+    Assert.Equal(pointi 0 0 1, fullQuater * p |> toPoint)
 
 [<Fact>]
-let the_inverse_of_an_x_rotation_rotates_in_the_opposite_direction () =
+let ``the inverse of an x rotation rotates in the opposite direction`` () =
     let p = pointi 0 1 0
-    let half_quater = rotation_x (pi / 4.0)
-    let inv = inverse half_quater
-    Assert.TupleEqual(point 0.0 hr2 -hr2, inv |* p)
+    let halfQuater = rotationX (pi / 4.0)
+    let inv = inverse halfQuater
+    Assert.Equal(point 0.0 hsr2 -hsr2, inv * p |> toPoint)
 
 [<Fact>]
-let rotating_a_point_around_the_y_axis () =
+let ``rotating a point around the y axis`` () =
     let p = pointi 0  0 1
-    let half_quater = rotation_y (pi / 4.0)
-    let full_quater = rotation_y (pi / 2.0)
-    Assert.TupleEqual(point hr2 0.0 hr2, half_quater |* p)
-    Assert.TupleEqual(pointi 1 0 0, full_quater |* p)
+    let halfQuater = rotationY (pi / 4.0)
+    let fullQuater = rotationY (pi / 2.0)
+    Assert.Equal(point hsr2 0.0 hsr2, halfQuater * p |> toPoint)
+    Assert.Equal(pointi 1 0 0, fullQuater * p |> toPoint)
 
 [<Fact>]
-let rotating_a_point_around_the_z_axis () =
+let ``rotating a point around the z axis`` () =
     let p = pointi 0  1 0
-    let half_quater = rotation_z (pi / 4.0)
-    let full_quater = rotation_z (pi / 2.0)
-    Assert.TupleEqual(point -hr2 hr2 0.0, half_quater |* p)
-    Assert.TupleEqual(pointi -1 0 0, full_quater |* p)
+    let halfQuater = rotationZ (pi / 4.0)
+    let fullQuater = rotationZ (pi / 2.0)
+    Assert.Equal(point -hsr2 hsr2 0.0, halfQuater * p |> toPoint)
+    Assert.Equal(pointi -1 0 0, fullQuater * p |> toPoint)
 
 [<Fact>]
-let a_shearing_transformation_moves_x_in_proportion_to_y () =
+let ``a shearing transformation moves x in proportion to y`` () =
     let transform = shearing 1.0 0.0 0.0 0.0 0.0 0.0
     let p = pointi 2 3 4
-    Assert.TupleEqual(pointi 5 3 4, transform |* p)
+    Assert.Equal(pointi 5 3 4, transform * p |> toPoint)
 
 [<Fact>]
-let a_shearing_transformation_moves_x_in_proportion_to_z () =
+let ``a shearing transformation moves x in proportion to z`` () =
     let transform = shearing 0.0 1.0 0.0 0.0 0.0 0.0
     let p = pointi 2 3 4
-    Assert.TupleEqual(pointi 6 3 4, transform |* p)
+    Assert.Equal(pointi 6 3 4, transform * p |> toPoint)
 
 [<Fact>]
-let a_shearing_transformation_moves_y_in_proportion_to_x () =
+let ``a shearing transformation moves y in proportion to x`` () =
     let transform = shearing 0.0 0.0 1.0 0.0 0.0 0.0
     let p = pointi 2 3 4
-    Assert.TupleEqual(pointi 2 5 4, transform |* p)
+    Assert.Equal(pointi 2 5 4, transform * p |> toPoint)
 
 [<Fact>]
-let a_shearing_transformation_moves_y_in_proportion_to_z () =
+let ``a shearing transformation moves y in proportion to z`` () =
     let transform = shearing 0.0 0.0 0.0 1.0 0.0 0.0
     let p = pointi 2 3 4
-    Assert.TupleEqual(pointi 2 7 4, transform |* p)
+    Assert.Equal(pointi 2 7 4, transform * p |> toPoint)
 
 [<Fact>]
-let a_shearing_transformation_moves_z_in_proportion_to_x () =
+let ``a shearing transformation moves z in proportion to x`` () =
     let transform = shearing 0.0 0.0 0.0 0.0 1.0 0.0
     let p = pointi 2 3 4
-    Assert.TupleEqual(pointi 2 3 6, transform |* p)
+    Assert.Equal(pointi 2 3 6, transform * p |> toPoint)
 
 [<Fact>]
-let a_shearing_transformation_moves_z_in_proportion_to_y () =
+let ``a shearing transformation moves z in proportion to y`` () =
     let transform = shearing 0.0 0.0 0.0 0.0 0.0 1.0
     let p = pointi 2 3 4
-    Assert.TupleEqual(pointi 2 3 7, transform |* p)
+    Assert.Equal(pointi 2 3 7, transform * p |> toPoint)
 
 [<Fact>]
-let individual_transformations_are_applied_in_sequence () =
+let ``individual transformations are applied in sequence`` () =
     let p = pointi 1 0 1
-    let A = rotation_x (pi / 2.0)
+    let A = rotationX (pi / 2.0)
     let B = scaling 5.0 5.0 5.0
     let C = translation 10.0 5.0 7.0
-    let p2 = A |* p
-    Assert.TupleEqual(pointi 1 -1 0, p2)
-    let p3 = B |* p2
-    Assert.TupleEqual(pointi 5 -5 0, p3)
-    let p4 = C |* p3
-    Assert.TupleEqual(pointi 15 0 7, p4)
+    let p2 = A * p
+    Assert.Equal(pointi 1 -1 0, p2 |> toPoint)
+    let p3 = B * p2
+    Assert.Equal(pointi 5 -5 0, p3 |> toPoint)
+    let p4 = C * p3
+    Assert.Equal(pointi 15 0 7, p4 |> toPoint)
 
 [<Fact>]
-let chained_transformations_must_be_applied_in_reverse_order () =
+let ``chained transformations must be applied in reverse order`` () =
     let p = pointi 1 0 1
-    let A = rotation_x (pi / 2.0)
-    let B = scaling 5.0 5.0 5.0
-    let C = translation 10.0 5.0 7.0
-    let T = C |*| B |*| A
-    Assert.TupleEqual(pointi 15 0 7, T |* p)
+    let r = rotationX (pi / 2.0)
+    let s = scaling 5.0 5.0 5.0
+    let t = translation 10.0 5.0 7.0
+    let chain = t * s * r
+    Assert.Equal(pointi 15 0 7, chain * p |> toPoint)
 
 [<Fact>]
-let fluent_transformations () =
-    let T = 
+let ``fluent transformations`` () =
+    let t =
         identity ()
-        |*|> rotation_x (pi / 2.0)
-        |*|> scaling 5.0 5.0 5.0
-        |*|> translation 10.0 5.0 7.0
-    assertTupEq (pointi 15 0 7) (T |* pointi 1 0 1)
+        *> rotationX (pi / 2.0)
+        *> scaling 5.0 5.0 5.0
+        *> translation 10.0 5.0 7.0
+    Assert.Equal(pointi 15 0 7, t * pointi 1 0 1 |> toPoint)
 
 [<Fact>]
-let fluent_transformations2 () =
+let ``fluent transformations2`` () =
     pointi 1 0 1
-    |*> rotation_x (pi / 2.0)
-    |*> scaling 5.0 5.0 5.0
-    |*> translation 10.0 5.0 7.0
-    |> assertTupEq (pointi 15 0 7)
+    *> rotationX (pi / 2.0)
+    *> scaling 5.0 5.0 5.0
+    *> translation 10.0 5.0 7.0
+    |> toPoint
+    |> (fun a -> Assert.Equal(pointi 15 0 7, a))

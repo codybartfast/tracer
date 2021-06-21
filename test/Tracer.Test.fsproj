@@ -15,7 +15,7 @@
     <Compile Include="PrimitivesTests.fs" />
     <Compile Include="ProjectileTests.fs" />
     <!-- <Compile Include="RayTests.fs" /> -->
-    <!-- <Compile Include="TransformTests.fs" /> -->
+    <Compile Include="TransformTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

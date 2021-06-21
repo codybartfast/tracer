@@ -13,8 +13,8 @@ let position projectile = projectile.Position
 let environment gravity wind = { Gravity = gravity; Wind = wind }
 
 let tick env proj =
-    { Position = proj.Position .+ proj.Velocity
-      Velocity = proj.Velocity .+ env.Gravity .+ env.Wind }
+    { Position = proj.Position + proj.Velocity
+      Velocity = proj.Velocity + env.Gravity + env.Wind }
 
 let rec path env =
     Seq.unfold (fun proj -> Some(proj, tick env proj))

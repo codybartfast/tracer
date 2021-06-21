@@ -21,7 +21,7 @@ let scaling x y z =
     t.[3, 3] <- 1.0
     t
 
-let rotation_x r =
+let rotationX r =
     let t = zeroMatrix ()
     t.[0, 0] <- 1.0
     t.[1, 1] <- Math.Cos r
@@ -31,7 +31,7 @@ let rotation_x r =
     t.[3, 3] <- 1.0
     t
 
-let rotation_y r =
+let rotationY r =
     let t = zeroMatrix ()
     t.[0, 0] <- Math.Cos r
     t.[0, 2] <- Math.Sin r
@@ -41,7 +41,7 @@ let rotation_y r =
     t.[3, 3] <- 1.0
     t
 
-let rotation_z r =
+let rotationZ r =
     let t = zeroMatrix ()
     t.[0, 0] <- Math.Cos r
     t.[0, 1] <- - (Math.Sin r)

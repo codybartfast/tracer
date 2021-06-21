@@ -1,41 +1,33 @@
 open System.IO
 
-open Canvas
 open Primitives
-open Projectile
+open Matrix
+open Transform
+open Canvas
+
 
 
 [<EntryPoint>]
 let main argv =
-    let start = point 0.0 1.0 0.0
-    let velocity =  (vector 1.0 1.8 0.0 |> norm) .* 11.25
-    let p = projectile start velocity
-    let gravity = vector 0.0 -0.1 0.0
-    let wind = vector -0.01 0.0 0.0
-    let e = environment gravity wind
-    let height = 500
-    let c = canvas 900 height
-
-    let path = flight e p |> Seq.map position |> List.ofSeq
-    let minX = path |> List.map x |> List.reduce min
-    let maxX = path |> List.map x |> List.reduce max
-    let minY = path |> List.map y |> List.reduce min
-    let maxY = path |> List.map y |> List.reduce max
-    printfn $" x range: {minX} - {maxX}"
-    printfn $" y range: {minY} - {maxY}"
-
-    let writePos canv pos =
+    let height = 101
+    let c = canvas height height
+    let writePos pos canv =
         writePixel
             (pos |> x |> int)
             (pos |> y |> int |> ((-) height))
-            (color 1.0 0.0 0.0)
+            white
             canv
 
-    let ppm =
-        path
-        |> List.fold writePos c
-        |> canvasToPpm
-    let filename = "Ch2Projectile.ppm"
-    File.WriteAllText(filename, ppm)
+    let axle = point 51.0 51.0 0.0
+    let noon = vector 0.0 48.0 0.0
+    let rotate = rotationZ (-pi / 6.0)
+
+    Seq.unfold (fun h -> Some(h, rotate * h |> toVector)) noon
+    |> Seq.take 12
+    |> Seq.map ((+) axle)
+    |> Seq.iter (fun h -> writePos h c |> ignore)
+    
+    let filename = "Ch4Clock.ppm"
+    File.WriteAllText(filename, canvasToPpm c)
     printfn "Written ppm to %s" (FileInfo(filename).FullName)
     0
