@@ -2,7 +2,7 @@ module Canvas
 
 open System.Text
 
-open Tuple
+open Primitives
 
 let black = color 0.0 0.0 0.0
 let red = color 1.0 0.0 0.0
@@ -15,7 +15,7 @@ type Canvas(width, height, initializer) =
     let pixels = Array2D.init width height initializer
     let maxX = width - 1
     let maxY = height - 1
-    let initializer : (int -> int -> Tuple) = initializer
+    let initializer : (int -> int -> Color) = initializer
 
     new(width, height, color) = Canvas(width, height, (fun _ _ -> color))
     new(width, height) = Canvas(width, height, black)

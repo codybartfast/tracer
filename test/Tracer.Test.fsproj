@@ -9,8 +9,8 @@
 
   <ItemGroup>
     <Compile Include="XUnitExtensions.fs" />
-    <!-- <Compile Include="CanvasTests.fs" /> -->
-    <!-- <Compile Include="ColorTests.fs" /> -->
+    <Compile Include="CanvasTests.fs" />
+    <Compile Include="ColorTests.fs" />
     <!-- <Compile Include="MatrixTests.fs" /> -->
     <!-- <Compile Include="PointVectorTests.fs" /> -->
     <Compile Include="PrimitivesTests.fs" />

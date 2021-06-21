@@ -17,5 +17,5 @@ let ``projectile hits target`` () =
         |> List.ofSeq
 
     let lastPos = List.last flight
-    Assert.PointEqual(point 10.113708 0.313708 0.0, lastPos)
+    Assert.Equal(point 10.113708 0.313708 0.0, lastPos)
     Assert.Equal(16, flight.Length - 1)

@@ -3,20 +3,20 @@ module CanvasTests
 open System
 open Xunit
 
+open Primitives
 open Canvas
-open Tuple
 
 type Assert = XUnitExtensions.TracerAssert
 
 [<Fact>]
-let creating_a_canvas () =
+let ``creating a canvas`` () =
     let c = canvas 10 20
     Assert.Equal(10, c.Width)
     Assert.Equal(20, c.Height)
-    Assert.All(c.Pixels, fun px -> Assert.TupleEqual(color 0.0 0.0 0.0, px))
+    Assert.All(c.Pixels, fun px -> Assert.Equal(color 0.0 0.0 0.0, px))
 
 [<Fact>]
-let writing_pixels_to_canvas () =
+let ``writing pixels to a canvas`` () =
     let c = canvas 10 20
     let red = color 1.0 0.0 0.0
     c.[2, 3] <- red
@@ -28,13 +28,13 @@ let lines first last (str: string) =
     |> String.concat newline
 
 [<Fact>]
-let constructing_the_ppm_header () =
+let ``constructing the ppm header`` () =
     let expected = "P3\n5 3\n255"
     let actual = (canvas 5 3).ToPpm() |> lines 1 3
     Assert.Equal(expected, actual)
 
 [<Fact>]
-let constructing_the_ppm_pixel_data () =
+let ``constructing the ppm pixel data`` () =
     let expected =
         "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n"
         + "0 0 0 0 0 0 0 128 0 0 0 0 0 0 0\n"
@@ -49,7 +49,7 @@ let constructing_the_ppm_pixel_data () =
     Assert.Equal(expected, actual)
 
 [<Fact>]
-let splitting_long_lines_in_ppm_files () =
+let ``splitting long lines in ppm files`` () =
     let expected =
         "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204\n"
         + "153 255 204 153 255 204 153 255 204 153 255 204 153\n"
@@ -62,7 +62,7 @@ let splitting_long_lines_in_ppm_files () =
     Assert.Equal(expected, actual)
 
 [<Fact>]
-let ppm_files_are_terminated_with_a_newline_characer () =
+let ``ppm files are terminated with a newline characer`` () =
     let lastChar =
         (canvas 5 3 |> canvasToPpm).ToCharArray()
         |> Array.last
