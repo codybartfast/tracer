@@ -8,7 +8,7 @@
     <!-- <Compile Include="TupleTyped.fs" /> -->
     <!-- <Compile Include="TupleUntyped.fs" /> -->
     <Compile Include="Primitives.fs" />
-    <!-- <Compile Include="Matrix.fs" /> -->
+    <Compile Include="Matrix.fs" />
     <Compile Include="Canvas.fs" />
     <Compile Include="Projectile.fs" />
     <!-- <Compile Include="Transform.fs" /> -->
