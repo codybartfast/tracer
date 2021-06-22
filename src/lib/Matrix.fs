@@ -44,6 +44,7 @@ type Matrix (data: float[,]) =
         |> Array2D.map (fun n -> n / detm)
 
     member private _.Data = data
+    member _.CopyOfData = Array2D.copy data
 
     new (height: int, width: int, init: int -> int -> float) =
         Matrix(Array2D.init height width init)
@@ -73,19 +74,26 @@ type Matrix (data: float[,]) =
     member _.Col
         with get(c) = data.[*, c]
 
-    static member (*) (m: Matrix, n: Matrix) =
+    static member ( * ) (m: Matrix, n: Matrix) =
         let m, n = m.Data, n.Data
         let height, width = Array2D.length1 m, Array2D.length2 m
-        if width <> Array2D.length1 n
+        let height', width' = Array2D.length1 n, Array2D.length2 n
+        if width <> height'
             then failwith "Matrices are wrong shape for multiplication"
         let init row col =
             (m.[row, *], n.[*, col]) ||> Array.map2 (*) |> Array.reduce (+)
-        Matrix (height, Array2D.length2 n, init)
+        Matrix (height, width', init)
 
-    static member (*) (m: Matrix, bare: Bare) = (m * (Matrix bare)).Col(0)
-    static member (*) (m: Matrix, p: Point) =  (m * (toBare p))
-    static member (*) (m: Matrix, v: Vector) =  (m * (toBare v))
-    static member (*) (m: Matrix, e: Exotic) =  (m * (toBare e))
+    static member ( * ) (m: Matrix, bare: Bare) =
+        let m = m.Data
+        Array.init (Array2D.length1 m) (fun i ->
+            Array.map2 (*) m.[i, *] bare |> Array.sum)
+    static member ( * ) (m: Matrix, p: Point) = (m * (toBare p))
+    static member ( * ) (m: Matrix, v: Vector) = (m * (toBare v))
+    static member ( * ) (m: Matrix, e: Exotic) = (m * (toBare e))
+    static member ( .* ) (m: Matrix, p: Point) = (m * p |> toPoint)
+    static member ( .* ) (m: Matrix, v: Vector) = (m * v |> toVector)
+    // static member ( *. ) (m: Matrix, e: Exotic) =  (m * (toBare e) |> toExotic)
 
     override _.Equals b =
         match b with
@@ -117,4 +125,5 @@ let identityN size = Matrix (size, size, fun r c -> if r = c then 1.0 else 0.0)
 let identity () = identityN 4
 let zeroMatrix () = Array2D.zeroCreate 4 4 |> Matrix
 
-let inline ( *> ) b a = a * b
+let inline ( |* ) b a = a * b
+let inline ( |.* ) b (a: Matrix) = a .* b

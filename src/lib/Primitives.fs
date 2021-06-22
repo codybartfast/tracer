@@ -4,14 +4,12 @@ open System
 
 // for untyped representations of a primitive type
 type Bare = float[]
-type Prim =
-    static member Bare ([<ParamArray>] arr : 'a array) = arr
 
 let epsilon = 0.00001
 let wPoint = 1.0
 let wVector = 0.0
 
-(* tuple functions *)
+(* triple functions *)
 let valEqual a b = a - b |> abs |> (>) epsilon
 let inline private equal (struct(x, y, z)) (struct(x', y', z')) =
     let valEqual a b = a - b |> abs |> (>) epsilon
@@ -25,6 +23,8 @@ let inline private sub (struct(x, y, z)) (struct(x', y', z')) =
 let inline private mul (struct(x, y, z)) n = struct (x * n, y * n, z * n)
 let inline private div (struct(x, y, z)) n = struct (x / n, y / n, z / n)
 
+let inline bare x y z w = [| x; y; z; w |]
+let inline barei x y z w = [| (float x); (float y); (float z); (float w) |]
 
 (* primitive types *)
 [<CustomEquality>][<NoComparison>]
@@ -37,7 +37,7 @@ type Vector = Vector of (struct (float * float * float)) with
     static member (~-) (Vector (x, y, z)) = Vector (-x, -y, -z)
     static member (*) ((Vector p), n) = Vector (mul p n)
     static member (/) ((Vector p), n) = Vector (div p n)
-    static member ToBare (Vector (x, y, z)) = [|x; y; z; wVector|]
+    static member ToBare (Vector (x, y, z)) = bare x y z wVector
     override a.Equals b =
         match b with
         | :? Vector as b ->
@@ -49,6 +49,7 @@ type Vector = Vector of (struct (float * float * float)) with
 
 // vector functions
 let inline vector x y z = Vector (x, y, z)
+let inline vectori x y z = vector (float x) (float y) (float z)
 let inline toVector (b: Bare) =
     match b with
     | [| x; y; z; w |] when (valEqual w wVector) -> vector x y z
@@ -70,7 +71,7 @@ type Point = Point of (struct (float * float * float)) with
     static member (+) ((Point p), (Vector v)) = Point (add p v)
     static member (-) ((Point p), (Point v)) = Vector (sub p v)
     static member (-) ((Point p), (Vector v)) = Point (sub p v)
-    static member ToBare (Point (x, y, z)) = [|x; y; z; wPoint|]
+    static member ToBare (Point (x, y, z)) = bare x y z wPoint
     override a.Equals b =
         match b with
         | :? Point as b ->
@@ -82,33 +83,43 @@ type Point = Point of (struct (float * float * float)) with
 
 // point functions
 let inline point x y z = Point (x, y, z)
+let inline pointi x y z = point (float x) (float y) (float z)
 let inline toPoint (b: Bare) =
     match b with
     | [| x; y; z; w |] when (valEqual w wPoint) -> point x y z
     | _ -> failwith $"Unexpected length for bare point: ${Array.length b}"
 
-[<CustomEquality>][<NoComparison>]
-type Color = Color of (struct (float * float * float)) with
-    static member Equals ((Color a), (Color b)) = equal a b
-    static member (+) ((Color p), (Color v)) = Color (add p v)
-    static member (-) ((Color p), (Color v)) = Color (sub p v)
-    static member (*) ((Color p), n) = Color (mul p n)
+// let private conv ((r, g, b): struct(float * float * float)) = (r, g, b)
+
+[<Struct>][<CustomEquality>][<NoComparison>]
+type Color(r: float, g: float, b: float) =
+    member _.Triple = struct (r, g, b)
+    member _.R = r
+    member _.G = g
+    member _.B = b
+    static member Equals (a: Color, b: Color) = equal a.Triple b.Triple
+    static member (+) (a: Color, b: Color) =
+        let struct (r, g, b) = add a.Triple b.Triple
+        Color (r, g, b)
+    static member (-) (a: Color, b: Color) =
+        let struct (r, g, b) = sub a.Triple b.Triple
+        Color (r, g, b)
+    static member (*) (a: Color, n) =
+        let struct (r, g, b) = mul a.Triple n
+        Color (r, g, b)
     override a.Equals b =
         match b with
-        | :? Color as b ->
-            let (Color a) = a
-            let (Color b) = b
-            equal a b
+        | :? Color as b -> equal a.Triple b.Triple
         | _ -> false
     override _.GetHashCode () = 0
 
 // color functions
 let inline color r g b = Color (r, g, b)
-let inline r (Color (r, _, _)) = r
-let inline g (Color (_, g, _)) = g
-let inline b (Color (_, _, b)) = b
-let inline hprod (Color (r, g, b)) (Color (r', g', b')) =
-    color (r * r') (g * g') (b * b')
+let inline r (c: Color) = c.R
+let inline g (c: Color) = c.G
+let inline b (c: Color) = c.B
+let inline hprod (c: Color) (d: Color) =
+    color (c.R * d.R) (c.G * d.G) (c.B * d.B)
 
 type Exotic = Exotic of (struct (float * float * float * float)) with
     static member ToBare (Exotic (x, y, z, w)) = [|x; y; z; w|]
@@ -124,3 +135,4 @@ let inline z (prim: ^T) =
     (^T: (static member Z: ^T -> float) (prim))
 let inline toBare (a: ^T) =
     (^T: (static member ToBare: ^T -> Bare) (a))
+

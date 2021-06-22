@@ -8,11 +8,6 @@ open Primitives
 
 type Assert = XUnitExtensions.TracerAssert
 
-let toFloat (rows: int list list) =
-    rows |> List.map (List.map float)
-// let matrixOfLists  (lists: 'a list list) =
-//         lists |> (List.map List.toArray) |> List.toArray |> matrixOfRows
-// let matrixOfInts = matrixOfLists >> (Array2D.map float)
 let round (m: Matrix)= m.Map (fun (n: float) -> Math.Round(n, 5))
 
 [<Theory>]
@@ -116,7 +111,7 @@ let ``multiplying a matrix by identity matrix`` () =
 let ``multiplying the identity matrix by a tuple`` () =
     let a = exotic 1.0 2.0 3.0 4.0
     let actual = identity () * a
-    Assert.Equal(toBare a, actual)   
+    Assert.Equal(toBare a, actual)
 
 [<Fact>]
 let ``transposing a matrix`` () =
