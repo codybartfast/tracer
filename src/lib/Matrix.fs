@@ -87,7 +87,6 @@ type Matrix (data: float[,]) =
     static member (*) (m: Matrix, v: Vector) =  (m * (toBare v))
     static member (*) (m: Matrix, e: Exotic) =  (m * (toBare e))
 
-
     override _.Equals b =
         match b with
         | :? Matrix as b ->

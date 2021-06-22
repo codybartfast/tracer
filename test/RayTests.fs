@@ -1,7 +1,7 @@
 module RayTests
 
 open Xunit
-open Tuple
+open Primitives
 open Ray
 
 type Assert = XUnitExtensions.TracerAssert
@@ -24,7 +24,7 @@ let ``Creating and querying a ray`` () =
 [<InlineData(2.5, 4.5, 3.0, 4.0)>]
 let ``Computing a point from a distance`` (t, x, y, z) =
     let r = ray (pointi 2 3 4) (vectori 1 0 0)
-    Assert.TupleEqual(point x y z, position r t)
+    Assert.Equal(point x y z, position r t)
 
 [<Fact>]
 let ``Spheres have identity (not in book)`` () =

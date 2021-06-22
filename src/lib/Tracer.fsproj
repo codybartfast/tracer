@@ -9,6 +9,6 @@
     <Compile Include="Canvas.fs" />
     <Compile Include="Projectile.fs" />
     <Compile Include="Transform.fs" />
-    <!-- <Compile Include="Ray.fs" /> -->
+    <Compile Include="Ray.fs" />
   </ItemGroup>
 </Project>
