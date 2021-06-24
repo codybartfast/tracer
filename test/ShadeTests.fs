@@ -54,4 +54,18 @@ let ``Computing the normal on a transformed sphere`` () =
     let n = normalAt s (point 0.0 hsr2 -hsr2)
     Assert.Equal(vector 0.0 0.97014 -0.24254, n)
 
+[<Fact>]
+let ``Reflecting a vector approaching at 45°`` () =
+    let v = vectori 1 -1 0
+    let n = vectori 0 1 0
+    let r = reflect v n
+    Assert.Equal(vectori 1 1 0, r)
+
+[<Fact>]
+let ``Reflecting a vector approaching at 45 degrees`` () =
+    let v = vectori 0 -1 0
+    let n = vector hsr2 hsr2 0.0
+    let r = reflect v n
+    Assert.Equal(vectori 1 0 0, r)
+
 

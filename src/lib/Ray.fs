@@ -40,8 +40,8 @@ type Sphere (transform: Matrix) =
             let t2 = (-b + sqrtDisc) / (2.0 * a)
             [| s.Intersection t1; s.Intersection t2 |]
 
-    member _.NormalAt(p: Point) =
-        p
+    member _.NormalAt(point: Point) =
+        point
         |* inverseM
         |* transposeInverseM
         |> toVectorUnchecked
@@ -60,3 +60,4 @@ let inline hit xs : Option<Intersection> =
     | x::_ -> Some x
     | _ -> None
 let inline normalAt (s: Sphere) p = s.NormalAt(p)
+let inline reflect i normal = i - normal * 2.0 * dot i normal
