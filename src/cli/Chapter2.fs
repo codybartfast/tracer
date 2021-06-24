@@ -8,7 +8,7 @@ open Projectile
 
 let chapter2 () =
     let start = point 0.0 1.0 0.0
-    let velocity =  (vector 1.0 1.8 0.0 |> norm) * 11.25
+    let velocity =  (vector 1.0 1.8 0.0 |> normalize) * 11.25
     let p = projectile start velocity
     let gravity = vector 0.0 -0.1 0.0
     let wind = vector -0.01 0.0 0.0

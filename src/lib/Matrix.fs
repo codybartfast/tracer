@@ -44,7 +44,6 @@ type Matrix (data: float[,]) =
         |> Array2D.map (fun n -> n / detm)
 
     member private _.Data = data
-    member _.CopyOfData = Array2D.copy data
 
     new (height: int, width: int, init: int -> int -> float) =
         Matrix(Array2D.init height width init)
@@ -78,22 +77,23 @@ type Matrix (data: float[,]) =
         let m, n = m.Data, n.Data
         let height, width = Array2D.length1 m, Array2D.length2 m
         let height', width' = Array2D.length1 n, Array2D.length2 n
-        if width <> height'
-            then failwith "Matrices are wrong shape for multiplication"
-        let init row col =
-            (m.[row, *], n.[*, col]) ||> Array.map2 (*) |> Array.reduce (+)
-        Matrix (height, width', init)
+        if width <> height' then failwith "Matrices are wrong shape for (*)"
+        Matrix(
+            height,
+            width',
+            fun row col -> Array.map2 (*) m.[row, *] n.[*, col] |> Array.sum)
 
     static member ( * ) (m: Matrix, bare: Bare) =
         let m = m.Data
-        Array.init (Array2D.length1 m) (fun i ->
-            Array.map2 (*) m.[i, *] bare |> Array.sum)
+        Array.init
+            (Array2D.length1 m)
+            (fun i -> Array.map2 (*) m.[i, *] bare |> Array.sum)
+
     static member ( * ) (m: Matrix, p: Point) = (m * (toBare p))
     static member ( * ) (m: Matrix, v: Vector) = (m * (toBare v))
     static member ( * ) (m: Matrix, e: Exotic) = (m * (toBare e))
     static member ( .* ) (m: Matrix, p: Point) = (m * p |> toPoint)
     static member ( .* ) (m: Matrix, v: Vector) = (m * v |> toVector)
-    // static member ( *. ) (m: Matrix, e: Exotic) =  (m * (toBare e) |> toExotic)
 
     override _.Equals b =
         match b with
@@ -103,13 +103,11 @@ type Matrix (data: float[,]) =
     override _.GetHashCode() = data.GetHashCode()
 
     member _.Transpose() = Matrix(transpose data)
-
     member _.Determinant() = determinant data
     member _.Submatrix(r, c) = Matrix (submatrix data r c)
     member _.Minor(r, c) = minor data r c
     member _.Cofactor(r, c) = cofactor data r c
     member _.Invertible() = data |> determinant |> ((<>) 0.0)
-
     member _.Inverse() = Matrix(inverse data)
     member _.Map(mapper) = Matrix(Array2D.map mapper data)
 
@@ -123,7 +121,8 @@ let inverse (m: Matrix) = m.Inverse()
 
 let identityN size = Matrix (size, size, fun r c -> if r = c then 1.0 else 0.0)
 let identity () = identityN 4
-let zeroMatrix () = Array2D.zeroCreate 4 4 |> Matrix
+let zeroMatrixN size = Array2D.zeroCreate size size |> Matrix
+let zeroMatrix () = zeroMatrixN 4
 
 let inline ( |* ) b a = a * b
-let inline ( |.* ) b (a: Matrix) = a .* b
+let inline ( |.* ) b a = a .* b

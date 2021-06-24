@@ -51,7 +51,7 @@ let ``subtracting vector from point`` () =
 
 [<Fact>]
 let ``subtracting vector from zero vector`` () =
-    let a1 = vector 0.0 0.0 0.0
+    let a1 = zeroVector
     let a2 = vector 1.0 -2.0 3.0
     Assert.Equal(vector -1.0 2.0 -3.0, a1 - a2)
 
@@ -87,7 +87,7 @@ let ``computing magnitude of a vector`` (expected, x, y, z) =
 [<Fact>]
 let ``normalizing vectors`` () =
     let test tup exp =
-        let norm = norm tup
+        let norm = normalize tup
         Assert.Equal(exp, norm)
         Assert.ValEqual(1.0, mag norm)
     test (vector 4.0 0.0 0.0) (vector 1.0 0.0 0.0)

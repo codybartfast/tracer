@@ -25,6 +25,7 @@ let inline private div (struct(x, y, z)) n = struct (x / n, y / n, z / n)
 
 let inline bare x y z w = [| x; y; z; w |]
 let inline barei x y z w = [| (float x); (float y); (float z); (float w) |]
+let zeroBare = barei 0 0 0 0
 
 (* primitive types *)
 [<CustomEquality>][<NoComparison>]
@@ -50,12 +51,18 @@ type Vector = Vector of (struct (float * float * float)) with
 // vector functions
 let inline vector x y z = Vector (x, y, z)
 let inline vectori x y z = vector (float x) (float y) (float z)
+let zeroVector = vectori 0 0 0
 let inline toVector (b: Bare) =
     match b with
     | [| x; y; z; w |] when (valEqual w wVector) -> vector x y z
-    | _ -> failwith $"Unexpected length for bare point: ${Array.length b}"
+    | [| _; _; _; w |] -> failwith $"Unexpected w for vector: {w}"
+    | _ -> failwith $"Unexpected length for bare point: {Array.length b}"
+let inline toVectorUnchecked (b: Bare) =
+    match b with
+    | [| x; y; z; w |] -> vector x y z
+    | _ -> failwith $"Unexpected length for bare point: {Array.length b}"
 let inline mag (Vector (x, y, z)) = (x * x) + (y * y) + (z * z) |> sqrt
-let inline norm ((Vector (x, y, z)) as v) =
+let inline normalize ((Vector (x, y, z)) as v) =
     let m = mag v in vector (x / m) (y / m) (z / m)
 let inline dot (Vector (x, y, z)) (Vector (x', y', z')) =
     (x * x') + (y * y') + (z * z')
@@ -84,9 +91,11 @@ type Point = Point of (struct (float * float * float)) with
 // point functions
 let inline point x y z = Point (x, y, z)
 let inline pointi x y z = point (float x) (float y) (float z)
+let zeroPoint = pointi 0 0 0
 let inline toPoint (b: Bare) =
     match b with
     | [| x; y; z; w |] when (valEqual w wPoint) -> point x y z
+    | [| _; _; _; w |] -> failwith $"Unexpected w for point: {w}"
     | _ -> failwith $"Unexpected length for bare point: ${Array.length b}"
 
 // let private conv ((r, g, b): struct(float * float * float)) = (r, g, b)
@@ -125,7 +134,6 @@ type Exotic = Exotic of (struct (float * float * float * float)) with
     static member ToBare (Exotic (x, y, z, w)) = [|x; y; z; w|]
 let exotic x y z w = Exotic (x, y, z, w)
 
-
 // 'polymorphic' functions
 let inline x (prim: ^T) =
     (^T: (static member X: ^T -> float) (prim))
@@ -135,4 +143,3 @@ let inline z (prim: ^T) =
     (^T: (static member Z: ^T -> float) (prim))
 let inline toBare (a: ^T) =
     (^T: (static member ToBare: ^T -> Bare) (a))
-

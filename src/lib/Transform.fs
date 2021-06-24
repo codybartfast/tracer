@@ -13,6 +13,8 @@ let translation x y z =
     t.[2, 3] <- z
     t
 
+let inline translationi x y z = translation (float x) (float y) (float z)
+
 let scaling x y z =
     let t = zeroMatrix ()
     t.[0, 0] <- x
@@ -20,6 +22,8 @@ let scaling x y z =
     t.[2, 2] <- z
     t.[3, 3] <- 1.0
     t
+
+let inline scalingi x y z = scaling (float x) (float y) (float z)
 
 let rotationX r =
     let t = zeroMatrix ()

@@ -12,7 +12,7 @@ let ``projectile hits target`` () =
     let flight =
         flight
             (environment (vector 0.0 -0.1 0.0) (vector -0.01 0.0 0.0))
-            (projectile (point 0.0 1.0 0.0) (vector 1.0 1.0 0.0 |> norm))
+            (projectile (point 0.0 1.0 0.0) (vector 1.0 1.0 0.0 |> normalize))
         |> Seq.map (fun proj -> proj.Position)
         |> List.ofSeq
 

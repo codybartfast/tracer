@@ -59,7 +59,7 @@ let ``A ray misses a sphere`` () =
 
 [<Fact>]
 let ``A ray originates inside a sphere`` () =
-    let r = ray (pointi 0 0 0) (vectori 0 0 1)
+    let r = ray zeroPoint (vectori 0 0 1)
     let s = Sphere()
     let xs = s.Intersect r
     Assert.Equal(2, xs.Length)

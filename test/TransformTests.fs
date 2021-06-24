@@ -9,7 +9,7 @@ open Primitives
 
 type Assert = XUnitExtensions.TracerAssert
 
-let hsr2 = (Math.Sqrt 2.0) / 2.0
+let hsr2 = (sqrt 2.0) / 2.0
 
 [<Fact>]
 let ``multiplying by a translation matrix`` () =
