@@ -36,7 +36,7 @@ let chapter5 width height =
             |* translation 0.0 0.0 50.0
             |* translation (float xShift) (float yShift) 0.0 )
     let colour r =
-        if sphere.Intersect(r) |> Array.isEmpty then light else shadow
+        if sphere.Intersect(r) |> List.isEmpty then light else shadow
 
     rays ()
         |> Seq.iter (fun r ->

@@ -27,7 +27,8 @@ let inline bare x y z w = [| x; y; z; w |]
 let inline barei x y z w = [| (float x); (float y); (float z); (float w) |]
 let zeroBare = barei 0 0 0 0
 
-(* primitive types *)
+
+(* Vector *)
 [<CustomEquality>][<NoComparison>]
 type Vector = Vector of (struct (float * float * float)) with
     static member X (Vector (x, _, _)) = x
@@ -59,7 +60,7 @@ let inline toVector (b: Bare) =
     | _ -> failwith $"Unexpected length for bare point: {Array.length b}"
 let inline toVectorUnchecked (b: Bare) =
     match b with
-    | [| x; y; z; w |] -> vector x y z
+    | [| x; y; z; _ |] -> vector x y z
     | _ -> failwith $"Unexpected length for bare point: {Array.length b}"
 let inline mag (Vector (x, y, z)) = (x * x) + (y * y) + (z * z) |> sqrt
 let inline normalize ((Vector (x, y, z)) as v) =
@@ -69,6 +70,7 @@ let inline dot (Vector (x, y, z)) (Vector (x', y', z')) =
 let inline cross (Vector (x, y, z)) (Vector (x', y', z')) =
     vector (y * z' - z * y') (z * x' - x * z') (x * y' - y * x')
 
+(* Point *)
 [<CustomEquality>][<NoComparison>]
 type Point = Point of (struct (float * float * float)) with
     static member X (Point (x, _, _)) = x
@@ -98,8 +100,25 @@ let inline toPoint (b: Bare) =
     | [| _; _; _; w |] -> failwith $"Unexpected w for point: {w}"
     | _ -> failwith $"Unexpected length for bare point: ${Array.length b}"
 
-// let private conv ((r, g, b): struct(float * float * float)) = (r, g, b)
 
+(* Exotic *)
+type Exotic = Exotic of (struct (float * float * float * float)) with
+    static member ToBare (Exotic (x, y, z, w)) = [|x; y; z; w|]
+let exotic x y z w = Exotic (x, y, z, w)
+
+
+(* Polymorphic functions *)
+let inline x (prim: ^T) =
+    (^T: (static member X: ^T -> float) (prim))
+let inline y (prim: ^T) =
+    (^T: (static member Y: ^T -> float) (prim))
+let inline z (prim: ^T) =
+    (^T: (static member Z: ^T -> float) (prim))
+let inline toBare (a: ^T) =
+    (^T: (static member ToBare: ^T -> Bare) (a))
+
+
+(* Color *)
 [<Struct>][<CustomEquality>][<NoComparison>]
 type Color(r: float, g: float, b: float) =
     member _.Triple = struct (r, g, b)
@@ -124,22 +143,9 @@ type Color(r: float, g: float, b: float) =
 
 // color functions
 let inline color r g b = Color (r, g, b)
+let inline colori r g b = Color ((float r), (float g), (float b))
 let inline r (c: Color) = c.R
 let inline g (c: Color) = c.G
 let inline b (c: Color) = c.B
 let inline hprod (c: Color) (d: Color) =
     color (c.R * d.R) (c.G * d.G) (c.B * d.B)
-
-type Exotic = Exotic of (struct (float * float * float * float)) with
-    static member ToBare (Exotic (x, y, z, w)) = [|x; y; z; w|]
-let exotic x y z w = Exotic (x, y, z, w)
-
-// 'polymorphic' functions
-let inline x (prim: ^T) =
-    (^T: (static member X: ^T -> float) (prim))
-let inline y (prim: ^T) =
-    (^T: (static member Y: ^T -> float) (prim))
-let inline z (prim: ^T) =
-    (^T: (static member Z: ^T -> float) (prim))
-let inline toBare (a: ^T) =
-    (^T: (static member ToBare: ^T -> Bare) (a))
