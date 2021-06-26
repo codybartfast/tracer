@@ -19,6 +19,7 @@ let chapter5 width height =
 
     let light = (yellow + white) * 0.5
     let shadow = blue * 0.2
+    let wallDistance = 2000
 
     let canv = canvas width height
     let inline writePos x y col =
@@ -28,12 +29,13 @@ let chapter5 width height =
     let rays () = seq{
         for y in [-yShift .. halfHeight] do
             for x in [-xShift .. halfWidth] do
-                ray origin (vectori x y 100)}
+                ray origin (vectori x y wallDistance)}
 
     let sphere =
+        let r = (min width height) / 5 |> float
         Sphere(
-            scaling 45.0 45.0 45.0
-            |* translation 0.0 0.0 50.0
+            scaling r r r
+            |* translation 0.0 0.0 (wallDistance / 2 |> float)
             |* translation (float xShift) (float yShift) 0.0 )
     let colour r =
         if sphere.Intersect(r) |> List.isEmpty then light else shadow

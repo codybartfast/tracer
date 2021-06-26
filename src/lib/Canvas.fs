@@ -4,14 +4,6 @@ open System.Text
 
 open Primitives
 
-let black = color 0.0 0.0 0.0
-let red = color 1.0 0.0 0.0
-let green = color 0.0 1.0 0.0
-let blue = color 0.0 0.0 1.0
-let white = color 1.0 1.0 1.0
-
-let yellow = color 1.0 1.0 0.0
-
 type Canvas(width, height, initializer) =
     let depth = 255
     let pixels = Array2D.init width height initializer

@@ -148,7 +148,7 @@ let ``A sphere's default transformation`` () =
 let ``Changing a sphere's transformation`` () =
     let s = sphere ()
     let t = translation 2.0 3.0 4.0
-    let s = s.WithTransform(t)
+    let s = s.With(transform = t)
     Assert.Equal (t, s.Transform)
 
 [<Fact>]

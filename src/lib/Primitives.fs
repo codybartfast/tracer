@@ -20,7 +20,9 @@ let inline private add (struct(x, y, z)) (struct(x', y', z')) =
     (struct(x + x', y + y', z + z'))
 let inline private sub (struct(x, y, z)) (struct(x', y', z')) =
     (struct(x - x', y - y', z - z'))
-let inline private mul (struct(x, y, z)) n = struct (x * n, y * n, z * n)
+let inline private scale (struct(x, y, z)) n = struct (x * n, y * n, z * n)
+let inline private prod (struct(x, y, z)) (struct(x', y', z')) = 
+    struct (x * x', y * y', z * z')
 let inline private div (struct(x, y, z)) n = struct (x / n, y / n, z / n)
 
 let inline bare x y z w = [| x; y; z; w |]
@@ -37,7 +39,7 @@ type Vector = Vector of (struct (float * float * float)) with
     static member (+) ((Vector p), (Vector v)) = Vector (add p v)
     static member (-) ((Vector p), (Vector v)) = Vector (sub p v)
     static member (~-) (Vector (x, y, z)) = Vector (-x, -y, -z)
-    static member (*) ((Vector p), n) = Vector (mul p n)
+    static member (*) ((Vector p), n) = Vector (scale p n)
     static member (/) ((Vector p), n) = Vector (div p n)
     static member ToBare (Vector (x, y, z)) = bare x y z wVector
     override a.Equals b =
@@ -133,7 +135,10 @@ type Color(r: float, g: float, b: float) =
         let struct (r, g, b) = sub a.Triple b.Triple
         Color (r, g, b)
     static member (*) (a: Color, n) =
-        let struct (r, g, b) = mul a.Triple n
+        let struct (r, g, b) = scale a.Triple n
+        Color (r, g, b)
+    static member (*) (a: Color, b: Color) =
+        let struct (r, g, b) = prod a.Triple b.Triple
         Color (r, g, b)
     override a.Equals b =
         match b with
@@ -149,3 +154,11 @@ let inline g (c: Color) = c.G
 let inline b (c: Color) = c.B
 let inline hprod (c: Color) (d: Color) =
     color (c.R * d.R) (c.G * d.G) (c.B * d.B)
+
+let black = color 0.0 0.0 0.0
+let red = color 1.0 0.0 0.0
+let green = color 0.0 1.0 0.0
+let blue = color 0.0 0.0 1.0
+let white = color 1.0 1.0 1.0
+
+let yellow = color 1.0 1.0 0.0
