@@ -10,7 +10,7 @@ type Ray (origin: Point, direction: Vector) =
     member _.Direction = direction
     member inline r.Position (time) = r.Origin + r.Direction * time
     static member inline ( * ) (t: Matrix, r: Ray) =
-        Ray(t .* r.Origin, t .* r.Direction)
+        Ray(t *. r.Origin, t *. r.Direction)
 
 // ray functions
 let inline ray origin direction : Ray = Ray(origin, direction)
@@ -104,7 +104,7 @@ let inline pointLight position intensity : PointLight =
     {Position = position; Intensity = intensity}
 
 
-let lighting(material, light, point, eyev, normalv) =
+let lighting material light point eyev normalv =
     let effectiveColor = material.Color * light.Intensity
     let lightv = normalize(light.Position - point)
     let ambient = effectiveColor * material.Ambient

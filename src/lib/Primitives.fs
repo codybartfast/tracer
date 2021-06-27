@@ -134,12 +134,17 @@ type Color(r: float, g: float, b: float) =
     static member (-) (a: Color, b: Color) =
         let struct (r, g, b) = sub a.Triple b.Triple
         Color (r, g, b)
-    static member (*) (a: Color, n) =
+    static member (*) (a: Color, n: float) =
         let struct (r, g, b) = scale a.Triple n
         Color (r, g, b)
+    static member (*) (a: Color, n: int) = (*) a (float n)
     static member (*) (a: Color, b: Color) =
         let struct (r, g, b) = prod a.Triple b.Triple
         Color (r, g, b)
+    static member (/) (a: Color, n: float) =
+        let struct (r, g, b) = div a.Triple n
+        Color (r, g, b)   
+    static member (/) (a: Color, n: int) = (/) a (float n)
     override a.Equals b =
         match b with
         | :? Color as b -> equal a.Triple b.Triple
@@ -156,9 +161,36 @@ let inline hprod (c: Color) (d: Color) =
     color (c.R * d.R) (c.G * d.G) (c.B * d.B)
 
 let black = color 0.0 0.0 0.0
-let red = color 1.0 0.0 0.0
-let green = color 0.0 1.0 0.0
-let blue = color 0.0 0.0 1.0
 let white = color 1.0 1.0 1.0
 
-let yellow = color 1.0 1.0 0.0
+let mix (colors: Color list) = (List.reduce (+) colors) / colors.Length
+let lighten c = mix[white; c]
+let darken (c: Color) = c / 2
+
+let grey = lighten black
+let lightGrey = lighten grey
+let darkGrey = darken grey
+
+let red = color 1.0 0.0 0.0
+let lightRed = lighten red
+let darkRed = darken red
+
+let green = color 0.0 1.0 0.0
+let lightGreen = lighten green
+let darkGeen = darken green
+
+let blue = color 0.0 0.0 1.0
+let lightBlue = lighten blue
+let darkBlue = darken blue
+
+let yellow = red + green
+let lightYellow = lighten yellow
+let darkYellow = darken yellow
+
+let magenta = red + blue
+let lightMagenta = lighten magenta
+let darkMagenta = darken magenta
+
+let cyan = green + blue
+let lightCyan = lighten cyan
+let darkCyan = darken cyan

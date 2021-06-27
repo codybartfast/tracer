@@ -92,8 +92,8 @@ type Matrix (data: float[,]) =
     static member ( * ) (m: Matrix, p: Point) = (m * (toBare p))
     static member ( * ) (m: Matrix, v: Vector) = (m * (toBare v))
     static member ( * ) (m: Matrix, e: Exotic) = (m * (toBare e))
-    static member ( .* ) (m: Matrix, p: Point) = (m * p |> toPoint)
-    static member ( .* ) (m: Matrix, v: Vector) = (m * v |> toVector)
+    static member ( *. ) (m: Matrix, p: Point) = (m * p |> toPoint)
+    static member ( *. ) (m: Matrix, v: Vector) = (m * v |> toVector)
 
     override _.Equals b =
         match b with
@@ -125,4 +125,4 @@ let zeroMatrixN size = Array2D.zeroCreate size size |> Matrix
 let zeroMatrix () = zeroMatrixN 4
 
 let inline ( |* ) b a = a * b
-let inline ( |.* ) b a = a .* b
+let inline ( |*. ) b a = a *. b
