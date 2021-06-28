@@ -96,6 +96,8 @@ let inline hit xs : Option<Intersection> =
 let inline normalAt (s: Sphere) p = s.NormalAt(p)
 let inline reflect ``in`` normal : Vector =
     ``in`` - normal * 2.0 * dot ``in`` normal
+let equivalent (s1: Sphere) (s2: Sphere) =
+    s1.Transform = s2.Transform && s1.Material = s2.Material
 
 
 [<Struct>]

@@ -17,6 +17,7 @@
     <Compile Include="RayTests.fs" />
     <Compile Include="ShadeTests.fs" />
     <Compile Include="TransformTests.fs" />
+    <Compile Include="WorldTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

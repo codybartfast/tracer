@@ -30,6 +30,12 @@ let ``multiplying a color by a scalar`` () =
     Assert.Equal(color 0.4 0.6 0.8, a * 2.0)
 
 [<Fact>]
+let ``multiplying colors`` () =
+    let c1 = color 1.0 0.2 0.4
+    let c2 = color 0.9 1.0 0.1
+    Assert.Equal(color 0.9 0.2 0.04, c1 * c2)
+
+[<Fact>]
 let ``hadamard product of two colors`` () =
     let a1 = color 1.0 0.2 0.4
     let a2 = color 0.9 1.0 0.1
