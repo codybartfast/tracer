@@ -36,7 +36,7 @@ let ``Spheres have identity (not in book)`` () =
 let ``A ray intersects a sphere at two points`` () =
     let r = ray (pointi 0 0 -5) (vectori 0 0 1)
     let s = Sphere ()
-    let xs = intersect s r
+    let xs = intersect r s
     Assert.Equal(2, xs.Length)
     Assert.Equal(4.0, xs.[0].T)
     Assert.Equal(6.0, xs.[1].T)
@@ -54,7 +54,7 @@ let ``A ray intersects a sphere at a tangent`` () =
 let ``A ray misses a sphere`` () =
     let r = ray (pointi 0 2 -5) (vectori 0 0 1)
     let s = Sphere()
-    let xs = intersect s r
+    let xs = intersect r s
     Assert.Equal(0, xs.Length)
 
 [<Fact>]
@@ -70,7 +70,7 @@ let ``A ray originates inside a sphere`` () =
 let ``A ray originates behind a sphere`` () =
     let r = ray (pointi 0 0 5) (vectori 0 0 1)
     let s = Sphere()
-    let xs = intersect s r
+    let xs = intersect r s
     Assert.Equal(2, xs.Length)
     Assert.Equal(-6.0, xs.[0].T)
     Assert.Equal(-4.0, xs.[1].T)
@@ -96,7 +96,7 @@ let ``Aggregating intersections`` () =
 let ``Intersect sets the object on the intersection`` () =
     let r = ray (pointi 0 0 -5) (vectori 0 0 1)
     let s = Sphere()
-    let xs = intersect s r
+    let xs = intersect r s
     Assert.Equal(2, xs.Length)
     Assert.Equal(s, xs.[0].Object)
     Assert.Equal(s, xs.[1].Object)
@@ -155,7 +155,7 @@ let ``Changing a sphere's transformation`` () =
 let ``Intersecting a scaled sphere with a ray`` () =
     let r = ray (pointi 0 0 -5) (vectori 0 0 1)
     let s = Sphere(scaling 2.0 2.0 2.0)
-    let xs = intersect s r
+    let xs = intersect r s
     Assert.Equal(2, xs.Length)
     Assert.Equal(3.0, xs.[0].T)
     Assert.Equal(7.0, xs.[1].T)
@@ -164,5 +164,5 @@ let ``Intersecting a scaled sphere with a ray`` () =
 let ``Intersecting a translated sphere with a ray`` () =
     let r = ray (pointi 0 0 -5) (vectori 0 0 1)
     let s = Sphere(translation 5.0 0.0 0.0)
-    let xs = intersect s r
+    let xs = intersect r s
     Assert.Equal(0, xs.Length)

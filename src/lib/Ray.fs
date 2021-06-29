@@ -34,22 +34,27 @@ type Material =  { Color: Color
           Specular = defaultArg specular m.Specular
           Shininess = defaultArg shininess m.Shininess }
 
+let defaultMaterial = 
+    { Color = colori 1 1 1
+      Ambient = 0.1
+      Diffuse = 0.9
+      Specular = 0.9
+      Shininess = 200.0 }
+
 // material functions
-let material () = { Color = colori 1 1 1
-                    Ambient = 0.1
-                    Diffuse = 0.9
-                    Specular = 0.9
-                    Shininess = 200.0 }
+let material () = defaultMaterial
 
 (* Sphere *)
 [<Sealed>]
-type Sphere (transform: Matrix, material: Material) =
+type Sphere (?transform: Matrix, ?material: Material) =
+    let transform = defaultArg transform (identity ())
+    let material = defaultArg material defaultMaterial
+    
     let inverseT = transform |> inverse
     let transposeInverseT = inverseT |> transpose
     let normalAtT = transposeInverseT * inverseT
 
-    new () = Sphere(identity (), material ())
-    new (transform) = Sphere(transform, material ())
+    // new (transform) = Sphere(transform, material ())
     member _.Transform = transform
     member _.Material = material
 
@@ -88,7 +93,7 @@ let inline sphere () = Sphere ()
 let inline intersection t (s: Sphere) = s.Intersection(t)
 let inline intersections (xs: Intersection list) : Intersections =
     xs |> List.sortBy (fun x -> x.T)
-let inline intersect (s: Sphere) r = s.Intersect(r)
+let inline intersect r (s: Sphere) = s.Intersect(r)
 let inline hit xs : Option<Intersection> =
     match xs |> List.filter (fun x -> 0.0 <= x.T) with
     | x::_ -> Some x
