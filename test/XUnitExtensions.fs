@@ -3,7 +3,7 @@ module XUnitExtensions
 open Xunit
 
 open Primitives
-open Ray
+open Sphere
 
 type TracerAssert () =
     inherit Assert ()

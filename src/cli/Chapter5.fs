@@ -3,9 +3,9 @@ module Chapter5
 open System.IO
 
 open Primitives
-open Matrix
 open Transform
 open Ray
+open Sphere
 open Canvas
 
 let chapter5 width height =
@@ -39,7 +39,7 @@ let chapter5 width height =
         let rad = (min width height) / 5 |> float
         Sphere(
             scaling rad rad rad
-            |* translation 0.0 0.0 (wallDistance / 2 |> float) )
+            * translation 0.0 0.0 (wallDistance / 2 |> float) )
     let color r =
         match sphere.Intersect(r) |> hit with None -> light | _ -> shadow
 

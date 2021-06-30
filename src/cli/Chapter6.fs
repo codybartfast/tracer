@@ -6,6 +6,7 @@ open Primitives
 open Matrix
 open Transform
 open Ray
+open Sphere
 open Canvas
 
 let chapter6 width height =

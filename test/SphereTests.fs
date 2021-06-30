@@ -1,10 +1,11 @@
-module RayTests
+module SphereTests
 
 open Xunit
 open Primitives
 open Matrix
 open Transform
 open Ray
+open Sphere
 
 type Assert = XUnitExtensions.TracerAssert
 

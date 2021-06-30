@@ -1,9 +1,11 @@
 module WorldTests
 
 open Xunit
+
 open Primitives
-open Transform
 open Ray
+open Sphere
+open Transform
 open World
 
 type Assert = XUnitExtensions.TracerAssert
@@ -91,4 +93,3 @@ let ``Shading an intersection from the inside`` () =
     let comps = prepareComputations i r
     let c = shadeHit w comps
     Assert.Equal(color 0.90498 0.90498 0.90498, c)
-

@@ -2,9 +2,9 @@ module World
 
 open System
 
-open Primitives
-open Ray
 open Transform
+open Primitives
+open Sphere
 
 type World(lights: PointLight list, [<ParamArray>] spheres: Sphere[]) =
     let spheresList = List.ofArray spheres

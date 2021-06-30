@@ -9,6 +9,7 @@
     <Compile Include="Matrix.fs" />
     <Compile Include="Transform.fs" />
     <Compile Include="Ray.fs" />
+    <Compile Include="Sphere.fs" />
     <Compile Include="World.fs" />
 
     <Compile Include="Projectile.fs" />

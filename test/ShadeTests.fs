@@ -3,7 +3,7 @@ module ShadeTests
 open Xunit
 open Primitives
 open Transform
-open Ray
+open Sphere
 
 type Assert = XUnitExtensions.TracerAssert
 
