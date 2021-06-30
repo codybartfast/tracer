@@ -34,7 +34,7 @@ type Material =  { Color: Color
           Specular = defaultArg specular m.Specular
           Shininess = defaultArg shininess m.Shininess }
 
-let defaultMaterial = 
+let defaultMaterial =
     { Color = colori 1 1 1
       Ambient = 0.1
       Diffuse = 0.9
@@ -49,7 +49,7 @@ let material () = defaultMaterial
 type Sphere (?transform: Matrix, ?material: Material) =
     let transform = defaultArg transform (identity ())
     let material = defaultArg material defaultMaterial
-    
+
     let inverseT = transform |> inverse
     let transposeInverseT = inverseT |> transpose
     let normalAtT = transposeInverseT * inverseT
@@ -128,3 +128,24 @@ let lighting material light point eyev normalv =
             let factor = reflectDotEye ** material.Shininess
             let specular = light.Intensity * material.Specular * factor
             ambient + diffuse + specular
+
+[<Struct>]
+type Computations =
+    { T: float
+      Object: Sphere
+      Point: Point
+      Inside: bool
+      Eyev: Vector
+      Normalv: Vector }
+
+let prepareComputations (i: Intersection) r =
+    let point = position r i.T
+    let eyev = -r.Direction
+    let nv = normalAt i.Object point
+    let inside = dot nv eyev < 0.0
+    { T = i.T
+      Object = i.Object
+      Point = point
+      Inside = inside
+      Eyev = eyev
+      Normalv = if inside then -nv else nv }

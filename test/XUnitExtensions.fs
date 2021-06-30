@@ -3,6 +3,7 @@ module XUnitExtensions
 open Xunit
 
 open Primitives
+open Ray
 
 type TracerAssert () =
     inherit Assert ()
@@ -15,6 +16,9 @@ type TracerAssert () =
 
     // static member Equal (a: Color, b: Color) =
     //     if  (a <> b) then raise (Sdk.EqualException(a, b))
+
+    static member Equal (a: PointLight list, b: PointLight list) =
+        if  (a <> b) then raise (Sdk.EqualException(a, b))
 
     static member Equal (a: float[], b: float[]) =
         if  (a <> b) then raise (Sdk.EqualException(a, b))
