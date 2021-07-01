@@ -71,7 +71,6 @@ let ``The hit, when an intersection occurs on the inside`` () =
     Assert.Equal(true, comps.Inside)
     Assert.Equal(vectori 0 0 -1, comps.Normalv)
 
-
 [<Fact>]
 let ``Shading an intersection`` () =
     let w = defaultWorld ()
@@ -93,3 +92,33 @@ let ``Shading an intersection from the inside`` () =
     let comps = prepareComputations i r
     let c = shadeHit w comps
     Assert.Equal(color 0.90498 0.90498 0.90498, c)
+
+[<Fact>]
+let ``The color when a ray misses`` () =
+    let w = defaultWorld ()
+    let r = ray (pointi 0 0 -5) (vectori 0 1 0)
+    let c = colorAt w r
+    Assert.Equal(black, c)
+
+[<Fact>]
+let ``The color when a ray hits`` () =
+    let w = defaultWorld ()
+    let r = ray (pointi 0 0 -5) (vectori 0 0 1)
+    let c = colorAt w r
+    Assert.Equal(color 0.38066 0.47583 0.2855, c)
+
+[<Fact>]
+let ``The color with an intersection behind the ray`` () =
+    let w = defaultWorld ()
+    let outer = w.[0]
+    let outerMaterial = outer.Material.With(ambient = 1.0)
+    let inner = w.[1]
+    let innerMaterial = inner.Material.With(ambient = 1.0)
+    let w =
+        w.With(spheres = [
+            outer.With(material = outerMaterial)
+            inner.With(material = innerMaterial) ])
+    let r = ray (point 0.0 0.0 0.75) (vectori 0 0 -1)
+    let c = colorAt w r
+    Assert.Equal(innerMaterial.Color, c)
+

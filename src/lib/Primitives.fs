@@ -21,7 +21,7 @@ let inline private add (struct(x, y, z)) (struct(x', y', z')) =
 let inline private sub (struct(x, y, z)) (struct(x', y', z')) =
     (struct(x - x', y - y', z - z'))
 let inline private scale (struct(x, y, z)) n = struct (x * n, y * n, z * n)
-let inline private prod (struct(x, y, z)) (struct(x', y', z')) = 
+let inline private prod (struct(x, y, z)) (struct(x', y', z')) =
     struct (x * x', y * y', z * z')
 let inline private div (struct(x, y, z)) n = struct (x / n, y / n, z / n)
 
@@ -143,13 +143,14 @@ type Color(r: float, g: float, b: float) =
         Color (r, g, b)
     static member (/) (a: Color, n: float) =
         let struct (r, g, b) = div a.Triple n
-        Color (r, g, b)   
+        Color (r, g, b)
     static member (/) (a: Color, n: int) = (/) a (float n)
     override a.Equals b =
         match b with
         | :? Color as b -> equal a.Triple b.Triple
         | _ -> false
     override _.GetHashCode () = 0
+    override _.ToString () = $"Color {r} {g} {b}"
 
 // color functions
 let inline color r g b = Color (r, g, b)

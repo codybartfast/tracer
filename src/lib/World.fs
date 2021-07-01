@@ -6,23 +6,23 @@ open Transform
 open Primitives
 open Sphere
 
-type World(lights: PointLight list, [<ParamArray>] spheres: Sphere[]) =
-    let spheresList = List.ofArray spheres
-    new() = World([])
+type World(lights: PointLight list, spheres: Sphere list) =
+    new() = World([], [])
     member _.Item with get(i) = spheres.[i]
-    member _.IsEmpty = List.isEmpty spheresList
+    member _.IsEmpty = List.isEmpty spheres
     member _.Lights = lights
+    member _.Spheres = spheres
     member _.Contains(predicate: Sphere -> bool) : bool =
-        List.exists predicate spheresList
+        List.exists predicate spheres
     member _.Intersect r =
-        spheresList
+        spheres
             |> List.collect (intersect r)
             |> List.filter (fun i -> i.T >= 0.0)
             |> List.sortBy (fun i -> i.T)
-    member w.With(?lights: PointLight list, [<ParamArray>] ?spheres: Sphere[]) =
+    member w.With(?lights: PointLight list, ?spheres: Sphere list) =
         // Surprised [<ParamArray>] can come after an optional param.
         let lights = defaultArg lights w.Lights
-        let spheres = defaultArg spheres (spheresList |> Array.ofList)
+        let spheres = defaultArg spheres w.Spheres
         World(lights, spheres)
 
 let private defaultWorldMaterial =
@@ -37,15 +37,22 @@ let defaultWorld () =
     let light = pointLight (pointi -10 10 -10) (colori 1 1 1)
     let s1 = Sphere(material = defaultWorldMaterial)
     let s2 = Sphere(scaling 0.5 0.5 0.5)
-    World([light], s1, s2)
+    World([light], [s1; s2])
 
 let intersectWorld (w: World) r = w.Intersect(r)
 
 let shadeHit (world: World) comps =
-    (black, world.Lights) ||> List.fold (fun c light ->
-        c +  lighting
+    world.Lights
+        |> List.map (fun light ->
+            lighting
                 comps.Object.Material
                 light
                 comps.Point
                 comps.Eyev
                 comps.Normalv)
+        |> List.reduce (+)
+
+let colorAt w r =
+    match intersectWorld w r |> hit with
+    | None -> black
+    | Some hit -> prepareComputations hit r |> shadeHit w
