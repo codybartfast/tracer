@@ -3,6 +3,7 @@ module Transform
 open System
 
 open Matrix
+open Primitives
 
 let pi = Math.PI
 
@@ -64,3 +65,15 @@ let shearing xy xz yx yz zx zy =
     t.[2, 0] <- zx
     t.[2, 1] <- zy
     t
+
+let viewTransform (from: Point) (``to``: Point) up =
+    let forward = normalize (``to`` - from)
+    let upn = normalize (up)
+    let left = cross forward upn
+    let trueUp = cross left forward
+    let orientation =
+        Matrix [ [ x left; y left; z left; 0.0]
+                 [ x trueUp; y trueUp; z trueUp; 0.0]
+                 [ -(x forward); -(y forward); -(z forward); 0.0]
+                 [ 0.0; 0.0; 0.0; 1.0] ]
+    orientation * translation -(x from)  -(y from) -(z from)

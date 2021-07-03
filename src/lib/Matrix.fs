@@ -1,5 +1,7 @@
 module Matrix
 
+open System
+
 open Primitives
 
 type Matrix (data: float[,]) =
@@ -42,6 +44,7 @@ type Matrix (data: float[,]) =
         |> Array2D.mapi (fun r c _ -> cofactor m r c)
         |> transpose
         |> Array2D.map (fun n -> n / detm)
+
 
     member private _.Data = data
 
@@ -95,12 +98,11 @@ type Matrix (data: float[,]) =
     static member ( *. ) (m: Matrix, p: Point) = (m * p |> toPoint)
     static member ( *. ) (m: Matrix, v: Vector) = (m * v |> toVector)
 
-    override _.Equals b =
+    override a.Equals b =
         match b with
         | :? Matrix as b ->
-            data =  b.Data
+            a.Rounded() = b.Rounded()
         | _ -> false
-    override _.GetHashCode() = data.GetHashCode()
 
     member _.Transpose() = Matrix(transpose data)
     member _.Determinant() = determinant data
@@ -110,6 +112,10 @@ type Matrix (data: float[,]) =
     member _.Invertible() = data |> determinant |> ((<>) 0.0)
     member _.Inverse() = Matrix(inverse data)
     member _.Map(mapper) = Matrix(Array2D.map mapper data)
+    member _.Rounded() = data |> Array2D.map (fun n -> Math.Round(n, 5))
+
+    override _.GetHashCode() = data.GetHashCode()
+    override _.ToString() = sprintf "Matrix: %A" data
 
 let transpose (m: Matrix) = m.Transpose()
 let determinant (m: Matrix) = m.Determinant()

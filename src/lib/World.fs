@@ -2,9 +2,10 @@ module World
 
 open System
 
-open Transform
+open Matrix
 open Primitives
 open Sphere
+open Transform
 
 type World(lights: PointLight list, spheres: Sphere list) =
     new() = World([], [])
@@ -20,7 +21,6 @@ type World(lights: PointLight list, spheres: Sphere list) =
             |> List.filter (fun i -> i.T >= 0.0)
             |> List.sortBy (fun i -> i.T)
     member w.With(?lights: PointLight list, ?spheres: Sphere list) =
-        // Surprised [<ParamArray>] can come after an optional param.
         let lights = defaultArg lights w.Lights
         let spheres = defaultArg spheres w.Spheres
         World(lights, spheres)

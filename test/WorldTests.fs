@@ -5,6 +5,7 @@ open Xunit
 open Primitives
 open Ray
 open Sphere
+open Matrix
 open Transform
 open World
 
@@ -121,4 +122,3 @@ let ``The color with an intersection behind the ray`` () =
     let r = ray (point 0.0 0.0 0.75) (vectori 0 0 -1)
     let c = colorAt w r
     Assert.Equal(innerMaterial.Color, c)
-

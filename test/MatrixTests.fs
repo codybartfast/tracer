@@ -8,8 +8,6 @@ open Primitives
 
 type Assert = XUnitExtensions.TracerAssert
 
-let round (m: Matrix)= m.Map (fun (n: float) -> Math.Round(n, 5))
-
 [<Theory>]
 [<InlineData(1.0, 0, 0)>]
 [<InlineData(4.0, 0, 3)>]
@@ -231,7 +229,7 @@ let ``calculating the inverse of a matrix`` () =
     Assert.Equal(-160.0/532.0, n.[3, 2])
     Assert.Equal(105.0, cofactor m 3 2)
     Assert.Equal(105.0/532.0, n.[2, 3])
-    Assert.Equal(expected, round n)
+    Assert.Equal(expected, n)
 
 [<Fact>]
 let ``calculating the inverse of another matrix`` () =
@@ -243,7 +241,7 @@ let ``calculating the inverse of another matrix`` () =
                             [-0.07692;  0.12308;  0.02564;  0.03077]
                             [ 0.35897;  0.35897;  0.43590;  0.92308]
                             [-0.69231; -0.69231; -0.76923; -1.92308] ]
-    Assert.Equal (expected, m |> inverse |> round)
+    Assert.Equal (expected, inverse m)
 
 [<Fact>]
 let ``calculating the inverse of a third matrix`` () =
@@ -255,7 +253,7 @@ let ``calculating the inverse of a third matrix`` () =
                             [-0.07778;  0.03333;  0.36667; -0.33333]
                             [-0.02901; -0.14630; -0.10926;  0.12963]
                             [ 0.17778;  0.06667; -0.26667;  0.33333] ]
-    Assert.Equal (expected, m |> inverse |> round)
+    Assert.Equal (expected, inverse m)
 
 [<Fact>]
 let ``multiplying a product by its inverse`` () =
@@ -268,4 +266,4 @@ let ``multiplying a product by its inverse`` () =
                      [ 7;  0;  5;  4]
                      [ 6; -2;  0;  5] ]
     let p = m * n
-    Assert.Equal(m, (p * inverse n) |> round)
+    Assert.Equal(m, p * inverse n)

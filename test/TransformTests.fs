@@ -177,3 +177,40 @@ let ``fluent transformations 4`` () =
     |* scaling 5.0 5.0 5.0
     |* translation 10.0 5.0 7.0
     |> (fun a -> Assert.Equal(barei 15 0 7 1, a))
+
+[<Fact>]
+let ``The transformation matrix for the default orientation`` () =
+    let from = pointi 0 0 0
+    let ``to`` = pointi 0 0 -1
+    let up = vectori 0 1 0
+    let t =  viewTransform from ``to`` up
+    Assert.Equal(identity (), t)
+
+[<Fact>]
+let ``The transformation matrix lookin in positive z direction`` () =
+    let from = pointi 0 0 0
+    let ``to`` = pointi 0 0 1
+    let up = vectori 0 1 0
+    let t = viewTransform from ``to`` up
+    Assert.Equal(scalingi -1 1 -1, t)
+
+[<Fact>]
+let ``The view tranformatin moves the world`` () =
+    let from = pointi 0 0 8
+    let ``to`` = pointi 0 0 0
+    let up = vectori 0 1 0
+    let t = viewTransform from ``to`` up
+    Assert.Equal(translationi 0 0 -8, t)
+
+[<Fact>]
+let ``An arbitrary view transformation`` () =
+    let from = pointi 1 3 2
+    let ``to`` = pointi 4 -2 8
+    let up = vectori 1 1 0
+    let t = viewTransform from ``to`` up
+    let expected =
+        Matrix [ [ -0.50709; 0.50709;  0.67612; -2.36643 ]
+                 [  0.76772; 0.60609;  0.12122; -2.82843 ]
+                 [ -0.35857; 0.59761; -0.71714;  0.00000 ]
+                 [  0.00000; 0.00000;  0.00000;  1.00000 ] ]
+    Assert.Equal(expected, t)
