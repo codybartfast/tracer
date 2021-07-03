@@ -26,10 +26,11 @@ let chapter2 () =
 
     let writePos canv pos =
         writePixel
+            canv
             (pos |> x |> int)
             (pos |> y |> int |> ((-) height))
             (color 1.0 0.0 0.0)
-            canv
+        canv
 
     let ppm =
         path

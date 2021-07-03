@@ -82,14 +82,14 @@ let ``dividing a tuple by a scalar`` () =
 [<InlineData(3.74165739, 1.0, 2.0, 3.0)>]
 [<InlineData(3.74165739, -1.0, -2.0, -3.0)>]
 let ``computing magnitude of a vector`` (expected, x, y, z) =
-    Assert.ValEqual(expected, mag (vector x y z))
+    Assert.Equal(expected, mag (vector x y z))
 
 [<Fact>]
 let ``normalizing vectors`` () =
     let test tup exp =
         let norm = normalize tup
         Assert.Equal(exp, norm)
-        Assert.ValEqual(1.0, mag norm)
+        Assert.Equal(1.0, mag norm)
     test (vector 4.0 0.0 0.0) (vector 1.0 0.0 0.0)
     test (vector 1.0 2.0 3.0) (vector 0.26726 0.53452 0.80178)
 
@@ -97,7 +97,7 @@ let ``normalizing vectors`` () =
 let ``dot product of two tuples`` () =
     let a = vector 1.0 2.0 3.0
     let b = vector 2.0 3.0 4.0
-    Assert.ValEqual(20.0, dot a b)
+    Assert.Equal(20.0, dot a b)
 
 [<Fact>]
 let ``cross product of two tuples`` () =

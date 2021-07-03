@@ -11,9 +11,10 @@
     <Compile Include="Ray.fs" />
     <Compile Include="Sphere.fs" />
     <Compile Include="World.fs" />
+    <Compile Include="Canvas.fs" />
+    <Compile Include="Camera.fs" />
 
     <Compile Include="Projectile.fs" />
-    <Compile Include="Canvas.fs" />
 
   </ItemGroup>
 </Project>

@@ -26,7 +26,7 @@ let chapter5 width height =
     let canv = canvas width height
     let inline writePoint p col =
         let (Point (x, y, z)) = shift *. p
-        writePixel (int x) (int y) col canv
+        writePixel canv (int x) (int y) col
 
     let origin = pointi 0 0 0
     // rays that hit individual 'pixels' on the wall after 1 second

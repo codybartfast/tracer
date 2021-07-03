@@ -27,7 +27,7 @@ let chapter6 width height =
     let canv = canvas width height
     let inline writePoint p col =
         let (Point (x, y, _)) = shift *. p
-        writePixel (int x) ((height - 1 - int y)) col canv
+        writePixel canv (int x) ((height - 1 - int y)) col
 
     let rays () = seq{
         for y in [-yShift .. halfHeight] do

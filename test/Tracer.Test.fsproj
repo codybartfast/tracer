@@ -9,12 +9,12 @@
 
   <ItemGroup>
     <Compile Include="XUnitExtensions.fs" />
+    <Compile Include="CameraTests.fs" />
     <Compile Include="CanvasTests.fs" />
     <Compile Include="ColorTests.fs" />
     <Compile Include="MatrixTests.fs" />
     <Compile Include="PrimitivesTests.fs" />
     <Compile Include="ProjectileTests.fs" />
-    <!-- <Compile Include="RayTests.fs" /> -->
     <Compile Include="SphereTests.fs" />
     <Compile Include="ShadeTests.fs" />
     <Compile Include="TransformTests.fs" />

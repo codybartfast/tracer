@@ -11,10 +11,10 @@ let chapter4 () =
     let c = canvas height height
     let writePos pos canv =
         writePixel
+            canv
             (pos |> x |> int)
             (pos |> y |> int |> ((-) height))
             white
-            canv
 
     let axle = point 51.0 51.0 0.0
     let noon = vector 0.0 48.0 0.0

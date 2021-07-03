@@ -77,10 +77,9 @@ type Canvas(width, height, initializer) =
 
 
 let canvas width height = Canvas(width, height)
-let pixelAt x y (canvas: Canvas) = canvas.[x, y]
+let pixelAt (canvas: Canvas) x y = canvas.[x, y]
 
-let writePixel x y color (canvas: Canvas) =
+let writePixel (canvas: Canvas) x y color =
     canvas.[x, y] <- color
-    canvas
 
 let canvasToPpm (canvas: Canvas) = canvas.ToPpm()

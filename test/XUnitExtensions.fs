@@ -23,5 +23,5 @@ type TracerAssert () =
     static member Equal (a: float[], b: float[]) =
         if  (a <> b) then raise (Sdk.EqualException(a, b))
 
-    static member ValEqual (a, b) =
+    static member Equal (a: float, b: float) =
         if not (valEqual a b) then raise (Sdk.EqualException(a, b))

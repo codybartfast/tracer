@@ -40,12 +40,11 @@ let ``constructing the ppm pixel data`` () =
         + "0 0 0 0 0 0 0 128 0 0 0 0 0 0 0\n"
         + "0 0 0 0 0 0 0 0 0 0 0 0 0 0 255"
     let actual =
-        canvas 5 3
-        |> writePixel 0 0 (color 1.5 0.0 0.0)
-        |> writePixel 2 1 (color 0.0 0.5 0.0)
-        |> writePixel 4 2 (color -0.5 0.0 1.0)
-        |> canvasToPpm
-        |> lines 4 6
+        let canv = canvas 5 3
+        writePixel canv 0 0 (color 1.5 0.0 0.0)
+        writePixel canv 2 1 (color 0.0 0.5 0.0)
+        writePixel canv 4 2 (color -0.5 0.0 1.0)
+        canv |> canvasToPpm |> lines 4 6
     Assert.Equal(expected, actual)
 
 [<Fact>]
