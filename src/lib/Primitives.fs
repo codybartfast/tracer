@@ -178,7 +178,7 @@ let darkRed = darken red
 
 let green = color 0.0 1.0 0.0
 let lightGreen = lighten green
-let darkGeen = darken green
+let darkGreen = darken green
 
 let blue = color 0.0 0.0 1.0
 let lightBlue = lighten blue
