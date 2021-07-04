@@ -6,7 +6,7 @@ open Primitives
 open Ray
 open Sphere
 open Matrix
-open Transform
+open Transformations
 open World
 
 type Assert = XUnitExtensions.TracerAssert
@@ -122,3 +122,27 @@ let ``The color with an intersection behind the ray`` () =
     let r = ray (point 0.0 0.0 0.75) (vectori 0 0 -1)
     let c = colorAt w r
     Assert.Equal(innerMaterial.Color, c)
+
+[<Fact>]
+let ``There is no shadow when nothing is collinear with point and light`` () =
+    let w = defaultWorld ()
+    let p = pointi 0 10 0
+    Assert.False(isShadowed w p)
+
+[<Fact>]
+let ``The shadow when an object is between the point and the light`` () =
+    let w = defaultWorld ()
+    let p = pointi 10 -10 10
+    Assert.True(isShadowed w p)
+
+[<Fact>]
+let ``There is no shadow when an object is behind the light`` () =
+    let w = defaultWorld ()
+    let p = pointi -20 20 -20
+    Assert.False(isShadowed w p)
+
+[<Fact>]
+let ``There is no shadow when an object is behind the point`` () =
+    let w = defaultWorld ()
+    let p = pointi -2 2 -2
+    Assert.False(isShadowed w p)

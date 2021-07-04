@@ -96,12 +96,12 @@ let inline pointLight position intensity : PointLight =
     {Position = position; Intensity = intensity}
 
 
-let lighting material light point eyev normalv =
+let lighting material light point eyev normalv inShadow =
     let effectiveColor = material.Color * light.Intensity
     let lightv = normalize(light.Position - point)
     let ambient = effectiveColor * material.Ambient
     let lightDotNormal = dot lightv normalv
-    if lightDotNormal <= 0.0 then
+    if inShadow || lightDotNormal <= 0.0 then
         ambient
     else
         let diffuse = effectiveColor * material.Diffuse * lightDotNormal

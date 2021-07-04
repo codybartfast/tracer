@@ -7,7 +7,7 @@
 
     <Compile Include="Primitives.fs" />
     <Compile Include="Matrix.fs" />
-    <Compile Include="Transform.fs" />
+    <Compile Include="Transformations.fs" />
     <Compile Include="Ray.fs" />
     <Compile Include="Sphere.fs" />
     <Compile Include="World.fs" />

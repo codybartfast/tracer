@@ -2,10 +2,10 @@ module World
 
 open System
 
-open Matrix
 open Primitives
+open Ray
 open Sphere
-open Transform
+open Transformations
 
 type World(lights: PointLight list, spheres: Sphere list) =
     new() = World([], [])
@@ -49,10 +49,24 @@ let shadeHit (world: World) comps =
                 light
                 comps.Point
                 comps.Eyev
-                comps.Normalv)
+                comps.Normalv
+                false) //////
         |> List.reduce (+)
 
 let colorAt w r =
     match intersectWorld w r |> hit with
     | None -> black
     | Some hit -> prepareComputations hit r |> shadeHit w
+
+let isShadowed (world: World) (point: Point) =
+    // Will only consider first light
+    if List.isEmpty world.Lights then true else
+    let light = world.Lights.Head
+    let v = light.Position - point
+    let distance = magnitude v
+    let direction = normalize v
+    let r = ray point direction
+    let h = intersectWorld world r |> hit
+    match h with
+    | Some h when h.T < distance -> true
+    | _ -> false

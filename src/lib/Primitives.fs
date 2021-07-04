@@ -64,9 +64,9 @@ let inline toVectorUnchecked (b: Bare) =
     match b with
     | [| x; y; z; _ |] -> vector x y z
     | _ -> failwith $"Unexpected length for bare point: {Array.length b}"
-let inline mag (Vector (x, y, z)) = (x * x) + (y * y) + (z * z) |> sqrt
+let inline magnitude (Vector (x, y, z)) = (x * x) + (y * y) + (z * z) |> sqrt
 let inline normalize ((Vector (x, y, z)) as v) =
-    let m = mag v in vector (x / m) (y / m) (z / m)
+    let m = magnitude v in vector (x / m) (y / m) (z / m)
 let inline dot (Vector (x, y, z)) (Vector (x', y', z')) =
     (x * x') + (y * y') + (z * z')
 let inline cross (Vector (x, y, z)) (Vector (x', y', z')) =

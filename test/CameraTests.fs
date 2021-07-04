@@ -6,7 +6,7 @@ open Camera
 open Canvas
 open Matrix
 open Primitives
-open Transform
+open Transformations
 open World
 
 type Assert = XUnitExtensions.TracerAssert

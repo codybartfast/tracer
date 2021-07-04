@@ -13,11 +13,12 @@
     <Compile Include="CanvasTests.fs" />
     <Compile Include="ColorTests.fs" />
     <Compile Include="MatrixTests.fs" />
+    <Compile Include="MaterialTests.fs" />
     <Compile Include="PrimitivesTests.fs" />
     <Compile Include="ProjectileTests.fs" />
     <Compile Include="SphereTests.fs" />
     <Compile Include="ShadeTests.fs" />
-    <Compile Include="TransformTests.fs" />
+    <Compile Include="TransformationTests.fs" />
     <Compile Include="WorldTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

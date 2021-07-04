@@ -3,7 +3,7 @@ module Chapter4
 open System.IO
 
 open Primitives
-open Transform
+open Transformations
 open Canvas
 
 let chapter4 () =

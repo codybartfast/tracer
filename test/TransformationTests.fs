@@ -1,10 +1,10 @@
-module TransfromTests
+module TransformationTests
 
 open System
 open Xunit
 
 open Matrix
-open Transform
+open Transformations
 open Primitives
 
 type Assert = XUnitExtensions.TracerAssert

@@ -3,7 +3,7 @@ module SphereTests
 open Xunit
 open Primitives
 open Matrix
-open Transform
+open Transformations
 open Ray
 open Sphere
 

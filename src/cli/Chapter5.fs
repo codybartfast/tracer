@@ -3,7 +3,7 @@ module Chapter5
 open System.IO
 
 open Primitives
-open Transform
+open Transformations
 open Ray
 open Sphere
 open Canvas
