@@ -1,7 +1,5 @@
 module World
 
-open System
-
 open Primitives
 open Ray
 open Sphere
@@ -12,6 +10,7 @@ type World(lights: PointLight list, spheres: Sphere list) =
     member _.Item with get(i) = spheres.[i]
     member _.IsEmpty = List.isEmpty spheres
     member _.Lights = lights
+    member _.FirstLight = match lights with l::_ -> Some l | _ -> None
     member _.Spheres = spheres
     member _.Contains(predicate: Sphere -> bool) : bool =
         List.exists predicate spheres
@@ -41,32 +40,34 @@ let defaultWorld () =
 
 let intersectWorld (w: World) r = w.Intersect(r)
 
+let isShadowed (world: World) (point: Point) =
+    // Will only consider first light ////
+    match world.FirstLight with
+    | None -> true
+    | Some light ->
+        let v = light.Position - point
+        let distance = magnitude v
+        let direction = normalize v
+        let r = ray point direction
+        let h = intersectWorld world r |> hit
+        match h with
+        | Some h when h.T < distance -> true
+        | _ -> false
+
 let shadeHit (world: World) comps =
+    let shadowed = isShadowed world comps.OverPoint
     world.Lights
         |> List.map (fun light ->
             lighting
                 comps.Object.Material
                 light
-                comps.Point
+                comps.OverPoint
                 comps.Eyev
                 comps.Normalv
-                false) //////
+                shadowed) //////
         |> List.reduce (+)
 
 let colorAt w r =
     match intersectWorld w r |> hit with
     | None -> black
     | Some hit -> prepareComputations hit r |> shadeHit w
-
-let isShadowed (world: World) (point: Point) =
-    // Will only consider first light
-    if List.isEmpty world.Lights then true else
-    let light = world.Lights.Head
-    let v = light.Position - point
-    let distance = magnitude v
-    let direction = normalize v
-    let r = ray point direction
-    let h = intersectWorld world r |> hit
-    match h with
-    | Some h when h.T < distance -> true
-    | _ -> false

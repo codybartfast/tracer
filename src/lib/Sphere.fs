@@ -119,6 +119,7 @@ type Computations =
     { T: float
       Object: Sphere
       Point: Point
+      OverPoint: Point
       Inside: bool
       Eyev: Vector
       Normalv: Vector }
@@ -126,11 +127,14 @@ type Computations =
 let prepareComputations (i: Intersection) r =
     let point = position r i.T
     let eyev = -r.Direction
-    let nv = normalAt i.Object point
-    let inside = dot nv eyev < 0.0
+    let initialNormal = normalAt i.Object point
+    let inside = dot initialNormal eyev < 0.0
+    let normalv = if inside then -initialNormal else initialNormal
+    let overPoint = point + (normalv * epsilon)
     { T = i.T
       Object = i.Object
       Point = point
+      OverPoint = overPoint
       Inside = inside
       Eyev = eyev
-      Normalv = if inside then -nv else nv }
+      Normalv = normalv }

@@ -146,3 +146,21 @@ let ``There is no shadow when an object is behind the point`` () =
     let w = defaultWorld ()
     let p = pointi -2 2 -2
     Assert.False(isShadowed w p)
+
+[<Fact>]
+let ``shadeHit is given an intersection in shadow`` () =
+    let s2 = Sphere(translationi 0 0 10)
+    let w = world (pointLight (pointi 0 0 -10) white) [sphere (); s2]
+    let r = ray (pointi 0 0 5) (vectori 0 0 1)
+    let i = intersection 4.0 s2
+    let comps = prepareComputations i r
+    let c = shadeHit w comps
+    Assert.Equal(color 0.1 0.1 0.1, c)
+
+[<Fact>]
+let ``The hit should offset the point`` () =
+    let r = ray (pointi 0 0 -5) (vectori 0 0 1)
+    let shape = Sphere (translationi 0 0 1)
+    let i = intersection 5.0 shape
+    let comps = prepareComputations i r
+    Assert.True((comps.OverPoint |> z) < -epsilon/2.0)
