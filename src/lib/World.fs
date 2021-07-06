@@ -40,9 +40,8 @@ let defaultWorld () =
 
 let intersectWorld (w: World) r = w.Intersect(r)
 
-let isShadowed (world: World) (point: Point) =
-    // Will only consider first light ////
-    match world.FirstLight with
+let isShadowed (world: World) (light: Option<PointLight>) (point: Point) =
+    match light with
     | None -> true
     | Some light ->
         let v = light.Position - point
@@ -55,7 +54,6 @@ let isShadowed (world: World) (point: Point) =
         | _ -> false
 
 let shadeHit (world: World) comps =
-    let shadowed = isShadowed world comps.OverPoint
     world.Lights
         |> List.map (fun light ->
             lighting
@@ -64,7 +62,7 @@ let shadeHit (world: World) comps =
                 comps.OverPoint
                 comps.Eyev
                 comps.Normalv
-                shadowed) //////
+                (isShadowed world (Some light) comps.OverPoint))
         |> List.reduce (+)
 
 let colorAt w r =

@@ -127,25 +127,25 @@ let ``The color with an intersection behind the ray`` () =
 let ``There is no shadow when nothing is collinear with point and light`` () =
     let w = defaultWorld ()
     let p = pointi 0 10 0
-    Assert.False(isShadowed w p)
+    Assert.False(isShadowed w w.FirstLight p)
 
 [<Fact>]
 let ``The shadow when an object is between the point and the light`` () =
     let w = defaultWorld ()
     let p = pointi 10 -10 10
-    Assert.True(isShadowed w p)
+    Assert.True(isShadowed w w.FirstLight p)
 
 [<Fact>]
 let ``There is no shadow when an object is behind the light`` () =
     let w = defaultWorld ()
     let p = pointi -20 20 -20
-    Assert.False(isShadowed w p)
+    Assert.False(isShadowed w w.FirstLight p)
 
 [<Fact>]
 let ``There is no shadow when an object is behind the point`` () =
     let w = defaultWorld ()
     let p = pointi -2 2 -2
-    Assert.False(isShadowed w p)
+    Assert.False(isShadowed w w.FirstLight p)
 
 [<Fact>]
 let ``shadeHit is given an intersection in shadow`` () =
