@@ -5,6 +5,7 @@ open System.IO
 open Camera
 open Canvas
 open Primitives
+open Shapes
 open Sphere
 open Transformations
 open World

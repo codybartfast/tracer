@@ -5,6 +5,7 @@ open Primitives
 open Matrix
 open Transformations
 open Ray
+open Shapes
 open Sphere
 
 type Assert = XUnitExtensions.TracerAssert
@@ -37,7 +38,7 @@ let ``Spheres have identity (not in book)`` () =
 let ``A ray intersects a sphere at two points`` () =
     let r = ray (pointi 0 0 -5) (vectori 0 0 1)
     let s = Sphere ()
-    let xs = intersect r s
+    let xs = s.LocalIntersect r
     Assert.Equal(2, xs.Length)
     Assert.Equal(4.0, xs.[0].T)
     Assert.Equal(6.0, xs.[1].T)
@@ -46,7 +47,7 @@ let ``A ray intersects a sphere at two points`` () =
 let ``A ray intersects a sphere at a tangent`` () =
     let r = ray (pointi 0 1 -5) (vectori 0 0 1)
     let s = Sphere()
-    let xs = s.Intersect r
+    let xs = s.LocalIntersect r
     Assert.Equal(2, xs.Length)
     Assert.Equal(5.0, xs.[0].T)
     Assert.Equal(5.0, xs.[1].T)
@@ -55,14 +56,14 @@ let ``A ray intersects a sphere at a tangent`` () =
 let ``A ray misses a sphere`` () =
     let r = ray (pointi 0 2 -5) (vectori 0 0 1)
     let s = Sphere()
-    let xs = intersect r s
+    let xs = s.LocalIntersect r
     Assert.Equal(0, xs.Length)
 
 [<Fact>]
 let ``A ray originates inside a sphere`` () =
     let r = ray zeroPoint (vectori 0 0 1)
     let s = Sphere()
-    let xs = s.Intersect r
+    let xs = s.LocalIntersect r
     Assert.Equal(2, xs.Length)
     Assert.Equal(-1.0, xs.[0].T)
     Assert.Equal(1.0, xs.[1].T)
@@ -71,7 +72,7 @@ let ``A ray originates inside a sphere`` () =
 let ``A ray originates behind a sphere`` () =
     let r = ray (pointi 0 0 5) (vectori 0 0 1)
     let s = Sphere()
-    let xs = intersect r s
+    let xs = s.LocalIntersect r
     Assert.Equal(2, xs.Length)
     Assert.Equal(-6.0, xs.[0].T)
     Assert.Equal(-4.0, xs.[1].T)
@@ -97,7 +98,7 @@ let ``Aggregating intersections`` () =
 let ``Intersect sets the object on the intersection`` () =
     let r = ray (pointi 0 0 -5) (vectori 0 0 1)
     let s = Sphere()
-    let xs = intersect r s
+    let xs = s.LocalIntersect r
     Assert.Equal(2, xs.Length)
     Assert.Equal(s, xs.[0].Object)
     Assert.Equal(s, xs.[1].Object)
@@ -152,6 +153,8 @@ let ``Changing a sphere's transformation`` () =
     let s = s.With(transform = t)
     Assert.Equal (t, s.Transform)
 
+(* Replaced with Shape tests ...
+
 [<Fact>]
 let ``Intersecting a scaled sphere with a ray`` () =
     let r = ray (pointi 0 0 -5) (vectori 0 0 1)
@@ -167,3 +170,9 @@ let ``Intersecting a translated sphere with a ray`` () =
     let s = Sphere(translation 5.0 0.0 0.0)
     let xs = intersect r s
     Assert.Equal(0, xs.Length)
+*)
+
+[<Fact>]
+let ``A Sphere is a Shape`` () =
+    sphere () :> Shape |> ignore
+    Assert.True(true)

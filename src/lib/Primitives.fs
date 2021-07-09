@@ -10,9 +10,8 @@ let wPoint = 1.0
 let wVector = 0.0
 
 (* triple functions *)
-let valEqual a b = a - b |> abs |> (>) epsilon
+let inline valEqual a b = a - b |> abs |> (>) epsilon
 let inline private equal (struct(x, y, z)) (struct(x', y', z')) =
-    let valEqual a b = a - b |> abs |> (>) epsilon
     (valEqual x x')
     && (valEqual y y')
     && (valEqual z z')

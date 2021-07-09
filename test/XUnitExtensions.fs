@@ -3,7 +3,7 @@ module XUnitExtensions
 open Xunit
 
 open Primitives
-open Sphere
+open Shapes
 
 type TracerAssert () =
     inherit Assert ()
@@ -25,3 +25,6 @@ type TracerAssert () =
 
     static member Equal (a: float, b: float) =
         if not (valEqual a b) then raise (Sdk.EqualException(a, b))
+
+    static member Equal (a: Shape, b: Shape) =
+        if  (a <> b) then raise (Sdk.EqualException(a, b))

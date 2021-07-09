@@ -16,8 +16,10 @@
     <Compile Include="MaterialTests.fs" />
     <Compile Include="PrimitivesTests.fs" />
     <Compile Include="ProjectileTests.fs" />
-    <Compile Include="SphereTests.fs" />
     <Compile Include="ShadeTests.fs" />
+    <Compile Include="TestShape.fs" />
+    <Compile Include="ShapeTests.fs" />
+    <Compile Include="SphereTests.fs" />
     <Compile Include="TransformationTests.fs" />
     <Compile Include="WorldTests.fs" />
     <Compile Include="Program.fs" />

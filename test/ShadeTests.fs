@@ -3,6 +3,7 @@ module ShadeTests
 open Xunit
 open Primitives
 open Transformations
+open Shapes
 open Sphere
 
 type Assert = XUnitExtensions.TracerAssert
@@ -13,32 +14,34 @@ let hsr2 = (sqrt 2.0) / 2.0
 [<Fact>]
 let ``The normal on a sphere at a point on the x axis`` () =
     let s = sphere ()
-    let n = s.NormalAt(pointi 1 0 0)
+    let n = s.LocalNormalAt(pointi 1 0 0)
     Assert.Equal(vectori 1 0 0, n)
 
 [<Fact>]
 let ``The normal on a sphere at a point on the y axis`` () =
     let s = sphere ()
-    let n = s.NormalAt(pointi 0 1 0)
+    let n = s.LocalNormalAt(pointi 0 1 0)
     Assert.Equal(vectori 0 1 0, n)
 
 [<Fact>]
 let ``The normal on a sphere at a point on the z axis`` () =
     let s = sphere ()
-    let n = s.NormalAt(pointi 0 0 1)
+    let n = s.LocalNormalAt(pointi 0 0 1)
     Assert.Equal(vectori 0 0 1, n)
 
 [<Fact>]
 let ``The normal on a sphere at a nonaxial point`` () =
     let s = sphere ()
-    let n = s.NormalAt(pointi tsr3 tsr3 tsr3)
+    let n = s.LocalNormalAt(pointi tsr3 tsr3 tsr3)
     Assert.Equal(vectori  tsr3 tsr3 tsr3, n)
 
 [<Fact>]
 let ``The normal is a normalized vector`` () =
     let s = sphere ()
-    let n = s.NormalAt(pointi tsr3 tsr3 tsr3)
+    let n = s.LocalNormalAt(pointi tsr3 tsr3 tsr3)
     Assert.Equal(normalize n, n)
+
+(* Replaced with Shape tests..
 
 [<Fact>]
 let ``Computing the normal on a translated sphere`` () =
@@ -53,6 +56,7 @@ let ``Computing the normal on a transformed sphere`` () =
     let s = s.With(transform = m)
     let n = normalAt s (point 0.0 hsr2 -hsr2)
     Assert.Equal(vector 0.0 0.97014 -0.24254, n)
+*)
 
 [<Fact>]
 let ``Reflecting a vector approaching at 45°`` () =

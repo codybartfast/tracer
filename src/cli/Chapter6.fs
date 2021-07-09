@@ -6,6 +6,7 @@ open Primitives
 open Matrix
 open Transformations
 open Ray
+open Shapes
 open Sphere
 open Canvas
 

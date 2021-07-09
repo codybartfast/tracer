@@ -5,6 +5,7 @@ open System.IO
 open Primitives
 open Transformations
 open Ray
+open Shapes
 open Sphere
 open Canvas
 
