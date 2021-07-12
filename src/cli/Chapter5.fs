@@ -6,7 +6,7 @@ open Primitives
 open Transformations
 open Ray
 open ShapeBase
-open Sphere
+open Shapes
 open Canvas
 
 let chapter5 width height =

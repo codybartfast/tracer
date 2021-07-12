@@ -6,7 +6,7 @@ open Camera
 open Canvas
 open Primitives
 open ShapeBase
-open Sphere
+open Shapes
 open Transformations
 open World
 

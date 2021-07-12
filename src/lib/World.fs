@@ -3,7 +3,7 @@ module World
 open Primitives
 open Ray
 open ShapeBase
-open Sphere
+open Shapes
 open Transformations
 
 type World(lights: PointLight list, spheres: Sphere list) =

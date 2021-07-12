@@ -1,4 +1,4 @@
-module Sphere
+module Shapes
 
 open Primitives
 open Matrix

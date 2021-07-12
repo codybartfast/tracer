@@ -4,7 +4,7 @@ open Xunit
 open Primitives
 open Transformations
 open ShapeBase
-open Sphere
+open Shapes
 
 type Assert = XUnitExtensions.TracerAssert
 

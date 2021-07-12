@@ -6,7 +6,7 @@ open Matrix
 open Transformations
 open Ray
 open ShapeBase
-open Sphere
+open Shapes
 
 type Assert = XUnitExtensions.TracerAssert
 
