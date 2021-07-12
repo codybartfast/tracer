@@ -3,7 +3,7 @@ module Sphere
 open Primitives
 open Matrix
 open Ray
-open Shapes
+open ShapeBase
 
 
 (* Sphere *)

@@ -3,7 +3,7 @@ module MaterialTests
 open Xunit
 open Primitives
 open Transformations
-open Shapes
+open ShapeBase
 open Sphere
 
 type Assert = XUnitExtensions.TracerAssert

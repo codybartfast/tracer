@@ -3,7 +3,7 @@ module XUnitExtensions
 open Xunit
 
 open Primitives
-open Shapes
+open ShapeBase
 
 type TracerAssert () =
     inherit Assert ()

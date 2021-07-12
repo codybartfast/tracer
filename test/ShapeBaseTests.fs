@@ -5,7 +5,7 @@ open Xunit
 open Primitives
 open Matrix
 open Ray
-open Shapes
+open ShapeBase
 open TestShape
 open Transformations
 

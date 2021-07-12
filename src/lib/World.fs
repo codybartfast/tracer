@@ -2,7 +2,7 @@ module World
 
 open Primitives
 open Ray
-open Shapes
+open ShapeBase
 open Sphere
 open Transformations
 

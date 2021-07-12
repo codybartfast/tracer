@@ -3,7 +3,7 @@ module TestShape
 open Matrix
 open Primitives
 open Ray
-open Shapes
+open ShapeBase
 
 [<Sealed>]
 type TestShape (?transform: Matrix, ?material: Material) =

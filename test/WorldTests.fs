@@ -4,9 +4,8 @@ open Xunit
 
 open Primitives
 open Ray
-open Shapes
+open ShapeBase
 open Sphere
-open Matrix
 open Transformations
 open World
 

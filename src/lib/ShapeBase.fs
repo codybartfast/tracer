@@ -1,4 +1,4 @@
-module Shapes
+module ShapeBase
 
 open Primitives
 open Matrix
