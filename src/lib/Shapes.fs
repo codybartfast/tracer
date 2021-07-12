@@ -36,3 +36,27 @@ type Sphere (?transform: Matrix, ?material: Material) =
 let inline sphere () = Sphere ()
 let equivalent (s1: Sphere) (s2: Sphere) =
     s1.Transform = s2.Transform && s1.Material = s2.Material
+
+
+(* Plane *)
+[<Sealed>]
+type Plane (?transform: Matrix, ?material: Material) =
+    inherit Shape(transform, material)
+
+    let normalAt = vectori 0 1 0
+
+    member inline p.With(?transform, ?material) =
+        Sphere(
+            defaultArg transform p.Transform,
+            defaultArg material p.Material)
+
+    override p.LocalIntersect(ray: Ray) : Intersections =
+        if valEqual (y ray.Direction) 0.0 then
+            List.empty
+        else
+            let t = -ray.Origin.Y / ray.Direction.Y
+            [intersection t p]
+
+    override _.LocalNormalAt (_: Point) = normalAt
+
+let inline plane () = Plane ()

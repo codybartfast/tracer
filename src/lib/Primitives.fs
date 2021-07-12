@@ -32,15 +32,18 @@ let zeroBare = barei 0 0 0 0
 (* Vector *)
 [<CustomEquality>][<NoComparison>]
 type Vector = Vector of (struct (float * float * float)) with
-    static member X (Vector (x, _, _)) = x
-    static member Y (Vector (_, y, _)) = y
-    static member Z (Vector (_, _, z)) = z
+    static member XPart (Vector (x, _, _)) = x
+    static member YPart (Vector (_, y, _)) = y
+    static member ZPart (Vector (_, _, z)) = z
     static member (+) ((Vector p), (Vector v)) = Vector (add p v)
     static member (-) ((Vector p), (Vector v)) = Vector (sub p v)
     static member (~-) (Vector (x, y, z)) = Vector (-x, -y, -z)
     static member (*) ((Vector p), n) = Vector (scale p n)
     static member (/) ((Vector p), n) = Vector (div p n)
     static member ToBare (Vector (x, y, z)) = bare x y z wVector
+    member v.X = Vector.XPart v
+    member v.Y = Vector.YPart v
+    member v.Z = Vector.ZPart v
     override a.Equals b =
         match b with
         | :? Vector as b ->
@@ -74,14 +77,17 @@ let inline cross (Vector (x, y, z)) (Vector (x', y', z')) =
 (* Point *)
 [<CustomEquality>][<NoComparison>]
 type Point = Point of (struct (float * float * float)) with
-    static member X (Point (x, _, _)) = x
-    static member Y (Point (_, y, _)) = y
-    static member Z (Point (_, _, z)) = z
+    static member XPart (Point (x, _, _)) = x
+    static member YPart (Point (_, y, _)) = y
+    static member ZPart (Point (_, _, z)) = z
     static member Equals ((Point a), (Point b)) = equal a b
     static member (+) ((Point p), (Vector v)) = Point (add p v)
     static member (-) ((Point p), (Point v)) = Vector (sub p v)
     static member (-) ((Point p), (Vector v)) = Point (sub p v)
     static member ToBare (Point (x, y, z)) = bare x y z wPoint
+    member p.X = Point.XPart p
+    member p.Y = Point.YPart p
+    member p.Z = Point.ZPart p
     override a.Equals b =
         match b with
         | :? Point as b ->
@@ -110,11 +116,11 @@ let exotic x y z w = Exotic (x, y, z, w)
 
 (* Polymorphic functions *)
 let inline x (prim: ^T) =
-    (^T: (static member X: ^T -> float) (prim))
+    (^T: (static member XPart: ^T -> float) (prim))
 let inline y (prim: ^T) =
-    (^T: (static member Y: ^T -> float) (prim))
+    (^T: (static member YPart: ^T -> float) (prim))
 let inline z (prim: ^T) =
-    (^T: (static member Z: ^T -> float) (prim))
+    (^T: (static member ZPart: ^T -> float) (prim))
 let inline toBare (a: ^T) =
     (^T: (static member ToBare: ^T -> Bare) (a))
 
