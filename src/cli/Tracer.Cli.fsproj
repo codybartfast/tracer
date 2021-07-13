@@ -13,6 +13,7 @@
     <Compile Include="Chapter6.fs" />
     <Compile Include="Chapter7.fs" />
     <Compile Include="Chapter8.fs" />
+    <Compile Include="Chapter9.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

@@ -111,12 +111,12 @@ let ``The color when a ray hits`` () =
 [<Fact>]
 let ``The color with an intersection behind the ray`` () =
     let w = defaultWorld ()
-    let outer = w.[0]
+    let outer = w.[0] :?> Sphere
     let outerMaterial = outer.Material.With(ambient = 1.0)
-    let inner = w.[1]
+    let inner = w.[1] :?> Sphere
     let innerMaterial = inner.Material.With(ambient = 1.0)
     let w =
-        w.With(spheres = [
+        w.With(shapes = [
             outer.With(material = outerMaterial)
             inner.With(material = innerMaterial) ])
     let r = ray (point 0.0 0.0 0.75) (vectori 0 0 -1)

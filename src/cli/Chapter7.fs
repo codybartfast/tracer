@@ -51,8 +51,8 @@ let chapter7 width height =
 
 
     let light = pointLight (pointi -10 10 -10) (colori 1 1 1)
-    let spheres = [floor; leftWall; rightWall; middle; left; right]
-    let world = world light spheres
+    let shperes : Shapes = [floor; leftWall; rightWall; middle; left; right]
+    let world = world light shperes
 
     let camera =
         viewTransform (point 0.0 1.5 -5.0) (pointi 0 1 0) (vectori 0 1 0)

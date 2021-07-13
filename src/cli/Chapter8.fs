@@ -52,7 +52,7 @@ let chapter8 width height =
 
     let light1 = pointLight (pointi -10 10 -10) (color 0.7 0.55 0.4)
     let light2 = pointLight (pointi -2 4 0) (color 0.4 0.55 0.7)
-    let spheres = [floor; leftWall; rightWall; middle; left; right]
+    let spheres : Shapes = [floor; leftWall; rightWall; middle; left; right]
     let world = World([light1; light2], spheres)
 
     let camera =

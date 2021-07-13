@@ -6,24 +6,24 @@ open ShapeBase
 open Shapes
 open Transformations
 
-type World(lights: PointLight list, spheres: Sphere list) =
+type World(lights: PointLight list, shapes: Shape list) =
     new() = World([], [])
-    member _.Item with get(i) = spheres.[i]
-    member _.IsEmpty = List.isEmpty spheres
+    member _.Item with get(i) = shapes.[i]
+    member _.IsEmpty = List.isEmpty shapes
     member _.Lights = lights
     member _.FirstLight = match lights with l::_ -> Some l | _ -> None
-    member _.Spheres = spheres
-    member _.Contains(predicate: Sphere -> bool) : bool =
-        List.exists predicate spheres
+    member _.Shapes = shapes
+    member _.Contains(predicate: Shape -> bool) : bool =
+        List.exists predicate shapes
     member _.Intersect r =
-        spheres
+        shapes
             |> List.collect (intersect r)
             |> List.filter (fun i -> i.T >= 0.0)
             |> List.sortBy (fun i -> i.T)
-    member w.With(?lights: PointLight list, ?spheres: Sphere list) =
+    member w.With(?lights: PointLight list, ?shapes: Shape list) =
         let lights = defaultArg lights w.Lights
-        let spheres = defaultArg spheres w.Spheres
-        World(lights, spheres)
+        let shapes = defaultArg shapes w.Shapes
+        World(lights, shapes)
 
 let private defaultWorldMaterial =
     defaultMaterial
@@ -31,7 +31,7 @@ let private defaultWorldMaterial =
               diffuse = 0.7,
               specular = 0.2)
 
-let world light spheres = World([light], spheres)
+let world light shapes = World([light], shapes)
 
 let defaultWorld () =
     let light = pointLight (pointi -10 10 -10) (colori 1 1 1)

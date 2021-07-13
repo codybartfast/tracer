@@ -59,6 +59,7 @@ type Shape (transform: Option<Matrix>, material: Option<Material>) =
 
     member inline s.Intersection time = {T = time; Object = s}
 
+and Shapes = Shape list
 and [<Struct>] Intersection = {T: float; Object: Shape}
 and Intersections = Intersection list
 
