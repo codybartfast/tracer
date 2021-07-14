@@ -2,7 +2,6 @@ module ShadeTests
 
 open Xunit
 open Primitives
-open Transformations
 open ShapeBase
 open Shapes
 

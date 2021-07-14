@@ -1,26 +1,32 @@
 module ShapeBase
 
+open Patterns
 open Primitives
 open Matrix
 open Ray
 
 (* Material *)
 [<Struct>]
-type Material =  { Color: Color
+type Material =  { Pattern: Pattern
                    Ambient: float
                    Diffuse: float
                    Specular: float
                    Shininess: float }
     with
-    member m.With(?color, ?ambient, ?diffuse, ?specular, ?shininess) =
-        { Color = defaultArg color m.Color
+    member m.With(?color, ?pattern, ?ambient, ?diffuse, ?specular, ?shininess) =
+        let pattern =
+            match color, pattern with
+            | _, Some pattern -> pattern
+            | Some color, _ -> PlanePattern(color) :> Pattern
+            | _ -> m.Pattern
+        { Pattern = pattern
           Ambient = defaultArg ambient m.Ambient
           Diffuse = defaultArg diffuse m.Diffuse
           Specular = defaultArg specular m.Specular
           Shininess = defaultArg shininess m.Shininess }
 
 let defaultMaterial =
-    { Color = colori 1 1 1
+    { Pattern = PlanePattern(white)
       Ambient = 0.1
       Diffuse = 0.9
       Specular = 0.9
@@ -83,7 +89,7 @@ let inline pointLight position intensity : PointLight =
 
 
 let lighting material light point eyev normalv inShadow =
-    let effectiveColor = material.Color * light.Intensity
+    let effectiveColor = material.Pattern.ColorAt point * light.Intensity
     let lightv = normalize(light.Position - point)
     let ambient = effectiveColor * material.Ambient
     let lightDotNormal = dot lightv normalv

@@ -1,10 +1,10 @@
 module MaterialTests
 
 open Xunit
+
+open Patterns
 open Primitives
-open Transformations
 open ShapeBase
-open Shapes
 
 type Assert = XUnitExtensions.TracerAssert
 
@@ -16,7 +16,7 @@ let position = zeroPoint
 [<Fact>]
 let ``The default material`` () =
     let m = material ()
-    Assert.Equal(colori 1 1 1, m.Color)
+    Assert.Equal(colori 1 1 1, m.Pattern.ColorAt zeroPoint)
     Assert.Equal(0.1, m.Ambient)
     Assert.Equal(0.9, m.Diffuse)
     Assert.Equal(0.9, m.Specular)
@@ -70,3 +70,22 @@ let ``Lighting with the surface in shadow`` () =
     let inShadow = true
     let result = lighting m light  position eyev normalv inShadow
     Assert.Equal(color 0.1 0.1 0.1, result)
+
+[<Fact>]
+let ``Lighting with a pattern applied`` () =
+    let m =
+        defaultMaterial
+            .With(
+                pattern = stripePattern white black,
+                ambient = 1.0,
+                diffuse = 0.0,
+                specular = 0.0)
+    let eyev = vectori 0 0 -1
+    let normalv = vectori 0 0 -1
+    let light = pointLight (pointi 0 0 -10) white
+    let c1 = lighting m light (point 0.9 0.0 0.0) eyev normalv false
+    let c2 = lighting m light (point 1.1 0.0 0.0) eyev normalv false
+    Assert.Equal(white, c1)
+    Assert.Equal(black, c2)
+
+

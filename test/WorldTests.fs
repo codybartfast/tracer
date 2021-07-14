@@ -121,7 +121,7 @@ let ``The color with an intersection behind the ray`` () =
             inner.With(material = innerMaterial) ])
     let r = ray (point 0.0 0.0 0.75) (vectori 0 0 -1)
     let c = colorAt w r
-    Assert.Equal(innerMaterial.Color, c)
+    Assert.Equal(innerMaterial.Pattern.ColorAt zeroPoint, c)
 
 [<Fact>]
 let ``There is no shadow when nothing is collinear with point and light`` () =
