@@ -62,3 +62,13 @@ type RingPattern (transform: Matrix, a: Color,  b: Color) =
         | 0 -> a
         | _ -> b
 
+type CheckersPattern (transform: Matrix, a: Color,  b: Color) =
+    inherit Pattern (transform)
+    new(a: Color,  b: Color) = CheckersPattern(identity (), a, b)
+    member _.A = a
+    member _.B = b
+    override _.LocalColorAt((Point (x, y, z)): Point) =
+        match (abs x + abs y + abs z |> int) % 2 with
+        | 0 -> a
+        | _ -> b
+

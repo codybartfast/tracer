@@ -112,3 +112,23 @@ let ``A ring should extend in both x and y`` () =
     Assert.Equal(black, pattern.ColorAt(pointi 0 0 1))
     Assert.Equal(black, pattern.ColorAt(point 0.708 0.0 0.708))
 
+[<Fact>]
+let ``Checkers should repeat in x`` () =
+    let pattern = CheckersPattern(white, black)
+    Assert.Equal(white, pattern.ColorAt(zeroPoint))
+    Assert.Equal(white, pattern.ColorAt(point 0.99 0.0 0.0))
+    Assert.Equal(black, pattern.ColorAt(point 1.01 0.0 0.0))
+
+[<Fact>]
+let ``Checkers should repeat in y`` () =
+    let pattern = CheckersPattern(white, black)
+    Assert.Equal(white, pattern.ColorAt(zeroPoint))
+    Assert.Equal(white, pattern.ColorAt(point 0.0 0.99 0.0))
+    Assert.Equal(black, pattern.ColorAt(point 0.0 1.01 0.0))
+
+[<Fact>]
+let ``Checkers should repeat in z`` () =
+    let pattern = CheckersPattern(white, black)
+    Assert.Equal(white, pattern.ColorAt(zeroPoint))
+    Assert.Equal(white, pattern.ColorAt(point 0.0 0.0 0.99))
+    Assert.Equal(black, pattern.ColorAt(point 0.0 0.0 1.01))
