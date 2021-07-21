@@ -78,7 +78,7 @@ let ``Lighting with a pattern applied`` () =
     let m =
         defaultMaterial
             .With(
-                pattern = stripePattern white black,
+                pattern = StripePattern(white, black),
                 ambient = 1.0,
                 diffuse = 0.0,
                 specular = 0.0)

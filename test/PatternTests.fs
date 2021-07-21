@@ -15,27 +15,27 @@ type Assert = XUnitExtensions.TracerAssert
 
 [<Fact>]
 let ``Creating a stripe pattern`` () =
-    let pattern = stripePattern white black
+    let pattern = StripePattern(white, black)
     Assert.Equal(white, pattern.A)
     Assert.Equal(black, pattern.B)
 
 [<Fact>]
 let ``A stripe pattern is constant in y`` () =
-    let pattern = stripePattern white black
+    let pattern = StripePattern(white, black)
     Assert.Equal(white, pattern.ColorAt(pointi 0 0 0))
     Assert.Equal(white, pattern.ColorAt(pointi 0 1 0))
     Assert.Equal(white, pattern.ColorAt(pointi 0 2 0))
 
 [<Fact>]
 let ``A stripe pattern is constant in z`` () =
-    let pattern = stripePattern white black
+    let pattern = StripePattern(white, black)
     Assert.Equal(white, pattern.ColorAt(pointi 0 0 0))
     Assert.Equal(white, pattern.ColorAt(pointi 0 0 1))
     Assert.Equal(white, pattern.ColorAt(pointi 0 0 2))
 
 [<Fact>]
 let ``A stripe pattern alternates in x`` () =
-    let pattern = stripePattern white black
+    let pattern = StripePattern(white, black)
     Assert.Equal(white, pattern.ColorAt(pointi 0 0 0))
     Assert.Equal(white, pattern.ColorAt(point 0.9 0.0 0.0))
     Assert.Equal(black, pattern.ColorAt(pointi 1 0 0))
@@ -45,7 +45,7 @@ let ``A stripe pattern alternates in x`` () =
 
 [<Fact>]
 let ``Stripes with an object transformation`` () =
-    let material = defaultMaterial.With(pattern = stripePattern white black)
+    let material = defaultMaterial.With(pattern = StripePattern(white, black))
     let object = Sphere(scalingi 2 2 2, material)
     let c = object.ColorAt(point 1.5 0.0 0.0)
     Assert.Equal(white, c)
@@ -95,4 +95,20 @@ let ``A pattern with both an object and a pattern transformation`` () =
         defaultMaterial.With(pattern = TestPattern(translation 0.5 1.0 1.5))
     let shape = Sphere(scalingi 2 2 2, material)
     Assert.Equal(color 0.75 0.5 0.25, shape.ColorAt(point 2.5 3.0 3.5))
+
+[<Fact>]
+let ``A gradient linearly interpolates between colors`` () =
+    let pattern = GradientPattern(white, black)
+    Assert.Equal(white, pattern.ColorAt(zeroPoint))
+    Assert.Equal(lightGrey, pattern.ColorAt(point 0.25 0.0 0.0))
+    Assert.Equal(grey, pattern.ColorAt(point 0.50 0.0 0.0))
+    Assert.Equal(darkGrey, pattern.ColorAt(point 0.75 0.0 0.0))
+
+[<Fact>]
+let ``A ring should extend in both x and y`` () =
+    let pattern = RingPattern(white, black)
+    Assert.Equal(white, pattern.ColorAt(zeroPoint))
+    Assert.Equal(black, pattern.ColorAt(pointi 1 0 0))
+    Assert.Equal(black, pattern.ColorAt(pointi 0 0 1))
+    Assert.Equal(black, pattern.ColorAt(point 0.708 0.0 0.708))
 
