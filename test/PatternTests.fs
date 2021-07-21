@@ -2,11 +2,14 @@ module PatternTests
 
 open Xunit
 
+open Matrix
 open Primitives
 open Patterns
 open ShapeBase
 open Shapes
 open Transformations
+
+open TestPattern
 
 type Assert = XUnitExtensions.TracerAssert
 
@@ -62,3 +65,34 @@ let ``Stripes with both and object and a pattern transformation`` () =
     let object = Sphere(scalingi 2 2 2, material)
     let c = object.ColorAt(point 2.5 0.0 0.0)
     Assert.Equal(white, c)
+
+[<Fact>]
+let ``The default pattern transformation`` () =
+    let pattern = TestPattern()
+    Assert.Equal(identity (), pattern.Transform)
+
+[<Fact>]
+let ``Assigning a transformation`` () =
+    let transform = translationi 1 2 3
+    let pattern = TestPattern(transform)
+    Assert.Equal(transform, pattern.Transform)
+
+[<Fact>]
+let ``A pattern with an object transformation`` () =
+    let material = defaultMaterial.With(pattern = TestPattern())
+    let shape = Sphere(scalingi 2 2 2, material)
+    Assert.Equal(color 1.0 1.5 2.0, shape.ColorAt(pointi 2 3 4))
+
+[<Fact>]
+let ``A pattern with an pattern transformation`` () =
+    let material = defaultMaterial.With(pattern = TestPattern(scalingi 2 2 2))
+    let shape = Sphere(material = material)
+    Assert.Equal(color 1.0 1.5 2.0, shape.ColorAt(pointi 2 3 4))
+
+[<Fact>]
+let ``A pattern with both an object and a pattern transformation`` () =
+    let material =
+        defaultMaterial.With(pattern = TestPattern(translation 0.5 1.0 1.5))
+    let shape = Sphere(scalingi 2 2 2, material)
+    Assert.Equal(color 0.75 0.5 0.25, shape.ColorAt(point 2.5 3.0 3.5))
+

@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="TestPattern.fs" />
+    <Compile Include="TestShape.fs" />
+    
     <Compile Include="XUnitExtensions.fs" />
     <Compile Include="CameraTests.fs" />
     <Compile Include="CanvasTests.fs" />
@@ -18,7 +21,6 @@
     <Compile Include="PlaneTests.fs" />
     <Compile Include="PrimitivesTests.fs" />
     <Compile Include="ProjectileTests.fs" />
-    <Compile Include="TestShape.fs" />
     <Compile Include="ShadeTests.fs" />
     <Compile Include="ShapeBaseTests.fs" />
     <Compile Include="SphereTests.fs" />

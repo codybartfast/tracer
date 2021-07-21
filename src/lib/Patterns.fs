@@ -7,8 +7,7 @@ open Primitives
 type Pattern (transfrom: Matrix) =
     let inverseT = inverse transfrom
 
-    // member _.PatterPoint(point: Point) =
-    //     inverseT * point
+    member _.Transform = transfrom
 
     member p.ColorAt(point: Point) : Color =
         point
@@ -42,8 +41,3 @@ type StripePattern (transform: Matrix, a: Color,  b: Color) =
         | _ -> p.B
 
 let stripePattern a b = StripePattern(identity (), a, b)
-
-// let stripeAt (pattern: StripePattern) (point: Point) =
-//     match (point.X |> floor |> int) % 2 with
-//     | 0 -> pattern.A
-//     | _ -> pattern.B
