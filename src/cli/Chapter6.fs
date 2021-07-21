@@ -51,7 +51,8 @@ let chapter6 width height =
             let point = position r intr.T
             let eyev = -normalize r.Direction
             let normalv = normalAt intr.Object point
-            lighting intr.Object.Material light point eyev normalv false
+            let obj = intr.Object
+            lighting obj.Material obj light point eyev normalv false
 
     let writeRay r = writePoint (position r 1.0) (color r) |> ignore
     rays () |> Seq.iter writeRay

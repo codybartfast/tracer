@@ -59,6 +59,7 @@ let shadeHit (world: World) comps =
         |> List.map (fun light ->
             lighting
                 comps.Object.Material
+                comps.Object
                 light
                 comps.OverPoint
                 comps.Eyev

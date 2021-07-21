@@ -52,8 +52,9 @@ type Shape (transform: Option<Matrix>, material: Option<Material>) =
     abstract member LocalNormalAt : Point -> Vector
 
     member s.Intersect (ray: Ray) : Intersections =
-        let localRay = inverseT * ray
-        s.LocalIntersect localRay
+        ray
+        |* inverseT
+        |> s.LocalIntersect
 
     member s.NormalAt(point: Point) : Vector =
         point
@@ -62,6 +63,11 @@ type Shape (transform: Option<Matrix>, material: Option<Material>) =
         |* transposeInverseT
         |> toVectorUnchecked
         |> normalize
+
+    member _.ColorAt(point: Point) : Color =
+        point
+        |*. inverseT
+        |> material.Pattern.ColorAt
 
     member inline s.Intersection time = {T = time; Object = s}
 
@@ -88,8 +94,8 @@ let inline pointLight position intensity : PointLight =
     {Position = position; Intensity = intensity}
 
 
-let lighting material light point eyev normalv inShadow =
-    let effectiveColor = material.Pattern.ColorAt point * light.Intensity
+let lighting material (object: Shape) light point eyev normalv inShadow =
+    let effectiveColor = object.ColorAt point * light.Intensity
     let lightv = normalize(light.Position - point)
     let ambient = effectiveColor * material.Ambient
     let lightDotNormal = dot lightv normalv
