@@ -20,13 +20,13 @@ type Pattern (transfrom: Matrix) =
     override _.GetHashCode () = 0
 
 (* Plain Pattern *)
-type PlanePattern (color: Color) =
+type SolidPattern (color: Color) =
     inherit Pattern (identity ())
     member _.Color = color
     override _.LocalColorAt(_: Point) = color
     override _.Equals b =
         match b with
-        | :? PlanePattern as b -> color = b.Color
+        | :? SolidPattern as b -> color = b.Color
         | _ -> false
     override _.GetHashCode() = 0
 

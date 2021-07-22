@@ -17,7 +17,7 @@ type Material =  { Pattern: Pattern
         let pattern =
             match color, pattern with
             | _, Some pattern -> pattern
-            | Some color, _ -> PlanePattern(color) :> Pattern
+            | Some color, _ -> SolidPattern(color) :> Pattern
             | _ -> m.Pattern
         { Pattern = pattern
           Ambient = defaultArg ambient m.Ambient
@@ -26,7 +26,7 @@ type Material =  { Pattern: Pattern
           Shininess = defaultArg shininess m.Shininess }
 
 let defaultMaterial =
-    { Pattern = PlanePattern(white)
+    { Pattern = SolidPattern(white)
       Ambient = 0.1
       Diffuse = 0.9
       Specular = 0.9
