@@ -124,7 +124,7 @@ let ``The color with an intersection behind the ray`` () =
     Assert.Equal(innerMaterial.Pattern.ColorAt zeroPoint, c)
 
 [<Fact>]
-let ``There is no shadow when nothing is collinear with point and light`` () =
+let ``There is no shadow when nothing is colinear with point and light`` () =
     let w = defaultWorld ()
     let p = pointi 0 10 0
     Assert.False(isShadowed w w.FirstLight p)
@@ -163,4 +163,4 @@ let ``The hit should offset the point`` () =
     let shape = Sphere (translationi 0 0 1)
     let i = intersection 5.0 shape
     let comps = prepareComputations i r
-    Assert.True((comps.OverPoint |> z) < -epsilon/2.0)
+    Assert.True((comps.OverPoint.Z) < -epsilon/2.0)

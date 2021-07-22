@@ -17,7 +17,7 @@ let main _ =
     // chapter5 1280 960
     // chapter6 1280 960
     // chapter7 1280 960
-    // chapter8 2560 1920
+    // chapter8 3240 2160
     // chapter9 1280 960
     chapter10 400 300
     printfn "Done"
