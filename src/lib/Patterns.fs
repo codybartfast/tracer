@@ -31,44 +31,44 @@ type SolidPattern (color: Color) =
     override _.GetHashCode() = 0
 
 (* Stripe Pattern *)
-type StripePattern (transform: Matrix, a: Color,  b: Color) =
+type StripePattern (transform: Matrix, a: Pattern,  b: Pattern) =
     inherit Pattern (transform)
-    new(a: Color,  b: Color) = StripePattern(identity (), a, b)
+    new(a,  b) = StripePattern(identity (), a, b)
     member _.A = a
     member _.B = b
     override _.LocalColorAt(point: Point) =
         match (point.X |> floor |> int) % 2 with
-        | 0 -> a
-        | _ -> b
+        | 0 -> a.ColorAt(point)
+        | _ -> b.ColorAt(point)
 
-type GradientPattern (transform: Matrix, a: Color,  b: Color) =
+type GradientPattern (transform: Matrix, a: Pattern,  b: Pattern) =
     inherit Pattern (transform)
-    new(a: Color,  b: Color) = GradientPattern(identity (), a, b)
+    new(a,  b) = GradientPattern(identity (), a, b)
     member _.A = a
     member _.B = b
     override _.LocalColorAt(point: Point) =
-        let distance = b - a
+        let aCol, bCol = a.ColorAt(point), b.ColorAt(point)
+        let distance = bCol - aCol
         let fraction = point.X - (floor point.X)
-        a + distance * fraction
+        aCol + distance * fraction
 
-type RingPattern (transform: Matrix, a: Color,  b: Color) =
+type RingPattern (transform: Matrix, a: Pattern,  b: Pattern) =
     inherit Pattern (transform)
-    new(a: Color,  b: Color) = RingPattern(identity (), a, b)
+    new(a,  b) = RingPattern(identity (), a, b)
     member _.A = a
     member _.B = b
-    override _.LocalColorAt((Point (x, _, z)): Point) =
+    override _.LocalColorAt((Point (x, _, z)) as point) =
         let distance = x * x + z * z |> sqrt
         match (floor distance |> int) % 2 with
-        | 0 -> a
-        | _ -> b
+        | 0 -> a.ColorAt(point)
+        | _ -> b.ColorAt(point)
 
-type CheckersPattern (transform: Matrix, a: Color,  b: Color) =
+type CheckersPattern (transform: Matrix, a: Pattern,  b: Pattern) =
     inherit Pattern (transform)
-    new(a: Color,  b: Color) = CheckersPattern(identity (), a, b)
+    new(a,  b) = CheckersPattern(identity (), a, b)
     member _.A = a
     member _.B = b
-    override _.LocalColorAt((Point (x, y, z)): Point) =
+    override _.LocalColorAt((Point (x, y, z)) as point) =
         match (abs x + abs y + abs z |> int) % 2 with
-        | 0 -> a
-        | _ -> b
-
+        | 0 -> a.ColorAt(point)
+        | _ -> b.ColorAt(point)

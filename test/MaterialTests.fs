@@ -9,10 +9,12 @@ open Shapes
 
 type Assert = XUnitExtensions.TracerAssert
 
+let whiteP, blackP = SolidPattern(white), SolidPattern(black)
+
 let hsr2 = (sqrt 2.0) / 2.0
 
 let m = material ()
-let obj m = Sphere(material = m) 
+let obj m = Sphere(material = m)
 let position = zeroPoint
 
 [<Fact>]
@@ -78,7 +80,7 @@ let ``Lighting with a pattern applied`` () =
     let m =
         defaultMaterial
             .With(
-                pattern = StripePattern(white, black),
+                pattern = StripePattern(whiteP, blackP),
                 ambient = 1.0,
                 diffuse = 0.0,
                 specular = 0.0)
