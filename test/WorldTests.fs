@@ -20,7 +20,7 @@ let ``Creating a world`` () =
 [<Fact>]
 let ``The default world`` () =
     let light = pointLight (pointi -10 10 -10) (colori 1 1 1)
-    let s1 = Sphere(material = (material ())
+    let s1 = Sphere(material = material
                         .With(color = color 0.8 1.0 0.6,
                               diffuse = 0.7,
                               specular = 0.2 ) )

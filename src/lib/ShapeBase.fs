@@ -33,7 +33,7 @@ let defaultMaterial =
       Shininess = 200.0 }
 
 // material functions
-let material () = defaultMaterial
+let material = defaultMaterial
 
 
 [<AbstractClass>]

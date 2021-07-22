@@ -27,7 +27,7 @@ let ``Assigning a transformation`` () =
 [<Fact>]
 let ``The default material`` () =
     let s = testShape ()
-    Assert.Equal(material (), s.Material)
+    Assert.Equal(material, s.Material)
 
 [<Fact>]
 let ``Assigning a material`` () =

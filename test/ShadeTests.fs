@@ -83,12 +83,12 @@ let ``A point light has a position and intensity`` () =
 let ``A sphere has a default material`` () =
     let s = sphere ()
     let m = s.Material
-    Assert.Equal(material (), m)
+    Assert.Equal(material, m)
 
 [<Fact>]
 let ``A sphere may be assigned a material`` () =
     let s = sphere ()
-    let m = material ()
+    let m = material
     let m = m.With(ambient = 1.0)
     let s = s.With(material = m)
     Assert.Equal(m, s.Material)

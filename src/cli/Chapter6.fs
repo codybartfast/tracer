@@ -39,7 +39,7 @@ let chapter6 width height =
     let sphere =
         let rad = sDist / 5.0
         let scale = scaling rad rad rad |* translation 0.0 0.0 sDist
-        let material = material().With(color = darkRed, ambient = 0.01)
+        let material = material.With(color = darkRed, ambient = 0.01)
         Sphere(scale, material)
 
     let light = pointLight (pointi -sDist sDist (sDist / 2.0)) intensity

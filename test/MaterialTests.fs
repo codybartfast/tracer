@@ -13,13 +13,13 @@ let whiteP, blackP = SolidPattern(white), SolidPattern(black)
 
 let hsr2 = (sqrt 2.0) / 2.0
 
-let m = material ()
+let m = material
 let obj m = Sphere(material = m)
 let position = zeroPoint
 
 [<Fact>]
 let ``The default material`` () =
-    let m = material ()
+    let m = material
     Assert.Equal(colori 1 1 1, m.Pattern.ColorAt zeroPoint)
     Assert.Equal(0.1, m.Ambient)
     Assert.Equal(0.9, m.Diffuse)
