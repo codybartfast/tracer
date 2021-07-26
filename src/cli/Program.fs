@@ -19,6 +19,6 @@ let main _ =
     // chapter7 1280 960
     // chapter8 3240 2160
     // chapter9 1280 960
-    chapter10 400 300
+    chapter10 "bmp/Hamilton.jpg" 3240 2160
     printfn "Done"
     0

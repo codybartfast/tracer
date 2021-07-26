@@ -32,10 +32,10 @@ let defaultMaterial =
       Specular = 0.9
       Shininess = 200.0 }
 
-// material functions
 let material = defaultMaterial
 
 
+(* Shape *)
 [<AbstractClass>]
 type Shape (transform: Option<Matrix>, material: Option<Material>) =
     let transform = defaultArg transform (identity ())
@@ -43,7 +43,6 @@ type Shape (transform: Option<Matrix>, material: Option<Material>) =
 
     let inverseT = transform |> inverse
     let transposeInverseT = inverseT |> transpose
-    // let normalAtT = transposeInverseT * inverseT
 
     member _.Transform = transform
     member _.Material = material
@@ -72,6 +71,9 @@ type Shape (transform: Option<Matrix>, material: Option<Material>) =
     member inline s.Intersection time = {T = time; Object = s}
 
 and Shapes = Shape list
+
+
+(* Intersection *)
 and [<Struct>] Intersection = {T: float; Object: Shape}
 and Intersections = Intersection list
 
@@ -88,11 +90,11 @@ let inline reflect ``in`` normal : Vector =
     ``in`` - normal * 2.0 * dot ``in`` normal
 
 
+(* Point Light *)
 [<Struct>]
 type PointLight = {Position: Point; Intensity: Color}
 let inline pointLight position intensity : PointLight =
     {Position = position; Intensity = intensity}
-
 
 let lighting material (object: Shape) light point eyev normalv inShadow =
     let effectiveColor = object.ColorAt point * light.Intensity
@@ -112,6 +114,8 @@ let lighting material (object: Shape) light point eyev normalv inShadow =
             let specular = light.Intensity * material.Specular * factor
             ambient + diffuse + specular
 
+
+(* Computation *)
 [<Struct>]
 type Computations =
     { T: float

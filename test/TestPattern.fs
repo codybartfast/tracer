@@ -11,3 +11,5 @@ type TestPattern (?transform: Matrix) =
     override _.LocalColorAt(point) =
         color (x point) (y point) (z point)
 
+    override p.TransformWith(t) =
+        TestPattern(t * p.Transform) :> Pattern

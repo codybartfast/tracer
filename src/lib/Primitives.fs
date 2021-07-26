@@ -169,8 +169,9 @@ let inline hprod (c: Color) (d: Color) =
 let black = color 0.0 0.0 0.0
 let white = color 1.0 1.0 1.0
 
-let mix (colors: Color list) = (List.reduce (+) colors) / colors.Length
-let lighten c = mix[white; c]
+let addColors (colors: Color list) = List.reduce (+) colors
+let blendColors (colors: Color list) = (addColors colors) / colors.Length
+let lighten c = blendColors[white; c]
 let darken (c: Color) = c / 2
 
 let grey = lighten black

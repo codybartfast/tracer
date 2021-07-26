@@ -13,31 +13,29 @@ open TestPattern
 
 type Assert = XUnitExtensions.TracerAssert
 
-let whiteP, blackP = SolidPattern(white), SolidPattern(black)
-
 [<Fact>]
 let ``Creating a stripe pattern`` () =
-    let pattern = StripePattern(whiteP, blackP)
+    let pattern = StripePattern(solidWhite, solidBlack)
     Assert.Equal(white, pattern.A.ColorAt(zeroPoint))
     Assert.Equal(black, pattern.B.ColorAt(zeroPoint))
 
 [<Fact>]
 let ``A stripe pattern is constant in y`` () =
-    let pattern = StripePattern(whiteP, blackP)
+    let pattern = StripePattern(solidWhite, solidBlack)
     Assert.Equal(white, pattern.ColorAt(pointi 0 0 0))
     Assert.Equal(white, pattern.ColorAt(pointi 0 1 0))
     Assert.Equal(white, pattern.ColorAt(pointi 0 2 0))
 
 [<Fact>]
 let ``A stripe pattern is constant in z`` () =
-    let pattern = StripePattern(whiteP, blackP)
+    let pattern = StripePattern(solidWhite, solidBlack)
     Assert.Equal(white, pattern.ColorAt(pointi 0 0 0))
     Assert.Equal(white, pattern.ColorAt(pointi 0 0 1))
     Assert.Equal(white, pattern.ColorAt(pointi 0 0 2))
 
 [<Fact>]
 let ``A stripe pattern alternates in x`` () =
-    let pattern = StripePattern(whiteP, blackP)
+    let pattern = StripePattern(solidWhite, solidBlack)
     Assert.Equal(white, pattern.ColorAt(pointi 0 0 0))
     Assert.Equal(white, pattern.ColorAt(point 0.9 0.0 0.0))
     Assert.Equal(black, pattern.ColorAt(pointi 1 0 0))
@@ -47,14 +45,14 @@ let ``A stripe pattern alternates in x`` () =
 
 [<Fact>]
 let ``Stripes with an object transformation`` () =
-    let material = defaultMaterial.With(pattern = StripePattern(whiteP, blackP))
+    let material = defaultMaterial.With(pattern = StripePattern(solidWhite, solidBlack))
     let object = Sphere(scalingi 2 2 2, material)
     let c = object.ColorAt(point 1.5 0.0 0.0)
     Assert.Equal(white, c)
 
 [<Fact>]
 let ``Stripes with a pattern transformation`` () =
-    let pattern = StripePattern(scalingi 2 2 2, whiteP, blackP)
+    let pattern = StripePattern(scalingi 2 2 2, solidWhite, solidBlack)
     let material = defaultMaterial.With(pattern = pattern)
     let object = Sphere(material = material)
     let c = object.ColorAt(point 1.5 0.0 0.0)
@@ -62,7 +60,7 @@ let ``Stripes with a pattern transformation`` () =
 
 [<Fact>]
 let ``Stripes with both and object and a pattern transformation`` () =
-    let pattern = StripePattern(translation 0.5 0.0 0.0, whiteP, blackP)
+    let pattern = StripePattern(translation 0.5 0.0 0.0, solidWhite, solidBlack)
     let material = defaultMaterial.With(pattern = pattern)
     let object = Sphere(scalingi 2 2 2, material)
     let c = object.ColorAt(point 2.5 0.0 0.0)
@@ -100,7 +98,7 @@ let ``A pattern with both an object and a pattern transformation`` () =
 
 [<Fact>]
 let ``A gradient linearly interpolates between colors`` () =
-    let pattern = GradientPattern(whiteP, blackP)
+    let pattern = GradientPattern(solidWhite, solidBlack)
     Assert.Equal(white, pattern.ColorAt(zeroPoint))
     Assert.Equal(lightGrey, pattern.ColorAt(point 0.25 0.0 0.0))
     Assert.Equal(grey, pattern.ColorAt(point 0.50 0.0 0.0))
@@ -108,7 +106,7 @@ let ``A gradient linearly interpolates between colors`` () =
 
 [<Fact>]
 let ``A ring should extend in both x and y`` () =
-    let pattern = RingPattern(whiteP, blackP)
+    let pattern = RingPattern(solidWhite, solidBlack)
     Assert.Equal(white, pattern.ColorAt(zeroPoint))
     Assert.Equal(black, pattern.ColorAt(pointi 1 0 0))
     Assert.Equal(black, pattern.ColorAt(pointi 0 0 1))
@@ -116,21 +114,21 @@ let ``A ring should extend in both x and y`` () =
 
 [<Fact>]
 let ``Checkers should repeat in x`` () =
-    let pattern = CheckersPattern(whiteP, blackP)
+    let pattern = CheckersPattern(solidWhite, solidBlack)
     Assert.Equal(white, pattern.ColorAt(zeroPoint))
     Assert.Equal(white, pattern.ColorAt(point 0.99 0.0 0.0))
     Assert.Equal(black, pattern.ColorAt(point 1.01 0.0 0.0))
 
 [<Fact>]
 let ``Checkers should repeat in y`` () =
-    let pattern = CheckersPattern(whiteP, blackP)
+    let pattern = CheckersPattern(solidWhite, solidBlack)
     Assert.Equal(white, pattern.ColorAt(zeroPoint))
     Assert.Equal(white, pattern.ColorAt(point 0.0 0.99 0.0))
     Assert.Equal(black, pattern.ColorAt(point 0.0 1.01 0.0))
 
 [<Fact>]
 let ``Checkers should repeat in z`` () =
-    let pattern = CheckersPattern(whiteP, blackP)
+    let pattern = CheckersPattern(solidWhite, solidBlack)
     Assert.Equal(white, pattern.ColorAt(zeroPoint))
     Assert.Equal(white, pattern.ColorAt(point 0.0 0.0 0.99))
     Assert.Equal(black, pattern.ColorAt(point 0.0 0.0 1.01))

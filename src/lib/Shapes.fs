@@ -1,9 +1,11 @@
 module Shapes
 
+open System
 open Primitives
 open Matrix
 open Ray
 open ShapeBase
+open Transformations
 
 
 (* Sphere *)
@@ -30,7 +32,7 @@ type Sphere (?transform: Matrix, ?material: Material) =
             let t2 = (-b + sqrtDisc) / (2.0 * a)
             [ s.Intersection t1; s.Intersection t2 ]
 
-    override s.LocalNormalAt (point: Point) = point - zeroPoint
+    override _.LocalNormalAt (point: Point) = point - zeroPoint
 
 // Sphere functions
 let inline sphere () = Sphere ()
@@ -46,7 +48,7 @@ type Plane (?transform: Matrix, ?material: Material) =
     let normalAt = vectori 0 1 0
 
     member inline p.With(?transform, ?material) =
-        Sphere(
+        Plane(
             defaultArg transform p.Transform,
             defaultArg material p.Material)
 

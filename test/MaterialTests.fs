@@ -9,8 +9,6 @@ open Shapes
 
 type Assert = XUnitExtensions.TracerAssert
 
-let whiteP, blackP = SolidPattern(white), SolidPattern(black)
-
 let hsr2 = (sqrt 2.0) / 2.0
 
 let m = material
@@ -80,7 +78,7 @@ let ``Lighting with a pattern applied`` () =
     let m =
         defaultMaterial
             .With(
-                pattern = StripePattern(whiteP, blackP),
+                pattern = StripePattern(solidWhite, solidBlack),
                 ambient = 1.0,
                 diffuse = 0.0,
                 specular = 0.0)

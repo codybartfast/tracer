@@ -6,6 +6,7 @@ open Matrix
 open Primitives
 
 let pi = Math.PI
+let halfPi = pi / 2.0
 
 let translation x y z =
     let t = identity ()

@@ -10,7 +10,7 @@
   <ItemGroup>
     <Compile Include="TestPattern.fs" />
     <Compile Include="TestShape.fs" />
-    
+
     <Compile Include="XUnitExtensions.fs" />
     <Compile Include="CameraTests.fs" />
     <Compile Include="CanvasTests.fs" />
