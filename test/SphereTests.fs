@@ -1,6 +1,7 @@
 module SphereTests
 
 open Xunit
+
 open Primitives
 open Matrix
 open Transformations
@@ -78,23 +79,6 @@ let ``A ray originates behind a sphere`` () =
     Assert.Equal(-4.0, xs.[1].T)
 
 [<Fact>]
-let ``An intersection encapsulates t and object`` () =
-    let s = Sphere ()
-    let i = intersection 3.5 s
-    Assert.Equal(3.5, i.T)
-    Assert.Equal(s, i.Object)
-
-[<Fact>]
-let ``Aggregating intersections`` () =
-    let s = Sphere()
-    let i1 = intersection 1.0 s
-    let i2 = intersection 2.0 s
-    let xs = intersections [i1; i2]
-    Assert.Equal(2, xs.Length)
-    Assert.Equal(1.0, xs.[0].T)
-    Assert.Equal(2.0, xs.[1].T)
-
-[<Fact>]
 let ``Intersect sets the object on the intersection`` () =
     let r = ray (pointi 0 0 -5) (vectori 0 0 1)
     let s = Sphere()
@@ -102,44 +86,6 @@ let ``Intersect sets the object on the intersection`` () =
     Assert.Equal(2, xs.Length)
     Assert.Equal(s, xs.[0].Object)
     Assert.Equal(s, xs.[1].Object)
-
-[<Fact>]
-let ``The hit, when all intersections have positive t`` () =
-    let s = sphere ()
-    let i1 = intersection 1.0 s
-    let i2 = intersection 2.0 s
-    let xs = intersections [i2; i1]
-    let i = hit xs
-    Assert.Equal (Some i1, i)
-
-[<Fact>]
-let ``The hit, when some intersections have negative t`` () =
-    let s = sphere ()
-    let i1 = intersection -1.0 s
-    let i2 = intersection 1.0 s
-    let xs = intersections [i2; i1]
-    let i = hit xs
-    Assert.Equal (Some i2, i)
-
-[<Fact>]
-let ``The hit, when all intersections have negative t`` () =
-    let s = sphere ()
-    let i1 = intersection -2.0 s
-    let i2 = intersection -1.0 s
-    let xs = intersections [i2; i1]
-    let i = hit xs
-    Assert.Equal (None, i)
-
-[<Fact>]
-let ``The hit is always the lowest nonnegative intersection`` () =
-    let s = sphere ()
-    let i1 = intersection 5.0 s
-    let i2 = intersection 7.0 s
-    let i3 = intersection -3.0 s
-    let i4 = intersection 2.0 s
-    let xs = intersections [i1; i2; i3; i4]
-    let i = hit xs
-    Assert.Equal (Some i4, i)
 
 [<Fact>]
 let ``A sphere's default transformation`` () =

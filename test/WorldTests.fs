@@ -42,37 +42,6 @@ let ``Intersect a world with a ray`` () =
     Assert.Equal(6.0, xs.[3].T)
 
 [<Fact>]
-let ``Precomputing the state of an intersection`` () =
-    let r = ray (pointi 0 0 -5) (vectori 0 0 1)
-    let shape = sphere ()
-    let i = intersection 4.0 shape
-    let comps = prepareComputations i r
-    Assert.Equal(i.T, comps.T)
-    Assert.Equal(i.Object, comps.Object)
-    Assert.Equal(pointi 0 0 -1, comps.Point)
-    Assert.Equal(vectori 0 0 -1, comps.Eyev)
-    Assert.Equal(vectori 0 0 -1, comps.Normalv)
-
-[<Fact>]
-let ``The hit, when an intersection occurs on the outside`` () =
-    let r = ray (pointi 0 0 -5) (vectori 0 0 1)
-    let shape = sphere ()
-    let i = intersection 4.0 shape
-    let comps = prepareComputations i r
-    Assert.Equal(false, comps.Inside)
-
-[<Fact>]
-let ``The hit, when an intersection occurs on the inside`` () =
-    let r = ray (pointi 0 0 0) (vectori 0 0 1)
-    let shape = sphere ()
-    let i = intersection 1.0 shape
-    let comps = prepareComputations i r
-    Assert.Equal(pointi 0 0 1, comps.Point)
-    Assert.Equal(vectori 0 0 -1, comps.Eyev)
-    Assert.Equal(true, comps.Inside)
-    Assert.Equal(vectori 0 0 -1, comps.Normalv)
-
-[<Fact>]
 let ``Shading an intersection`` () =
     let w = defaultWorld ()
     let r = ray (pointi 0 0 -5) (vectori 0 0 1)
@@ -156,11 +125,3 @@ let ``shadeHit is given an intersection in shadow`` () =
     let comps = prepareComputations i r
     let c = shadeHit w comps
     Assert.Equal(color 0.1 0.1 0.1, c)
-
-[<Fact>]
-let ``The hit should offset the point`` () =
-    let r = ray (pointi 0 0 -5) (vectori 0 0 1)
-    let shape = Sphere (translationi 0 0 1)
-    let i = intersection 5.0 shape
-    let comps = prepareComputations i r
-    Assert.True((comps.OverPoint.Z) < -epsilon/2.0)

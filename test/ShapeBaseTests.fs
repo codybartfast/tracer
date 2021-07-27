@@ -36,22 +36,6 @@ let ``Assigning a material`` () =
     Assert.Equal(m, s.Material)
 
 [<Fact>]
-let ``Intersecting a scaled shape with a ray`` () =
-    let r = ray (pointi 0 0 -5) (vectori 0 0 1)
-    let s = TestShape(scalingi 2 2 2)
-    intersect r s |> ignore
-    let expected = ray (point 0.0 0.0 -2.5) (vector 0.0 0.0 0.5)
-    Assert.Equal(expected, s.SavedRay)
-
-[<Fact>]
-let ``Intersecting a translated shape with a ray`` () =
-    let r = ray (pointi 0 0 -5) (vectori 0 0 1)
-    let s = TestShape(translationi 5 0 0)
-    intersect r s |> ignore
-    let expected = ray (pointi -5 0 -5) (vectori 0 0 1)
-    Assert.Equal(expected, s.SavedRay)
-
-[<Fact>]
 let ``Computing the normal on a translated shape`` () =
     let s = TestShape(translationi 0 1 0)
     let n = normalAt s (point 0.0 1.70711 -0.70711)

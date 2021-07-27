@@ -89,3 +89,7 @@ let ``Lighting with a pattern applied`` () =
     let c2 = lighting m (obj m) light (point 1.1 0.0 0.0) eyev normalv false
     Assert.Equal(white, c1)
     Assert.Equal(black, c2)
+
+[<Fact>]
+let ``Reflectivity for the default material`` () =
+    Assert.Equal(0.0, material.Reflective)

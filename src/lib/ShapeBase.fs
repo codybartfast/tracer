@@ -11,9 +11,16 @@ type Material =  { Pattern: Pattern
                    Ambient: float
                    Diffuse: float
                    Specular: float
-                   Shininess: float }
+                   Shininess: float
+                   Reflective: float }
     with
-    member m.With(?color, ?pattern, ?ambient, ?diffuse, ?specular, ?shininess) =
+    member m.With(?color,
+                  ?pattern,
+                  ?ambient,
+                  ?diffuse,
+                  ?specular,
+                  ?shininess,
+                  ?reflective) =
         let pattern =
             match color, pattern with
             | _, Some pattern -> pattern
@@ -23,14 +30,16 @@ type Material =  { Pattern: Pattern
           Ambient = defaultArg ambient m.Ambient
           Diffuse = defaultArg diffuse m.Diffuse
           Specular = defaultArg specular m.Specular
-          Shininess = defaultArg shininess m.Shininess }
+          Shininess = defaultArg shininess m.Shininess
+          Reflective = defaultArg reflective m.Reflective }
 
 let defaultMaterial =
     { Pattern = SolidPattern(white)
       Ambient = 0.1
       Diffuse = 0.9
       Specular = 0.9
-      Shininess = 200.0 }
+      Shininess = 200.0
+      Reflective = 0.0 }
 
 let material = defaultMaterial
 
