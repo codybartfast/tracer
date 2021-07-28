@@ -133,7 +133,8 @@ type Computations =
       OverPoint: Point
       Inside: bool
       Eyev: Vector
-      Normalv: Vector }
+      Normalv: Vector 
+      Reflectv: Vector }
 
 let prepareComputations (i: Intersection) r =
     let point = position r i.T
@@ -148,4 +149,5 @@ let prepareComputations (i: Intersection) r =
       OverPoint = overPoint
       Inside = inside
       Eyev = eyev
-      Normalv = normalv }
+      Normalv = normalv
+      Reflectv = reflect r.Direction normalv}

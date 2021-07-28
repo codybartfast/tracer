@@ -13,7 +13,7 @@ open Transformations
 type Sphere (?transform: Matrix, ?material: Material) =
     inherit Shape(transform, material)
 
-    member inline s.With(?transform, ?material) =
+    member s.With(?transform, ?material) =
         Sphere(
             defaultArg transform s.Transform,
             defaultArg material s.Material)
@@ -33,6 +33,7 @@ type Sphere (?transform: Matrix, ?material: Material) =
             [ s.Intersection t1; s.Intersection t2 ]
 
     override _.LocalNormalAt (point: Point) = point - zeroPoint
+
 
 // Sphere functions
 let inline sphere () = Sphere ()

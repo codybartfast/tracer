@@ -11,6 +11,9 @@ open Transformations
 
 type Assert = XUnitExtensions.TracerAssert
 
+let sr2 = sqrt 2.0
+let hsr2 = sr2 / 2.0
+
 [<Fact>]
 let ``An intersection encapsulates t and object`` () =
     let s = Sphere ()
@@ -107,13 +110,6 @@ let ``The hit is always the lowest nonnegative intersection`` () =
     let i = hit xs
     Assert.Equal (Some i4, i)
 
-
-
-
-
-
-
-
 [<Fact>]
 let ``Intersecting a scaled shape with a ray`` () =
     let r = ray (pointi 0 0 -5) (vectori 0 0 1)
@@ -129,3 +125,11 @@ let ``Intersecting a translated shape with a ray`` () =
     intersect r s |> ignore
     let expected = ray (pointi -5 0 -5) (vectori 0 0 1)
     Assert.Equal(expected, s.SavedRay)
+
+[<Fact>]
+let ``Precomputing the reflection vector`` () =
+    let shape = plane ()
+    let r = ray (pointi 0 1 -1) (vector 0.0 -hsr2 hsr2)
+    let i = intersection sr2 shape
+    let comps = prepareComputations i r
+    Assert.Equal(vector 0.0 hsr2 hsr2, comps.Reflectv)

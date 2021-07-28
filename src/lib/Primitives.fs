@@ -152,7 +152,8 @@ type Color(r: float, g: float, b: float) =
     static member (/) (a: Color, n: int) = (/) a (float n)
     override a.Equals b =
         match b with
-        | :? Color as b -> equal a.Triple b.Triple
+        | :? Color as b ->
+            equal a.Triple b.Triple
         | _ -> false
     override _.GetHashCode () = 0
     override _.ToString () = $"Color {r} {g} {b}"

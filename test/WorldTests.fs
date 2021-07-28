@@ -125,3 +125,25 @@ let ``shadeHit is given an intersection in shadow`` () =
     let comps = prepareComputations i r
     let c = shadeHit w comps
     Assert.Equal(color 0.1 0.1 0.1, c)
+
+[<Fact>]
+let ``he reflected color for a nonreflective material`` () =
+    let shape = defaultWorldS2
+    let mat2 = shape.Material.With(ambient = 1.0)
+    let w = World(defaultWorldLights, [defaultWorldS1; shape])
+    let r = ray zeroPoint (vectori 0 0 1)
+    let i = intersection 1.0 shape
+    let comps = prepareComputations i r
+    let color = w.RefectedColor comps
+    Assert.Equal(black, color)
+
+[<Fact>]
+let ``he reflected color for a reflective material`` () =
+    let shape = Plane(translationi 0 -1 0, material.With(reflective = 0.5))
+    let w = World(defaultWorldLights, [defaultWorldS1; defaultWorldS2; shape])
+    let r = ray (pointi 0 0 -3) (vector 0.0 -hsr2 hsr2)
+    let i = intersection sr2 shape
+    let comps = prepareComputations i r
+    let c = w.RefectedColor comps
+    Assert.Equal(color 0.19033 0.23792 0.14275, c)
+    // Assert.Equal(color 0.19032 0.2379 0.14274, c)
