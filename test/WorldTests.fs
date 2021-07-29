@@ -145,5 +145,4 @@ let ``he reflected color for a reflective material`` () =
     let i = intersection sr2 shape
     let comps = prepareComputations i r
     let c = w.RefectedColor comps
-    Assert.Equal(color 0.19033 0.23792 0.14275, c)
-    // Assert.Equal(color 0.19032 0.2379 0.14274, c)
+    Assert.Equal(color 0.19032 0.2379 0.14274, c)

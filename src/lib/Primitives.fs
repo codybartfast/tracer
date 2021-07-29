@@ -5,7 +5,7 @@ open System
 // for untyped representations of a primitive type
 type Bare = float[]
 
-let epsilon = 0.00001
+let epsilon = 0.0001
 let wPoint = 1.0
 let wVector = 0.0
 
