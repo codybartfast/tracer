@@ -53,12 +53,12 @@ let rayForPixel (camera: Camera) (px: int) (py: int) =
     let direction = pixel - origin |> normalize
     ray origin direction
 
-let render (camera: Camera) (world: World) =
+let render (camera: Camera) (world: World) (reflectDepth: int)=
     let image = canvas camera.HSize camera.VSize
     for y in 0 .. camera.VSize - 1 do
         for x in 0 .. camera.HSize - 1 do
             let ray = rayForPixel camera x y
-            let color = colorAt world ray
+            let color = world.ColorAt(ray, reflectDepth)
             writePixel image x y color |> ignore
     image
 

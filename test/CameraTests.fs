@@ -66,5 +66,5 @@ let ``Rendering a world with a camera`` () =
     let up = vectori 0 1 0
     let t = viewTransform from ``to`` up
     let c = camera 11 11 halfPi t
-    let image = render c w
+    let image = render c w 0
     Assert.Equal(color 0.38066 0.47583 0.2855, pixelAt image 5 5)

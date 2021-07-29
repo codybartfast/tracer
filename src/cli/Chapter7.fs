@@ -58,7 +58,7 @@ let chapter7 width height =
         viewTransform (point 0.0 1.5 -5.0) (pointi 0 1 0) (vectori 0 1 0)
         |> camera width height (pi / 3.0)
 
-    let canv = render camera world
+    let canv = render camera world 0
     let filename = "Ch7Scene.ppm"
     File.WriteAllText(filename, canvasToPpm canv)
     printfn $"Written ppm to {FileInfo(filename).FullName}"

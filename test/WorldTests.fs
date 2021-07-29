@@ -48,7 +48,7 @@ let ``Shading an intersection`` () =
     let shape = w.[0]
     let i = intersection 4.0 shape
     let comps = prepareComputations i r
-    let c = shadeHit w comps
+    let c = w.ShadeHit(comps, 0)
     Assert.Equal(color 0.38066 0.47583 0.2855, c)
 
 [<Fact>]
@@ -60,21 +60,21 @@ let ``Shading an intersection from the inside`` () =
     let shape = w.[1]
     let i = intersection 0.5 shape
     let comps = prepareComputations i r
-    let c = shadeHit w comps
+    let c = w.ShadeHit(comps, 0)
     Assert.Equal(color 0.90498 0.90498 0.90498, c)
 
 [<Fact>]
 let ``The color when a ray misses`` () =
     let w = defaultWorld ()
     let r = ray (pointi 0 0 -5) (vectori 0 1 0)
-    let c = colorAt w r
+    let c = w.ColorAt(r, 0)
     Assert.Equal(black, c)
 
 [<Fact>]
 let ``The color when a ray hits`` () =
     let w = defaultWorld ()
     let r = ray (pointi 0 0 -5) (vectori 0 0 1)
-    let c = colorAt w r
+    let c = w.ColorAt(r, 0)
     Assert.Equal(color 0.38066 0.47583 0.2855, c)
 
 [<Fact>]
@@ -89,7 +89,7 @@ let ``The color with an intersection behind the ray`` () =
             outer.With(material = outerMaterial)
             inner.With(material = innerMaterial) ])
     let r = ray (point 0.0 0.0 0.75) (vectori 0 0 -1)
-    let c = colorAt w r
+    let c = w.ColorAt(r, 0)
     Assert.Equal(innerMaterial.Pattern.ColorAt zeroPoint, c)
 
 [<Fact>]
@@ -123,7 +123,7 @@ let ``shadeHit is given an intersection in shadow`` () =
     let r = ray (pointi 0 0 5) (vectori 0 0 1)
     let i = intersection 4.0 s2
     let comps = prepareComputations i r
-    let c = shadeHit w comps
+    let c = w.ShadeHit(comps, 0)
     Assert.Equal(color 0.1 0.1 0.1, c)
 
 [<Fact>]
@@ -134,15 +134,45 @@ let ``he reflected color for a nonreflective material`` () =
     let r = ray zeroPoint (vectori 0 0 1)
     let i = intersection 1.0 shape
     let comps = prepareComputations i r
-    let color = w.RefectedColor comps
+    let color = w.RefectedColor(comps, 1)
     Assert.Equal(black, color)
 
 [<Fact>]
-let ``he reflected color for a reflective material`` () =
+let ``The reflected color for a reflective material`` () =
     let shape = Plane(translationi 0 -1 0, material.With(reflective = 0.5))
-    let w = World(defaultWorldLights, [defaultWorldS1; defaultWorldS2; shape])
+    let w =dfltWorldWith shape
     let r = ray (pointi 0 0 -3) (vector 0.0 -hsr2 hsr2)
     let i = intersection sr2 shape
     let comps = prepareComputations i r
-    let c = w.RefectedColor comps
-    Assert.Equal(color 0.19032 0.2379 0.14274, c)
+    let col = w.RefectedColor(comps, 1)
+    Assert.Equal(color 0.19032 0.2379 0.14274, col)
+
+[<Fact>]
+let ``ShadeHit with a reflective material`` () =
+    let shape = Plane(translationi 0 -1 0, material.With(reflective = 0.5))
+    let w = dfltWorldWith shape
+    let r = ray (pointi 0 0 -3) (vector 0.0 -hsr2 hsr2)
+    let i = intersection sr2 shape
+    let comps = prepareComputations i r
+    let col = w.ShadeHit(comps, 1)
+    Assert.Equal(color 0.87677 0.92436 0.82918, col)
+
+[<Fact>]
+let ``color_at() with mutually reflective surfaces`` () =
+    let light = pointLight zeroPoint white
+    let lower = Plane(translationi 0 -1 0, material.With(reflective = 1.0))
+    let upper = Plane(translationi 0 1 0, material.With(reflective = 1.0))
+    let w = world light [lower; upper]
+    let r = ray zeroPoint (vectori 0 1 0)
+    Assert.True(true)
+
+
+[<Fact>]
+let ``The reflected color at the maximum recursive depth`` () =
+    let shape = Plane(translationi 0 -1 0, material.With(reflective = 0.5))
+    let w = dfltWorldWith shape
+    let r = ray (pointi 0 0 -3) (vector 0.0 -hsr2 hsr2)
+    let i = intersection sr2 shape
+    let comps = prepareComputations i r
+    let col = w.RefectedColor(comps, 0)
+    Assert.Equal(black, col)
