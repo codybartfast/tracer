@@ -93,3 +93,9 @@ let ``Lighting with a pattern applied`` () =
 [<Fact>]
 let ``Reflectivity for the default material`` () =
     Assert.Equal(0.0, material.Reflective)
+
+[<Fact>]
+let ``Transparency and Refractive Index for the default material`` () =
+    Assert.Equal(0.0, material.Transparency)
+    Assert.Equal(1.0, material.RefractiveIndex)
+

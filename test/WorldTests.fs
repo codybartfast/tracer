@@ -9,6 +9,8 @@ open Shapes
 open Transformations
 open World
 
+open TestPattern
+
 type Assert = XUnitExtensions.TracerAssert
 
 [<Fact>]
@@ -47,7 +49,7 @@ let ``Shading an intersection`` () =
     let r = ray (pointi 0 0 -5) (vectori 0 0 1)
     let shape = w.[0]
     let i = intersection 4.0 shape
-    let comps = prepareComputations i r
+    let comps = prepareComputations i r [i]
     let c = w.ShadeHit(comps, 0)
     Assert.Equal(color 0.38066 0.47583 0.2855, c)
 
@@ -59,7 +61,7 @@ let ``Shading an intersection from the inside`` () =
     let r = ray (pointi 0 0 0) (vectori 0 0 1)
     let shape = w.[1]
     let i = intersection 0.5 shape
-    let comps = prepareComputations i r
+    let comps = prepareComputations i r [i]
     let c = w.ShadeHit(comps, 0)
     Assert.Equal(color 0.90498 0.90498 0.90498, c)
 
@@ -122,7 +124,7 @@ let ``shadeHit is given an intersection in shadow`` () =
     let w = world (pointLight (pointi 0 0 -10) white) [sphere (); s2]
     let r = ray (pointi 0 0 5) (vectori 0 0 1)
     let i = intersection 4.0 s2
-    let comps = prepareComputations i r
+    let comps = prepareComputations i r [i]
     let c = w.ShadeHit(comps, 0)
     Assert.Equal(color 0.1 0.1 0.1, c)
 
@@ -133,8 +135,8 @@ let ``he reflected color for a nonreflective material`` () =
     let w = World(defaultWorldLights, [defaultWorldS1; shape])
     let r = ray zeroPoint (vectori 0 0 1)
     let i = intersection 1.0 shape
-    let comps = prepareComputations i r
-    let color = w.RefectedColor(comps, 1)
+    let comps = prepareComputations i r [i]
+    let color = w.ReflectedColor(comps, 1)
     Assert.Equal(black, color)
 
 [<Fact>]
@@ -143,8 +145,8 @@ let ``The reflected color for a reflective material`` () =
     let w =dfltWorldWith shape
     let r = ray (pointi 0 0 -3) (vector 0.0 -hsr2 hsr2)
     let i = intersection sr2 shape
-    let comps = prepareComputations i r
-    let col = w.RefectedColor(comps, 1)
+    let comps = prepareComputations i r [i]
+    let col = w.ReflectedColor(comps, 1)
     Assert.Equal(color 0.19032 0.2379 0.14274, col)
 
 [<Fact>]
@@ -153,12 +155,12 @@ let ``ShadeHit with a reflective material`` () =
     let w = dfltWorldWith shape
     let r = ray (pointi 0 0 -3) (vector 0.0 -hsr2 hsr2)
     let i = intersection sr2 shape
-    let comps = prepareComputations i r
+    let comps = prepareComputations i r [i]
     let col = w.ShadeHit(comps, 1)
     Assert.Equal(color 0.87677 0.92436 0.82918, col)
 
 [<Fact>]
-let ``color_at() with mutually reflective surfaces`` () =
+let ``ColorAt with mutually reflective surfaces`` () =
     let light = pointLight zeroPoint white
     let lower = Plane(translationi 0 -1 0, material.With(reflective = 1.0))
     let upper = Plane(translationi 0 1 0, material.With(reflective = 1.0))
@@ -173,6 +175,81 @@ let ``The reflected color at the maximum recursive depth`` () =
     let w = dfltWorldWith shape
     let r = ray (pointi 0 0 -3) (vector 0.0 -hsr2 hsr2)
     let i = intersection sr2 shape
-    let comps = prepareComputations i r
-    let col = w.RefectedColor(comps, 0)
+    let comps = prepareComputations i r [i]
+    let col = w.ReflectedColor(comps, 0)
     Assert.Equal(black, col)
+
+[<Fact>]
+let ``The refracted color with an opaque surface`` () =
+    let w = defaultWorld ()
+    let shape = w.[0]
+    let r = ray (pointi 0 0 -5) (vectori 0 0 1)
+    let xs = [intersection 4.0 shape; intersection 6.0 shape]
+    let comps = prepareComputations xs.[0] r xs
+    let c = w.RefractedColor(comps, 5)
+    Assert.Equal(black, c)
+
+[<Fact>]
+let ``The refracted color at the maximum depth`` () =
+    let mat1 = defaultWorldS1.Material
+    let mat1 = mat1.With(transparency = 1.0, refractiveIndex = 1.5)
+    let shape = defaultWorldS1.With(material = mat1)
+    let w = World(
+                defaultWorldLights,
+                [shape; defaultWorldS2])
+    let r = ray (pointi 0 0 -5) (vectori 0 0 1)
+    let xs = [intersection 4.0 shape; intersection 6.0 shape]
+    let comps = prepareComputations xs.[0] r xs
+    let c = w.RefractedColor(comps, 0)
+    Assert.Equal(black, c)
+
+[<Fact>]
+let ``The refracted color under total internal reflection`` () =
+    let mat1 = defaultWorldS1.Material
+    let mat1 = mat1.With(transparency = 1.0, refractiveIndex = 1.5)
+    let shape = defaultWorldS1.With(material = mat1)
+    let w = World(
+                defaultWorldLights,
+                [shape; defaultWorldS2])
+    let r = ray (point 0.0 0.0 hsr2) (vectori 0 1 0)
+    let xs = [intersection -hsr2 shape; intersection hsr2 shape]
+    let comps = prepareComputations xs.[1] r xs
+    let c = w.RefractedColor(comps, 5)
+    Assert.Equal(black, c)
+
+[<Fact>]
+let ``The refracted color with a refracted ray`` () =
+    let mat1, mat2 = defaultWorldS1.Material, defaultWorldS2.Material
+    let mat1 = mat1.With(ambient = 1.0, pattern = TestPattern())
+    let mat2 = mat2.With(transparency = 1.0, refractiveIndex = 1.5)
+    let a = defaultWorldS1.With(material = mat1)
+    let b = defaultWorldS2.With(material = mat2)
+    let w = World(defaultWorldLights, [a; b])
+    let r = ray (point 0.0 0.0 0.1) (vectori 0 1 0)
+    let xs = [  intersection -0.9899 a;
+                intersection -0.4899 b;
+                intersection 0.4899 b;
+                intersection 0.9899 a ]
+    let comps = prepareComputations xs.[2] r xs
+    let c = w.RefractedColor(comps, 5)
+    Assert.Equal(color 0.0 0.99888 0.04725, c)
+
+[<Fact>]
+let ``ShadeHit with a transparent material`` () =
+    let floor = 
+        Plane(
+            translationi 0 -1 0,
+            material.With(transparency = 0.5, refractiveIndex = 1.5))
+    let ball =
+        Sphere(
+            translation 0.0 -3.5 -0.5,
+            material.With(color = red, ambient = 0.5))
+    let w = 
+        World(  
+            defaultWorldLights, 
+            [defaultWorldS1; defaultWorldS2; floor; ball])
+    let r = ray (pointi 0 0 -3) (vector 0.0 -hsr2 hsr2)
+    let xs = [intersection sr2 floor]
+    let comps = prepareComputations xs.[0] r xs
+    let col = w.ShadeHit(comps, 5)
+    Assert.Equal(color 0.93642 0.68642 0.68642, col)

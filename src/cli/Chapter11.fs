@@ -22,7 +22,7 @@ let chapter11 picPath width height  =
             translationi 23 0 -8 * scalingi 12 12 12,
             material.With(pattern = floorPat))
 
-    let ceilingPat =  
+    let ceilingPat =
         StripePattern(
             blendColors [lightCyan; lightBlue; darkGrey] |> solid,
             solid lightGrey)
@@ -69,9 +69,9 @@ let chapter11 picPath width height  =
                 * rotationX -halfPi,
             material
                 .With(
-                    pattern = RgbCubePattern(scaling 0.5 1.1 1.1),
-                    ambient = 0.2,
-                    reflective = 0.2))
+                    pattern = RgbCubePattern(scaling 0.7 0.7 0.7),
+                    reflective = 0.2,
+                    ambient = 0.2))
 
     let material = material.With(diffuse = 0.7, specular = 0.3)
     let middlePat =
@@ -82,7 +82,7 @@ let chapter11 picPath width height  =
                 * rotationZ -0.2
                 * rotationX -0.8
                 * rotationY -2.2
-                * rotationX -halfPi, // debug sphere
+                * rotationX -halfPi,
             material.With(pattern = middlePat, ambient = 0.3))
 
     let right =

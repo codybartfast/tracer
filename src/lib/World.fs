@@ -6,8 +6,8 @@ open ShapeBase
 open Shapes
 open Transformations
 
-let sr2 = sqrt 2.0
-let hsr2 = sr2 / 2.0
+let sr2 = sqrt 2.0 // square root of 2
+let hsr2 = sr2 / 2.0 // half square root of 2
 
 type World(lights: PointLight list, shapes: Shape list) =
     new() = World([], [])
@@ -42,10 +42,10 @@ type World(lights: PointLight list, shapes: Shape list) =
             | Some h when h.T < distance -> true
             | _ -> false
 
-    member w.ShadeHit(comps: Computations, reflectRem: int) =
+    member w.ShadeHit(comps: Computations, refRemaining: int) =
         w.Lights
             |> List.map (fun light ->
-                let surface = 
+                let surface =
                     lighting
                         comps.Object.Material
                         comps.Object
@@ -54,27 +54,45 @@ type World(lights: PointLight list, shapes: Shape list) =
                         comps.Eyev
                         comps.Normalv
                         (w.IsShadowed(Some light, comps.OverPoint))
-                let reflected = w.RefectedColor(comps, reflectRem)
-                // let reflected = black
-                surface + reflected)
+                let reflected = w.ReflectedColor(comps, refRemaining)
+                let refracted = w.RefractedColor(comps, refRemaining)
+                // failwith $"refract: {refracted}"
+                surface + reflected + refracted)
             |> List.reduce (+)
 
-    member w.ColorAt(ray: Ray, reflectRem: int) =
-        match w.Intersect(ray) |> hit with
+    member w.ColorAt(ray: Ray, refRemaining: int) =
+        let xs = w.Intersect(ray)
+        match xs |> hit with
         | None -> black
-        | Some hit -> 
-            let comps = prepareComputations hit ray
-            w.ShadeHit(comps, reflectRem)
+        | Some hit ->
+            let comps = prepareComputations hit ray xs
+            w.ShadeHit(comps, refRemaining)
 
-    member w.RefectedColor (comps: Computations, reflectRem: int) =
-        if reflectRem <= 0 then black else
+    member w.ReflectedColor (comps: Computations, refRemaining: int) =
+        if refRemaining <= 0 then black else
         let reflective = comps.Object.Material.Reflective
         match reflective with
         | 0.0 -> black
         | _ ->
             let reflectRay = ray comps.OverPoint comps.Reflectv
-            let color = w.ColorAt(reflectRay, reflectRem - 1)
+            let color = w.ColorAt(reflectRay, refRemaining - 1)
             color * reflective
+
+    member w.RefractedColor (comps: Computations, refRemaining: int) =
+        if refRemaining <= 0 then black else
+
+        let nRatio = comps.N1 / comps.N2
+        let cosI = dot comps.Eyev comps.Normalv
+        let sin2T = nRatio * nRatio * (1.0 - (cosI * cosI))
+        let totalInteralRefraction = sin2T >= 1.0        
+        if totalInteralRefraction then black else
+        if comps.Object.Material.Transparency = 0.0 then black else
+
+        let cosT = 1.0 - sin2T |> sqrt
+        let direction = comps.Normalv * (nRatio * cosI - cosT) - (comps.Eyev * nRatio)
+        let refractedRay = ray comps.UnderPoint direction
+        let color = w.ColorAt(refractedRay, refRemaining - 1) * comps.Object.Material.Transparency
+        color
 
 let world light shapes = World([light], shapes)
 
@@ -98,8 +116,3 @@ let intersectWorld (w: World) r = w.Intersect(r)
 
 let isShadowed (world: World) (light: Option<PointLight>) (point: Point) =
     world.IsShadowed(light, point)
-
-// let shadeHit (world: World) comps = world.ShadeHit(comps)
-
-// let colorAt (w: World) r = w.ColorAt(r)
-

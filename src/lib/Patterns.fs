@@ -113,10 +113,22 @@ type CheckersPattern (transform: Matrix, a: Pattern,  b: Pattern) =
 
 (* Not in the book *)
 
+// type RgbCubePattern (transform: Matrix) =
+//     inherit Pattern(transform)
+//     new() = RgbCubePattern(identity ())
+//     override _.LocalColorAt(Point (x, y, z)) = color x y z
+//     override p.TransformWith(t) = RgbCubePattern(t * p.Transform) :> Pattern
+
 type RgbCubePattern (transform: Matrix) =
     inherit Pattern(transform)
+    let map (n: float) =
+        n
+        |> abs
+        |> fun n -> n % 2.0
+        |> fun n -> if n > 1.0 then (2.0 - n) else n
+
     new() = RgbCubePattern(identity ())
-    override _.LocalColorAt(Point (x, y, z)) = color x y z
+    override _.LocalColorAt(Point (x, y, z)) = color (map x) (map y) (map z)
     override p.TransformWith(t) = RgbCubePattern(t * p.Transform) :> Pattern
 
 type InvMercatorPattern (transform: Matrix, pattern: Pattern) =

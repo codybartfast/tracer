@@ -12,7 +12,9 @@ type Material =  { Pattern: Pattern
                    Diffuse: float
                    Specular: float
                    Shininess: float
-                   Reflective: float }
+                   Reflective: float
+                   Transparency: float
+                   RefractiveIndex: float }
     with
     member m.With(?color,
                   ?pattern,
@@ -20,7 +22,9 @@ type Material =  { Pattern: Pattern
                   ?diffuse,
                   ?specular,
                   ?shininess,
-                  ?reflective) =
+                  ?reflective,
+                  ?transparency,
+                  ?refractiveIndex) =
         let pattern =
             match color, pattern with
             | _, Some pattern -> pattern
@@ -31,7 +35,9 @@ type Material =  { Pattern: Pattern
           Diffuse = defaultArg diffuse m.Diffuse
           Specular = defaultArg specular m.Specular
           Shininess = defaultArg shininess m.Shininess
-          Reflective = defaultArg reflective m.Reflective }
+          Reflective = defaultArg reflective m.Reflective
+          Transparency = defaultArg transparency m.Transparency
+          RefractiveIndex = defaultArg refractiveIndex m.RefractiveIndex }
 
 let defaultMaterial =
     { Pattern = SolidPattern(white)
@@ -39,7 +45,9 @@ let defaultMaterial =
       Diffuse = 0.9
       Specular = 0.9
       Shininess = 200.0
-      Reflective = 0.0 }
+      Reflective = 0.0
+      Transparency = 0.0
+      RefractiveIndex = 1.0 }
 
 let material = defaultMaterial
 
@@ -131,23 +139,46 @@ type Computations =
       Object: Shape
       Point: Point
       OverPoint: Point
+      UnderPoint: Point
       Inside: bool
       Eyev: Vector
-      Normalv: Vector 
-      Reflectv: Vector }
+      Normalv: Vector
+      Reflectv: Vector
+      N1: float
+      N2: float }
 
-let prepareComputations (i: Intersection) r =
+let n1n2 (hit: Intersection) (xs: Intersections) =
+    let prevContainers, containers =
+        xs 
+        |> List.takeWhile (fun x -> x.T <= hit.T)
+        |> List.fold
+            (fun (_, containers) x ->
+                let obj = x.Object
+                match List.contains obj containers with
+                | true -> containers, List.filter ((<>) obj) containers
+                | _ -> containers, obj::containers)
+            ([], [])
+    let ri (containers: Shape list) = 
+        match containers with
+        | [] -> material.RefractiveIndex
+        | c::_ -> c.Material.RefractiveIndex
+    ri prevContainers, ri containers
+
+let prepareComputations (i: Intersection) r (xs: Intersections) =
     let point = position r i.T
     let eyev = -r.Direction
     let initialNormal = normalAt i.Object point
     let inside = dot initialNormal eyev < 0.0
     let normalv = if inside then -initialNormal else initialNormal
-    let overPoint = point + (normalv * epsilon)
+    let n1, n2 = n1n2 i xs
     { T = i.T
       Object = i.Object
       Point = point
-      OverPoint = overPoint
+      OverPoint = point + (normalv * epsilon)
+      UnderPoint = point - (normalv * epsilon)
       Inside = inside
       Eyev = eyev
       Normalv = normalv
-      Reflectv = reflect r.Direction normalv}
+      Reflectv = reflect r.Direction normalv
+      N1 = n1
+      N2 = n2 }
