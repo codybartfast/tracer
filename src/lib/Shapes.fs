@@ -1,11 +1,9 @@
 module Shapes
 
-open System
 open Primitives
 open Matrix
 open Ray
 open ShapeBase
-open Transformations
 
 
 (* Sphere *)
@@ -39,7 +37,7 @@ type Sphere (?transform: Matrix, ?material: Material) =
 let inline sphere () = Sphere ()
 let equivalent (s1: Shape) (s2: Shape) =
     s1.Transform = s2.Transform && s1.Material = s2.Material
-let glass = material.With(transparency = 1.0, refractiveIndex = 1.0)
+let glass = material.With(transparency = 1.0, refractiveIndex = 1.5)
 
 
 (* Plane *)

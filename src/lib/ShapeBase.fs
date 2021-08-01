@@ -149,7 +149,7 @@ type Computations =
 
 let n1n2 (hit: Intersection) (xs: Intersections) =
     let prevContainers, containers =
-        xs 
+        xs
         |> List.takeWhile (fun x -> x.T <= hit.T)
         |> List.fold
             (fun (_, containers) x ->
@@ -158,7 +158,7 @@ let n1n2 (hit: Intersection) (xs: Intersections) =
                 | true -> containers, List.filter ((<>) obj) containers
                 | _ -> containers, obj::containers)
             ([], [])
-    let ri (containers: Shape list) = 
+    let ri (containers: Shape list) =
         match containers with
         | [] -> material.RefractiveIndex
         | c::_ -> c.Material.RefractiveIndex
@@ -182,3 +182,19 @@ let prepareComputations (i: Intersection) r (xs: Intersections) =
       Reflectv = reflect r.Direction normalv
       N1 = n1
       N2 = n2 }
+
+let schlick comps =
+    let schlick cos =
+        let r0 = ((comps.N1 - comps.N2) / (comps.N1 + comps.N2)) ** 2.0
+        r0 + (1.0 - r0) * (1.0 - cos) ** 5.0
+    let cos = dot comps.Eyev comps.Normalv
+    if comps.N1 > comps.N2 then
+        let n = comps.N1 / comps.N2
+        let sin2T = n * n * (1.0 - cos * cos)
+        if sin2T > 1.0 then
+            1.0
+        else
+            schlick (1.0 - sin2T |> sqrt)
+    else
+        schlick cos
+

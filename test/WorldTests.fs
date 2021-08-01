@@ -236,7 +236,7 @@ let ``The refracted color with a refracted ray`` () =
 
 [<Fact>]
 let ``ShadeHit with a transparent material`` () =
-    let floor = 
+    let floor =
         Plane(
             translationi 0 -1 0,
             material.With(transparency = 0.5, refractiveIndex = 1.5))
@@ -244,12 +244,33 @@ let ``ShadeHit with a transparent material`` () =
         Sphere(
             translation 0.0 -3.5 -0.5,
             material.With(color = red, ambient = 0.5))
-    let w = 
-        World(  
-            defaultWorldLights, 
-            [defaultWorldS1; defaultWorldS2; floor; ball])
+    let w =
+        World(
+            defaultWorldLights,
+            [defaultWorldS1; defaultWorldS2; floor; ball] )
     let r = ray (pointi 0 0 -3) (vector 0.0 -hsr2 hsr2)
     let xs = [intersection sr2 floor]
     let comps = prepareComputations xs.[0] r xs
     let col = w.ShadeHit(comps, 5)
     Assert.Equal(color 0.93642 0.68642 0.68642, col)
+
+[<Fact>]
+let ``ShadeHit with a reflective, transparent material`` () =
+    let r = ray (pointi 0 0 -3) (vector 0.0 -hsr2 hsr2)
+    let mat = material.With(reflective = 0.5,
+                            transparency = 0.5,
+                            refractiveIndex = 1.5)
+    let floor = Plane(translationi 0 -1 0, mat)
+    let ball =
+        Sphere(translation 0.0 -3.5 -0.5,
+               material.With(  color = red,
+                               ambient = 0.5 ))
+    let w = World(defaultWorldLights,
+                  [defaultWorldS1; defaultWorldS2; floor; ball])
+    let xs = [intersection sr2 floor]
+    let comps = prepareComputations xs.[0] r xs
+    let col = w.ShadeHit(comps, 5)
+    Assert.Equal(color 0.93391 0.69643 0.69243, col)
+
+
+

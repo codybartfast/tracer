@@ -11,8 +11,8 @@ open Transformations
 
 type Assert = XUnitExtensions.TracerAssert
 
-let sr2 = sqrt 2.0
-let hsr2 = sr2 / 2.0
+let sr2 = sqrt 2.0 // square root or 2
+let hsr2 = sr2 / 2.0 // half sr2
 
 [<Fact>]
 let ``An intersection encapsulates t and object`` () =
@@ -162,3 +162,31 @@ let ``The under point is offset below the surface`` () =
     let comps = prepareComputations i r xs
     Assert.True(comps.UnderPoint.Z > epsilon / 2.0)
     Assert.True(comps.Point.Z < comps.UnderPoint.Z)
+
+[<Fact>]
+let ``The Schlick approximation under total internal reflection`` () =
+    let shape = Sphere(material = glass)
+    let r = ray (point 0.0 0.0 hsr2) (vectori 0 1 0)
+    let xs = [intersection -hsr2 shape; intersection hsr2 shape]
+    let comps = prepareComputations xs.[1] r xs
+    let reflectance = schlick comps
+    Assert.Equal(1.0, reflectance)
+
+[<Fact>]
+let ``The Schlick approximation with a perpendicular viewing angle`` () =
+    let shape = Sphere(material = glass)
+    let r = ray (pointi 0 0 0) (vectori 0 1 0)
+    let xs = [intersection -1.0 shape; intersection 1.0 shape]
+    let comps = prepareComputations xs.[1] r xs
+    let reflectance = schlick(comps)
+    Assert.Equal(0.04, reflectance)
+
+[<Fact>]
+let ``The Schlick approximation with small angle and n2 > n1`` () =
+    let shape = Sphere(material = glass)
+    let r = ray (point 0.0 0.99 -2.0) (vectori 0 0 1)
+    let xs = [intersection 1.8589 shape]
+    let comps = prepareComputations xs.[0] r xs
+    let reflectance = schlick(comps)
+    Assert.Equal(0.48873, reflectance)
+
