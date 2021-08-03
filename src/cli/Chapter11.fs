@@ -47,6 +47,7 @@ let chapter11 picPath width height  =
     let walls =
         let walls =
             [0 .. 5] |> List.map (fun n ->
+            // [0; 4; 5] |> List.map (fun n ->
                 let roty = rotationY ((float n) * (pi / 3.0) + 0.5)
                 Plane(  roty
                         * translation 0.0 0.46 7.0
@@ -69,25 +70,46 @@ let chapter11 picPath width height  =
                 * rotationX -halfPi,
             material
                 .With(
-                    pattern = RgbCubePattern(scaling 0.7 0.7 0.7),
-                    reflective = 0.2,
+                    color = darkGrey,
+                    reflective = 0.15,
                     ambient = 0.2))
 
     let material = material.With(diffuse = 0.7, specular = 0.3)
     let middlePat =
         BitmapPattern(picPath) |> squareLimit 4 |> InvMercatorPattern
-    let middle =
+    let middle1 =
         Sphere(
             translation -0.5 1.0 0.5
+                // * scaling 0.6 0.6 0.6
                 * rotationZ -0.2
                 * rotationX -0.8
                 * rotationY -2.2
                 * rotationX -halfPi,
-            material.With(pattern = middlePat, ambient = 0.3))
+            material
+                .With(
+                    // reflective = 0.1,
+                    pattern = middlePat,
+                    ambient = 0.3))
+
+    let transMat =
+        defaultMaterial
+            .With(
+                // ambient = 0.0,
+                // diffuse = 0.0,
+                color = black,
+                shininess = 300.0,
+                specular = 1.0,
+                refractiveIndex = 2.0,
+                reflective = 1.0,
+                transparency = 0.4)
+
+    let trans1 = Sphere(translation 1.9 1.2 2.2 * scaling 0.8 0.8 0.8, transMat)
+
+    let trans2 = Sphere(translation 1.9 0.2 2.2 * scaling 0.2 0.2 0.2, transMat)
 
     let right =
         let rightPattern =
-            BitmapPattern("bmp/Mercator.jpg") |>  InvMercatorPattern
+            BitmapPattern("bmp/Mercator.jpg")|>  InvMercatorPattern
         Sphere(
             translation 1.5 0.57 -0.5
                 * scaling 0.57 0.57 0.57
@@ -100,13 +122,17 @@ let chapter11 picPath width height  =
 
     let light1 = pointLight (pointi -5 5 -5) (color 0.7 0.55 0.4)
     let light2 = pointLight (pointi -2 4 0) (color 0.4 0.55 0.7)
-    let shapes : Shape list = [left; middle; right; floor; ceiling] @ walls
+    let shapes : Shape list = 
+        [left; middle1; right; trans1; floor; ceiling] @ walls
     let world = World([light1; light2], shapes)
     let camera =
         viewTransform (point 3.0 1.2 -3.6) (pointi 0.7 1.0 0.0) (vectori 0 1 0)
         |> camera width height (pi / 3.0)
+    // let camera =
+    //     viewTransform (point 12.2 2.0 -18.0) (pointi 0.7 1.0 0.0) (vectori 0 1 0)
+    //     |> camera width height (pi / 14.0)
 
-    let canv = render camera world 1
+    let canv = render camera world 5
     let filename = "Ch11Reflection.ppm"
     File.WriteAllText(filename, canvasToPpm canv)
     printfn $"Written ppm to {FileInfo(filename).FullName}"
