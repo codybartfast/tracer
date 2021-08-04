@@ -1,5 +1,7 @@
 module Shapes
 
+open System
+
 open Primitives
 open Matrix
 open Ray
@@ -62,3 +64,35 @@ type Plane (?transform: Matrix, ?material: Material) =
     override _.LocalNormalAt (_: Point) = normalAt
 
 let inline plane () = Plane ()
+
+
+(* Cube *)
+[<Sealed>]
+type Cube (?transform: Matrix, ?material: Material) =
+    inherit Shape(transform, material)
+
+    let checkAxis origin direction =
+        let tminNumerator = -1.0 - origin
+        let tmaxNumerator = 1.0 - origin
+        let tmin, tmax =
+            if abs(direction) >= epsilon then
+                tminNumerator / direction, tmaxNumerator / direction
+            else
+                tminNumerator * Double.PositiveInfinity,
+                    tmaxNumerator * Double.PositiveInfinity
+        if tmin <= tmax then tmin, tmax else tmax, tmin
+
+
+    override c.LocalIntersect(ray: Ray) : Intersections =
+        let xtmin, xtmax = checkAxis ray.Origin.X ray.Direction.X
+        let ytmin, ytmax = checkAxis ray.Origin.Y ray.Direction.Y
+        let ztmin, ztmax = checkAxis ray.Origin.Z ray.Direction.Z
+        let tmin = List.max [xtmin; ytmin; ztmin]
+        let tmax = List.min [xtmax; ytmax; ztmax]
+        if tmin <= tmax then
+            [intersection tmin c; intersection tmax c]
+        else
+            []
+
+    override _.LocalNormalAt (_: Point) =
+        failwith "not imkplemented"
