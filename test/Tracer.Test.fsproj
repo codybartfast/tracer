@@ -15,6 +15,7 @@
     <Compile Include="CameraTests.fs" />
     <Compile Include="CanvasTests.fs" />
     <Compile Include="ColorTests.fs" />
+    <Compile Include="CylinderTests.fs" />
     <Compile Include="CubeTests.fs" />
     <Compile Include="IntersectionTests.fs" />
     <Compile Include="MatrixTests.fs" />

@@ -33,6 +33,7 @@ let `` A ray intersects a cube`` (px, py, pz, vx, vy, vz, t1, t2) =
 [<InlineData(2, 0, 2, 0.0, 0.0, -1.0)>]
 [<InlineData(0, 2, 2, 0.0, -1.0, 0.0)>]
 [<InlineData(2, 2, 0, -1.0, 0.0, 0.0)>]
+[<InlineData(0, 0, 2, 0.0, 0.0, 1.0)>]
 let ``A ray misses a cube`` (px, py, pz, vx, vy, vz) =
     let c = Cube()
     let r = ray (pointi px py pz) (vector vx vy vz)

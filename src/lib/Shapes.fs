@@ -89,10 +89,10 @@ type Cube (?transform: Matrix, ?material: Material) =
         let ztmin, ztmax = checkAxis ray.Origin.Z ray.Direction.Z
         let tmin = List.max [xtmin; ytmin; ztmin]
         let tmax = List.min [xtmax; ytmax; ztmax]
-        if tmin <= tmax then
-            [intersection tmin c; intersection tmax c]
-        else
+        if tmax <= 0.0 || tmax < tmin then
             []
+        else
+            [intersection tmin c; intersection tmax c]
 
     override _.LocalNormalAt (point: Point) =
         let absolutes = [point.X; point.Y; point.Z] |> List.map abs
@@ -101,3 +101,30 @@ type Cube (?transform: Matrix, ?material: Material) =
         | 0 -> vector point.X 0.0 0.0
         | 1 -> vector 0.0 point.Y 0.0
         | _ -> vector 0.0 0.0 point.Z
+
+
+[<Sealed>]
+type Cylinder (?transform: Matrix, ?material: Material) =
+    inherit Shape(transform, material)
+
+    let sqr n = n * n
+
+    override cyl.LocalIntersect(ray: Ray) : Intersections =
+        let a =  sqr ray.Direction.X  + sqr ray.Direction.Z
+        if valEqual a 0.0 then
+            []
+        else
+            let b = (2.0 * ray.Origin.X * ray.Direction.X) +
+                        (2.0 *  ray.Origin.Z * ray.Direction.Z)
+            let c = (sqr ray.Origin.X) + (sqr ray.Origin.Z) - 1.0
+            let disc = (sqr b) - 4.0 * a * c
+            if disc < 0.0 then 
+                [] 
+            else
+                let t0 = (-b - (sqrt disc)) / (2.0 * a)
+                let t1 = (-b + (sqrt disc)) / (2.0 * a)
+                [intersection t0 cyl; intersection t1 cyl]
+
+
+    override _.LocalNormalAt (point: Point) =
+        failwith "so"
