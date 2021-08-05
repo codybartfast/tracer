@@ -33,8 +33,23 @@ let `` A ray intersects a cube`` (px, py, pz, vx, vy, vz, t1, t2) =
 [<InlineData(2, 0, 2, 0.0, 0.0, -1.0)>]
 [<InlineData(0, 2, 2, 0.0, -1.0, 0.0)>]
 [<InlineData(2, 2, 0, -1.0, 0.0, 0.0)>]
-let `` A ray misses a cube`` (px, py, pz, vx, vy, vz) =
+let ``A ray misses a cube`` (px, py, pz, vx, vy, vz) =
     let c = Cube()
     let r = ray (pointi px py pz) (vector vx vy vz)
     let xs = c.LocalIntersect(r)
     Assert.Equal(0, xs.Length)
+
+[<Theory>]
+[<InlineData(1.0, 0.5, -0.8, 1, 0, 0)>]
+[<InlineData(-1.0, -0.2, 0.9, -1, 0, 0)>]
+[<InlineData(-0.4, 1.0, -0.1, 0, 1, 0)>]
+[<InlineData(0.3, -1.0, -0.7, 0, -1, 0)>]
+[<InlineData(-0.6, 0.3, 1.0, 0, 0, 1)>]
+[<InlineData(0.4, 0.4, -1.0, 0, 0, -1)>]
+[<InlineData(1.0, 1.0, 1.0, 1, 0, 0)>]
+[<InlineData(-1.0, -1.0, -1.0, -1, 0, 0)>]
+let ``The normal on the surface of a cube`` (px, py, pz, vx, vy, vz) =
+    let c = Cube()
+    let p = point px py pz
+    let norm = c.LocalNormalAt(p)
+    Assert.Equal(vectori vx vy vz, norm)

@@ -94,5 +94,10 @@ type Cube (?transform: Matrix, ?material: Material) =
         else
             []
 
-    override _.LocalNormalAt (_: Point) =
-        failwith "not imkplemented"
+    override _.LocalNormalAt (point: Point) =
+        let absolutes = [point.X; point.Y; point.Z] |> List.map abs
+        let maxC =  absolutes |> List.max
+        match List.findIndex ((=) maxC) absolutes with
+        | 0 -> vector point.X 0.0 0.0
+        | 1 -> vector 0.0 point.Y 0.0
+        | _ -> vector 0.0 0.0 point.Z
