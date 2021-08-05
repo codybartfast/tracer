@@ -8,6 +8,7 @@ open Chapter8
 open Chapter9
 open Chapter10
 open Chapter11
+open Chapter12
 
 
 [<EntryPoint>]
@@ -21,6 +22,7 @@ let main _ =
     // chapter8 3240 2160
     // chapter9 1280 960
     // chapter10 "bmp/Hamilton.jpg" 3240 2160
-    chapter11 "bmp/Hamilton.jpg" 3240 2160
+    // chapter11 "bmp/Hamilton.jpg" 3240 2160
+    chapter12 "bmp/Hamilton.jpg" 3240 2160
     printfn "Done"
     0
