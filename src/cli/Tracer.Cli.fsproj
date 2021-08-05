@@ -6,14 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Chapter1.fs" />
-    <Compile Include="Chapter2.fs" />
-    <Compile Include="Chapter4.fs" />
-    <Compile Include="Chapter5.fs" />
-    <Compile Include="Chapter6.fs" />
-    <Compile Include="Chapter7.fs" />
-    <Compile Include="Chapter8.fs" />
-    <Compile Include="Chapter9.fs" />
+    <Compile Include="Chapter01.fs" />
+    <Compile Include="Chapter02.fs" />
+    <Compile Include="Chapter04.fs" />
+    <Compile Include="Chapter05.fs" />
+    <Compile Include="Chapter06.fs" />
+    <Compile Include="Chapter07.fs" />
+    <Compile Include="Chapter08.fs" />
+    <Compile Include="Chapter09.fs" />
     <Compile Include="Chapter10.fs" />
     <Compile Include="Chapter11.fs" />
     <Compile Include="Program.fs" />
